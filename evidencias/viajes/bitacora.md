@@ -6,9 +6,9 @@
 | 2 · Value Object (`EstadoViaje`) | ~45 min | 30 min | "feat: value object EstadoViaje con transiciones válidas" | |
 | 3 · Límite del Agregado (documentar y respetar cómo `Viaje` referencia otras entidades) | ~15 min | 5 min | feat: raíz del agregado Viaje, referencia a Conductor y Pasajero solo por id |
 | 4 · Factory (`ViajeFactory`) | ~35 min | 25 min | feat: factory ViajeFactory para construir viajes válidos |
-| 5 · Servicio de Dominio (`TransicionEstadoViajeService`) | ~35 min | |  |
-| 6 · Commit y push + Pull Request | ~5 min | |  |
-| **Total** | **~2 h 35 min** | | | |
+| 5 · Servicio de Dominio (`TransicionEstadoViajeService`) | ~35 min | 30 min | feat: servicio de dominio TransicionEstadoViajeService |
+| 6 · Commit y push + Pull Request | ~5 min | 5 min |  |
+| **Total** | **~2 h 35 min** | **1 h 45 min**  | |
 
 ## Notas del paso 1 · Lenguaje Ubicuo
 
