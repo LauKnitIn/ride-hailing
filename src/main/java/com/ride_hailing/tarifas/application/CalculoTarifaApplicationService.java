@@ -1,32 +1,36 @@
 package com.ride_hailing.tarifas.application;
 
+import java.util.UUID;
+
 import com.ride_hailing.tarifas.domain.CalculadoraTarifaService;
 import com.ride_hailing.tarifas.domain.Monto;
 
 public class CalculoTarifaApplicationService
         implements CalculoTarifaUseCase {
 
-    private final CalculadoraTarifaService calculadoraTarifaService;
+    private final RepositorioViajes repositorioViajes;
+    private final CalculadoraTarifaService calculadora;
+
 
     public CalculoTarifaApplicationService(
-            CalculadoraTarifaService calculadoraTarifaService) {
-        this.calculadoraTarifaService = calculadoraTarifaService;
+            RepositorioViajes repositorioViajes,
+            CalculadoraTarifaService calculadora) {
+        this.repositorioViajes = repositorioViajes;
+        this.calculadora = calculadora;
     }
-
+    
     @Override
-    public Monto calcularTarifa(
-            double distanciaKm,
-            double tiempoMinutos,
-            Monto tarifaMinima,
-            double tarifaPorKm,
-            double tarifaPorMinuto) {
+    public Monto calcularTarifa(UUID viajeId) {
 
-        return calculadoraTarifaService.calcularTarifa(
-                distanciaKm,
-                tiempoMinutos,
-                tarifaMinima,
-                tarifaPorKm,
-                tarifaPorMinuto
+        DatosViajeTarifa viaje =
+                repositorioViajes.buscarPorId(viajeId);
+
+        return calculadora.calcularMonto(
+                viaje.distanciaKm(),
+                viaje.tiempoMinutos(),
+                new Monto(5000),
+                1500,
+                300
         );
     }
 }
