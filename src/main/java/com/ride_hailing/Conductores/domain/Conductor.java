@@ -1,17 +1,26 @@
 package com.ride_hailing.Conductores.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Conductor { 
     private String idConductor;
     private String documentoIdentidad;
     private String nombreCompleto;
-    private Date fechaNacimiento;
+    private LocalDate fechaNacimiento;
     private boolean disponibilidad;
     private String ubicacionActual;
 
 
-    public Conductor(String documentoIdentidad, String nombreCompleto, Date fechaNacimiento, String ubicacionActual){
+    public Conductor(
+        String idConductor,
+        String documentoIdentidad,
+        String nombreCompleto, 
+        LocalDate fechaNacimiento, 
+        String ubicacionActual,
+        boolean disponibilidad
+    ){
+        this.disponibilidad = disponibilidad;
+        this.idConductor = idConductor;
         this.documentoIdentidad = documentoIdentidad;
         this.nombreCompleto = nombreCompleto;
         this.fechaNacimiento = fechaNacimiento;
@@ -23,61 +32,38 @@ public class Conductor {
         return idConductor;
     }
 
-
-    public void setIdConductor(String idConductor) {
-        this.idConductor = idConductor;
-    }
-
-
     public String getDocumentoIdentidad() {
         return documentoIdentidad;
     }
-
-
-    public void setDocumentoIdentidad(String documentoIdentidad) {
-        this.documentoIdentidad = documentoIdentidad;
-    }
-
 
     public String getNombreCompleto() {
         return nombreCompleto;
     }
 
-
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
     }
 
-
-    public Date getFechaNacimiento() {
+    public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-
-    public boolean isDisponibilidad() {
-        return disponibilidad;
-    }
-
-
-    public void setDisponibilidad(boolean disponibilidad) {
+    public void registrarDisponibilidad (boolean disponibilidad) {
         this.disponibilidad = disponibilidad;
     }
 
-
-    public String getUbicacionActual() {
-        return ubicacionActual;
+    public void desactivarDisponibilidad() {
+        this.disponibilidad = false;
     }
 
 
-    public void setUbicacionActual(String ubicacionActual) {
+    public void actualizarUbicacion (String ubicacionActual) {
         this.ubicacionActual = ubicacionActual;
     }
 
+    public String conocerUbicacionActual(){
+        return this.ubicacionActual;
+    }
     
     
 }
