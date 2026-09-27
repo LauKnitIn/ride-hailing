@@ -1,4 +1,4 @@
-package com.ride_hailing.Conductores;
+package com.ride_hailing.Conductores.application;
 
 import org.springframework.stereotype.Service;
 
