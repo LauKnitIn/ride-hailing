@@ -1,4 +1,4 @@
-package com.ride_hailing.tarifas.infraestructure;
+package com.ride_hailing.tarifas.infraestructure.salida;
 
 import java.util.UUID;
 
