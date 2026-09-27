@@ -1,38 +1,56 @@
 package com.ride_hailing.Conductores.domain;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.util.Objects;
 
 public class Conductor { 
-    private String idConductor;
-    private String documentoIdentidad;
+    private final DriverId idConductor;
+    private final DocumentoIdentidad documentoIdentidad;
     private String nombreCompleto;
-    private LocalDate fechaNacimiento;
-    private boolean disponibilidad;
-    private String ubicacionActual;
+    private final LocalDate fechaNacimiento;
+    private EstadoDisponibilidad disponibilidad;
+    private UbicacionGeografica ubicacionActual;
 
 
     public Conductor(
-        String idConductor,
-        String documentoIdentidad,
+        DriverId idConductor,
+        DocumentoIdentidad documentoIdentidad,
         String nombreCompleto, 
-        LocalDate fechaNacimiento, 
-        String ubicacionActual,
-        boolean disponibilidad
+        LocalDate fechaNacimiento
     ){
-        this.disponibilidad = disponibilidad;
-        this.idConductor = idConductor;
-        this.documentoIdentidad = documentoIdentidad;
-        this.nombreCompleto = nombreCompleto;
-        this.fechaNacimiento = fechaNacimiento;
-        this.ubicacionActual = ubicacionActual;
+        this.disponibilidad = EstadoDisponibilidad.INACTIVO;
+        this.idConductor = Objects.requireNonNull(idConductor, "El ID del conductor es obligatorio.");
+        this.documentoIdentidad = Objects.requireNonNull(documentoIdentidad, "El documento de identidad es obligatorio.");
+        validarNombre(nombreCompleto);
+        this.fechaNacimiento = Objects.requireNonNull(fechaNacimiento, "La fecha de nacimiento es obligatoria.");
+        validarMayoriaEdad(fechaNacimiento);
+        this.ubicacionActual = null;
+    }
+
+    private void validarNombre(String nombre){
+        if(nombre == null || nombre.isBlank()){
+            throw new IllegalArgumentException("El nombre completo no puede estar vacío.");
+        }
+        this.nombreCompleto = nombre;
+    }
+
+    private void validarMayoriaEdad(LocalDate fechaNacimiento){
+        if(fechaNacimiento == null){
+            throw new IllegalArgumentException("La fecha de nacimiento es obligatoria.");
+        }
+        int edad = Period.between(fechaNacimiento, LocalDate.now()).getYears();
+        if (edad < 18){
+            throw new IllegalArgumentException("El conductor debe ser mayor de edad.");
+        }
     }
 
 
-    public String getIdConductor() {
+    public DriverId getIdConductor() {
         return idConductor;
     }
 
-    public String getDocumentoIdentidad() {
+    public DocumentoIdentidad getDocumentoIdentidad() {
         return documentoIdentidad;
     }
 
@@ -40,30 +58,30 @@ public class Conductor {
         return nombreCompleto;
     }
 
-    public void setNombreCompleto(String nombreCompleto) {
-        this.nombreCompleto = nombreCompleto;
-    }
-
     public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void registrarDisponibilidad (boolean disponibilidad) {
-        this.disponibilidad = disponibilidad;
+    public void registrarDisponibilidad () {
+        if(this.ubicacionActual == null){
+            throw new IllegalStateException("No se puede registrar disponibilidad sin una ubicación actual.");
+        }
+        if(this.disponibilidad == EstadoDisponibilidad.EN_VIAJE){
+            throw new IllegalStateException("No se puede registrar disponibilidad mientras el conductor está en viaje.");
+        }
+        this.disponibilidad = EstadoDisponibilidad.DISPONIBLE;
     }
 
     public void desactivarDisponibilidad() {
-        this.disponibilidad = false;
+        if (this.disponibilidad == EstadoDisponibilidad.EN_VIAJE) {
+            throw new IllegalStateException("No es posible desactivar la disponibilidad durante un viaje activo.");
+        }
+        this.disponibilidad = EstadoDisponibilidad.INACTIVO;
     }
 
-
-    public void actualizarUbicacion (String ubicacionActual) {
-        this.ubicacionActual = ubicacionActual;
+    public void actualizarUbicacion (UbicacionGeografica ubicacionActual) {
+        this.ubicacionActual = Objects.requireNonNull(ubicacionActual, "La ubicación actual no puede ser nula.");
     }
 
-    public String conocerUbicacionActual(){
-        return this.ubicacionActual;
-    }
-    
     
 }
