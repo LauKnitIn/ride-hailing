@@ -10,9 +10,5 @@ public interface PasajeroUseCase {
 
     void cambiarCorreo(UUID pasajeroId, String nuevoCorreo);
 
-    void desactivar(UUID pasajeroId);
-
-    void reactivar(UUID pasajeroId);
-
     Pasajero consultar(UUID pasajeroId);
 }
