@@ -1,13 +1,18 @@
-package com.ride_hailing.viajes;
+package com.ride_hailing.viajes.aplicacion;
 
 import java.util.List;
 import java.util.UUID;
 
+import com.ride_hailing.viajes.dominio.Viaje;
+
 public interface ViajeUseCase {
 
-    Viaje solicitarViaje(UUID pasajeroId, String origen, String destino);
+    Viaje solicitarViaje(UUID pasajeroId, double latitudOrigen, double longitudOrigen,
+                          double latitudDestino, double longitudDestino);
 
     void asignarConductor(UUID viajeId, UUID conductorId);
+
+    void rechazarPorFaltaDeConductores(UUID viajeId, String motivo);
 
     void iniciarViaje(UUID viajeId);
 

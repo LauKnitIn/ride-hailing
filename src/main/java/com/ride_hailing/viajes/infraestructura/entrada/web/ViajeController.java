@@ -1,7 +1,10 @@
-package com.ride_hailing.viajes;
+package com.ride_hailing.viajes.infraestructura.entrada.web;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.ride_hailing.viajes.aplicacion.ViajeUseCase;
+import com.ride_hailing.viajes.dominio.Viaje;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,13 +21,22 @@ public class ViajeController {
 
     @PostMapping
     public ResponseEntity<ViajeResponse> solicitar(@RequestBody SolicitarViajeRequest request) {
-        Viaje viaje = viajeUseCase.solicitarViaje(request.pasajeroId(), request.origen(), request.destino());
+        Viaje viaje = viajeUseCase.solicitarViaje(
+                request.pasajeroId(),
+                request.latitudOrigen(), request.longitudOrigen(),
+                request.latitudDestino(), request.longitudDestino());
         return ResponseEntity.ok(ViajeResponse.desde(viaje));
     }
 
     @PostMapping("/{id}/conductor/{conductorId}")
     public ResponseEntity<Void> asignarConductor(@PathVariable UUID id, @PathVariable UUID conductorId) {
         viajeUseCase.asignarConductor(id, conductorId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/rechazar-sin-conductores")
+    public ResponseEntity<Void> rechazarPorFaltaDeConductores(@PathVariable UUID id, @RequestBody String motivo) {
+        viajeUseCase.rechazarPorFaltaDeConductores(id, motivo);
         return ResponseEntity.noContent().build();
     }
 
