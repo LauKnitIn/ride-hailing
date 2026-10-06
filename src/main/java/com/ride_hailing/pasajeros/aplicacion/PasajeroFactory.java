@@ -1,9 +1,14 @@
-package com.ride_hailing.pasajeros;
+package com.ride_hailing.pasajeros.aplicacion;
 
 import java.util.List;
 import java.util.UUID;
+import org.springframework.stereotype.Component;
 
+import com.ride_hailing.pasajeros.dominio.Correo;
+import com.ride_hailing.pasajeros.dominio.Pasajero;
+import com.ride_hailing.pasajeros.dominio.Telefono;
 
+@Component
 public class PasajeroFactory {
 
     private final RegistroPasajeroService registroPasajeroService;

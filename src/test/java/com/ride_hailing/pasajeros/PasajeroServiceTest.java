@@ -3,6 +3,14 @@ package com.ride_hailing.pasajeros;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.ride_hailing.pasajeros.aplicacion.PasajeroFactory;
+import com.ride_hailing.pasajeros.aplicacion.PasajeroRepository;
+import com.ride_hailing.pasajeros.aplicacion.PasajeroService;
+import com.ride_hailing.pasajeros.aplicacion.RegistroPasajeroService;
+import com.ride_hailing.pasajeros.dominio.CorreoYaRegistradoException;
+import com.ride_hailing.pasajeros.dominio.Pasajero;
+import com.ride_hailing.pasajeros.dominio.PasajeroNoEncontradoException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package com.ride_hailing.pasajeros;
+package com.ride_hailing.pasajeros.dominio;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -10,7 +10,7 @@ public class Pasajero {
     private Correo correo;
     private Telefono telefono;
 
-    Pasajero(UUID id, String nombre, Correo correo, Telefono telefono) {
+    public Pasajero(UUID id, String nombre, Correo correo, Telefono telefono) {
         this.id = id;
         this.nombre = nombre;
         this.correo = correo;

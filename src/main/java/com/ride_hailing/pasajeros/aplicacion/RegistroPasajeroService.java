@@ -1,7 +1,13 @@
-package com.ride_hailing.pasajeros;
+package com.ride_hailing.pasajeros.aplicacion;
 
 import java.util.List;
+import org.springframework.stereotype.Component;
 
+import com.ride_hailing.pasajeros.dominio.Correo;
+import com.ride_hailing.pasajeros.dominio.CorreoYaRegistradoException;
+import com.ride_hailing.pasajeros.dominio.Pasajero;
+
+@Component
 public class RegistroPasajeroService {
 
     public void validarCorreoDisponible(Correo correo, List<Pasajero> pasajerosExistentes) {

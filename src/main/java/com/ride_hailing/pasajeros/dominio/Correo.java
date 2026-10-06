@@ -1,4 +1,4 @@
-package com.ride_hailing.pasajeros;
+package com.ride_hailing.pasajeros.dominio;
 
 import java.util.regex.Pattern;
 

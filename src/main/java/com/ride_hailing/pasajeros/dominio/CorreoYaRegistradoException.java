@@ -1,4 +1,4 @@
-package com.ride_hailing.pasajeros;
+package com.ride_hailing.pasajeros.dominio;
 
 public class CorreoYaRegistradoException extends RuntimeException {
     public CorreoYaRegistradoException(String mensaje) {
