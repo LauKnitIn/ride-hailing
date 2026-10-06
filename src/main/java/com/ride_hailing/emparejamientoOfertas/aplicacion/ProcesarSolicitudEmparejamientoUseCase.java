@@ -16,45 +16,54 @@ import com.ride_hailing.emparejamientoOfertas.dominio.EmparejamientoDomainServic
 
 
 public class ProcesarSolicitudEmparejamientoUseCase {
-   private final OfertaRepository ofertaRepository;
-    private final ConductoresPort conductoresPort;
-    private final AsignacionViajePort asignacionViajePort;
-    private final EmparejamientoDomainService matchingDomainService;
-    private final double radioMaximoKm;
+    // 1. Declaración de la constante que faltaba
+    private static final double RADIO_DEFAULT_KM = 5.0;
 
+    private final EmparejamientoDomainService emparejamientoDomainService;
+    private final OfertaRepository ofertaRepository;
+    private final ConductoresPort conductoresPort;
 
     public ProcesarSolicitudEmparejamientoUseCase(
+            EmparejamientoDomainService emparejamientoDomainService,
             OfertaRepository ofertaRepository,
-            ConductoresPort conductoresPort,
-            AsignacionViajePort asignacionViajePort,
-            EmparejamientoDomainService matchingDomainService,
-            double radioMaximoKm) {
+            ConductoresPort conductoresPort) {
+        this.emparejamientoDomainService = emparejamientoDomainService;
         this.ofertaRepository = ofertaRepository;
         this.conductoresPort = conductoresPort;
-        this.asignacionViajePort = asignacionViajePort;
-        this.matchingDomainService = matchingDomainService; // Se asigna al atributo de instancia
-        this.radioMaximoKm = radioMaximoKm;
     }
 
     public void ejecutar(UUID viajeId, double origenLat, double origenLon) {
-        List<Oferta> ofertasExistentes = ofertaRepository.buscarPorViajeId(viajeId);
-        List<UUID> conductoresQueRechazaron = ofertasExistentes.stream()
-                .filter(o -> o.getEstado() == EstadoOferta.RECHAZADA)
+        // 2. Se le pasan las coordenadas y el radio al puerto
+        List<CandidatoConductor> candidatos = conductoresPort.obtenerConductoresDisponibles(
+                origenLat,
+                origenLon,
+                RADIO_DEFAULT_KM
+        );
+
+        List<UUID> rechazados = ofertaRepository.buscarPorViajeId(viajeId)
+                .stream()
                 .map(Oferta::getConductorId)
                 .toList();
 
-        List<CandidatoConductor> disponibles = conductoresPort.obtenerConductoresDisponibles(origenLat, origenLon, radioMaximoKm);
+        ejecutar(viajeId, origenLat, origenLon, candidatos, rechazados, RADIO_DEFAULT_KM);
+    }
 
-        CandidatoConductor candidato = this.matchingDomainService.seleccionarSiguienteCandidato(
-                origenLat, origenLon, disponibles, conductoresQueRechazaron, radioMaximoKm);
+    // Método principal de 6 parámetros
+    public void ejecutar(
+            UUID viajeId,
+            double origenLat,
+            double origenLon,
+            List<CandidatoConductor> candidatos,
+            List<UUID> rechazados,
+            double radioKm) {
 
-        if (candidato == null) {
-            asignacionViajePort.notificarSinConductoresDisponibles(viajeId, "No hay conductores disponibles en el radio de búsqueda");
-            return;
+        CandidatoConductor candidato = emparejamientoDomainService.seleccionarSiguienteCandidato(
+                origenLat, origenLon, candidatos, rechazados, radioKm
+        );
+
+        if (candidato != null) {
+            Oferta nuevaOferta = OfertaFactory.crearNuevaOferta(viajeId, candidato.conductorId());
+            ofertaRepository.guardar(nuevaOferta);
         }
-
-        Oferta nuevaOferta = OfertaFactory.crearNuevaOferta(viajeId, candidato.conductorId());
-        ofertaRepository.guardar(nuevaOferta);
-        ofertaRepository.guardar(nuevaOferta);
     }
 }   

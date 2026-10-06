@@ -15,10 +15,9 @@ import com.ride_hailing.emparejamientoOfertas.infrastructure.persistence.entitie
 
 @Repository
 public class OfertaRepositoryAdapter implements OfertaRepository {
-    
+
     private final SpringDataOfertaRepository repository;
 
-    // Constructor de la clase
     public OfertaRepositoryAdapter(SpringDataOfertaRepository repository) {
         this.repository = repository;
     }
@@ -43,7 +42,7 @@ public class OfertaRepositoryAdapter implements OfertaRepository {
                         entity.getId(),
                         entity.getViajeId(),
                         entity.getConductorId(),
-                        EstadoOferta.valueOf(entity.getEstado()),
+                        EstadoOferta.valueOf(entity.getEstado()), // Invocar explícitamente sobre EstadoOferta
                         entity.getFechaCreacion()
                 ));
     }
@@ -55,10 +54,9 @@ public class OfertaRepositoryAdapter implements OfertaRepository {
                         entity.getId(),
                         entity.getViajeId(),
                         entity.getConductorId(),
-                        EstadoOferta.valueOf(entity.getEstado()),
+                        EstadoOferta.valueOf(entity.getEstado()), // Invocar explícitamente sobre EstadoOferta
                         entity.getFechaCreacion()
                 ))
                 .toList();
     }
 }
-

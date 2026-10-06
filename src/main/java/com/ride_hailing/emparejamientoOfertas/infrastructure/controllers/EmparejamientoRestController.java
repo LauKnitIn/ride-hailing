@@ -33,7 +33,10 @@ public class EmparejamientoRestController {
         procesarSolicitudEmparejamientoUseCase.ejecutar(
                 request.viajeId(),
                 request.origenLat(),
-                request.origenLon()
+                request.origenLon(),
+                request.candidatos(),
+                request.rechazados(),
+                request.radioKm()
         );
         return ResponseEntity.accepted().build();
     }

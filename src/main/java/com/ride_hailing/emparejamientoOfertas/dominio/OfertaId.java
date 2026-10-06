@@ -1,4 +1,4 @@
-package com.ride_hailing.emparejamientoOfertas;
+package com.ride_hailing.emparejamientoOfertas.dominio;
 
 import java.util.Objects;
 import java.util.UUID;
