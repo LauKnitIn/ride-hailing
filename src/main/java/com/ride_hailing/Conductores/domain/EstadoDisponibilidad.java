@@ -1,4 +1,4 @@
-package com.ride_hailing.Conductores.domain;
+package com.ride_hailing.conductores.domain;
 
 public enum EstadoDisponibilidad {
     INACTIVO,

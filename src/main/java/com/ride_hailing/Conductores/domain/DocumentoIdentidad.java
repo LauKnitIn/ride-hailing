@@ -1,4 +1,4 @@
-package com.ride_hailing.Conductores.domain;
+package com.ride_hailing.conductores.domain;
 
 public class DocumentoIdentidad {
     private String numeroDocumento;

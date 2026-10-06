@@ -1,4 +1,4 @@
-package com.ride_hailing.Conductores.domain;
+package com.ride_hailing.conductores.domain;
 
 import java.util.Objects;
 import java.util.UUID;
