@@ -1,15 +1,23 @@
-package com.ride_hailing.pasajeros;
+package com.ride_hailing.pasajeros.aplicacion;
 
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
+import com.ride_hailing.pasajeros.dominio.Correo;
+import com.ride_hailing.pasajeros.dominio.Pasajero;
+import com.ride_hailing.pasajeros.dominio.PasajeroNoEncontradoException;
+import com.ride_hailing.pasajeros.dominio.Telefono;
+
+@Service 
 public class PasajeroService implements PasajeroUseCase {
 
-    private final PasajeroRepository pasajeroRepository;
+    private final RepositorioPasajeros pasajeroRepository;
     private final PasajeroFactory pasajeroFactory;
     private final RegistroPasajeroService registroPasajeroService;
 
-    public PasajeroService(PasajeroRepository pasajeroRepository,
+    public PasajeroService(RepositorioPasajeros pasajeroRepository,
                             PasajeroFactory pasajeroFactory,
                             RegistroPasajeroService registroPasajeroService) {
         this.pasajeroRepository = pasajeroRepository;

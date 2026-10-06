@@ -1,6 +1,8 @@
-package com.ride_hailing.pasajeros;
+package com.ride_hailing.pasajeros.aplicacion;
 
 import java.util.UUID;
+
+import com.ride_hailing.pasajeros.dominio.Pasajero;
 
 public interface PasajeroUseCase {
 

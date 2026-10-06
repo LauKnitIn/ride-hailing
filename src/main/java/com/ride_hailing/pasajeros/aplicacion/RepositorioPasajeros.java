@@ -1,10 +1,12 @@
-package com.ride_hailing.pasajeros;
+package com.ride_hailing.pasajeros.aplicacion;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface PasajeroRepository {
+import com.ride_hailing.pasajeros.dominio.Pasajero;
+
+public interface RepositorioPasajeros {
 
     void guardar(Pasajero pasajero);
 
