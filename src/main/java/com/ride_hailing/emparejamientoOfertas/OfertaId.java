@@ -1,6 +1,7 @@
 package com.ride_hailing.emparejamientoOfertas;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public record OfertaId(UUID value) {
     public OfertaId {
