@@ -23,6 +23,7 @@ public class Conductor {
         this.idConductor = Objects.requireNonNull(idConductor, "El ID del conductor es obligatorio.");
         this.documentoIdentidad = Objects.requireNonNull(documentoIdentidad, "El documento de identidad es obligatorio.");
         validarNombre(nombreCompleto);
+        this.nombreCompleto = nombreCompleto;
         this.fechaNacimiento = Objects.requireNonNull(fechaNacimiento, "La fecha de nacimiento es obligatoria.");
         validarMayoriaEdad(fechaNacimiento);
         this.ubicacionActual = null;
@@ -32,7 +33,6 @@ public class Conductor {
         if(nombre == null || nombre.isBlank()){
             throw new IllegalArgumentException("El nombre completo no puede estar vacío.");
         }
-        this.nombreCompleto = nombre;
     }
 
     private void validarMayoriaEdad(LocalDate fechaNacimiento){
@@ -43,23 +43,6 @@ public class Conductor {
         if (edad < 18){
             throw new IllegalArgumentException("El conductor debe ser mayor de edad.");
         }
-    }
-
-
-    public DriverId getIdConductor() {
-        return idConductor;
-    }
-
-    public DocumentoIdentidad getDocumentoIdentidad() {
-        return documentoIdentidad;
-    }
-
-    public String getNombreCompleto() {
-        return nombreCompleto;
-    }
-
-    public LocalDate getFechaNacimiento() {
-        return fechaNacimiento;
     }
 
     public void registrarDisponibilidad () {
@@ -83,5 +66,28 @@ public class Conductor {
         this.ubicacionActual = Objects.requireNonNull(ubicacionActual, "La ubicación actual no puede ser nula.");
     }
 
+    public DriverId getIdConductor() {
+        return idConductor;
+    }
+
+    public DocumentoIdentidad getDocumentoIdentidad() {
+        return documentoIdentidad;
+    }
+
+    public String getNombreCompleto() {
+        return nombreCompleto;
+    }
+
+    public LocalDate getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public EstadoDisponibilidad getDisponibilidad() {
+        return disponibilidad;
+    }
+
+    public UbicacionGeografica getUbicacionActual() {
+        return ubicacionActual;
+    }
     
 }

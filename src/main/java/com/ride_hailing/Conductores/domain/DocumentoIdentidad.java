@@ -1,6 +1,7 @@
 package com.ride_hailing.Conductores.domain;
 
 public class DocumentoIdentidad {
+    
     private String numeroDocumento;
     private TipoDocumento tipoDocumento;
 
@@ -23,6 +24,10 @@ public class DocumentoIdentidad {
 
     public void setTipoDocumento(TipoDocumento tipoDocumento){
         this.tipoDocumento = tipoDocumento;
+    }
+
+    public String getNombre(){
+        return this.tipoDocumento.toString();
     }
 
 }
