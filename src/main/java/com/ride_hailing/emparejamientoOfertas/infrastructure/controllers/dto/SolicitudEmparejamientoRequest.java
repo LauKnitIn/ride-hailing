@@ -1,5 +1,11 @@
 package com.ride_hailing.emparejamientoOfertas.infrastructure.controllers.dto;
 
-public record SolicitudEmparejamientoRequest() {
+import java.util.UUID;
+
+public record SolicitudEmparejamientoRequest(
+        UUID viajeId,
+        double origenLat,
+        double origenLon
+) {
 
 }

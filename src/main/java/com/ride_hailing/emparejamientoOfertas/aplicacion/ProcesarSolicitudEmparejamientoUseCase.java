@@ -1,12 +1,15 @@
-package com.ride_hailing.emparejamientoOfertas;
+package com.ride_hailing.emparejamientoOfertas.aplicacion;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.ride_hailing.emparejamientoOfertas.AsignacionViajePort;
+import com.ride_hailing.emparejamientoOfertas.ConductoresPort;
 import com.ride_hailing.emparejamientoOfertas.dominio.EmparejamientoDomainService;
 import com.ride_hailing.emparejamientoOfertas.dominio.EstadoOferta;
 import com.ride_hailing.emparejamientoOfertas.dominio.Oferta;
+import com.ride_hailing.emparejamientoOfertas.dominio.OfertaFactory;
 import com.ride_hailing.emparejamientoOfertas.dominio.OfertaId;
 import com.ride_hailing.emparejamientoOfertas.dominio.OfertaRepository;
 import com.ride_hailing.emparejamientoOfertas.dominio.EmparejamientoDomainService.CandidatoConductor;
@@ -50,7 +53,8 @@ public class ProcesarSolicitudEmparejamientoUseCase {
             return;
         }
 
-        Oferta nuevaOferta = new Oferta(OfertaId.generar(), viajeId, candidato.conductorId());
+        Oferta nuevaOferta = OfertaFactory.crearNuevaOferta(viajeId, candidato.conductorId());
+        ofertaRepository.guardar(nuevaOferta);
         ofertaRepository.guardar(nuevaOferta);
     }
 }   

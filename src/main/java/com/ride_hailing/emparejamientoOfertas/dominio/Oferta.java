@@ -1,7 +1,8 @@
-package com.ride_hailing.emparejamientoOfertas;
+package com.ride_hailing.emparejamientoOfertas.dominio;
 
 import java.time.Instant;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Oferta {
     private final OfertaId id;
@@ -10,12 +11,18 @@ public class Oferta {
     private EstadoOferta estado;
     private final Instant fechaCreacion;
 
+    // Constructor para nuevas ofertas
     public Oferta(OfertaId id, UUID viajeId, UUID conductorId) {
+        this(id, viajeId, conductorId, EstadoOferta.PENDIENTE, Instant.now());
+    }
+
+    // Constructor completo para reconstrucción mediante Factory
+    public Oferta(OfertaId id, UUID viajeId, UUID conductorId, EstadoOferta estado, Instant fechaCreacion) {
         this.id = Objects.requireNonNull(id, "El ID de la oferta no puede ser nulo");
         this.viajeId = Objects.requireNonNull(viajeId, "El ID del viaje no puede ser nulo");
         this.conductorId = Objects.requireNonNull(conductorId, "El ID del conductor no puede ser nulo");
-        this.fechaCreacion = Instant.now();
-        this.estado = EstadoOferta.PENDIENTE;
+        this.estado = Objects.requireNonNull(estado, "El estado no puede ser nulo");
+        this.fechaCreacion = Objects.requireNonNull(fechaCreacion, "La fecha de creación no puede ser nula");
     }
 
     public void aceptar() {

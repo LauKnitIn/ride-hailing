@@ -1,6 +1,11 @@
-package com.ride_hailing.emparejamientoOfertas;
+package com.ride_hailing.emparejamientoOfertas.aplicacion;
 
 import java.time.Instant;
+
+import com.ride_hailing.emparejamientoOfertas.AsignacionViajePort;
+import com.ride_hailing.emparejamientoOfertas.dominio.Oferta;
+import com.ride_hailing.emparejamientoOfertas.dominio.OfertaId;
+import com.ride_hailing.emparejamientoOfertas.dominio.OfertaRepository;
 
 public class ResponderOfertaUseCase {
     private final OfertaRepository ofertaRepository;
