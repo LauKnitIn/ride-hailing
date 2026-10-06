@@ -1,7 +1,9 @@
-package com.ride_hailing.viajes;
+package com.ride_hailing.viajes.aplicacion;
 
 import java.util.List;
 import java.util.UUID;
+
+import com.ride_hailing.viajes.dominio.Viaje;
 
 public interface ViajeUseCase {
 

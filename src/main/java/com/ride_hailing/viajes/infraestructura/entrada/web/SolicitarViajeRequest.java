@@ -1,4 +1,4 @@
-package com.ride_hailing.viajes;
+package com.ride_hailing.viajes.infraestructura.entrada.web;
 
 import java.util.UUID;
 

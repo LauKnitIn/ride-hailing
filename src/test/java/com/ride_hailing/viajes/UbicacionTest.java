@@ -2,6 +2,8 @@ package com.ride_hailing.viajes;
 
 import org.junit.jupiter.api.Test;
 
+import com.ride_hailing.viajes.dominio.Ubicacion;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class UbicacionTest {

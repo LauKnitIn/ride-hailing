@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import com.ride_hailing.viajes.dominio.EstadoViaje;
+import com.ride_hailing.viajes.dominio.EstadoViajeInvalidoException;
+
 class EstadoViajeTest {
 
     @Test

@@ -2,6 +2,11 @@ package com.ride_hailing.viajes;
 
 import org.junit.jupiter.api.Test;
 
+import com.ride_hailing.viajes.aplicacion.ViajeFactory;
+import com.ride_hailing.viajes.dominio.Ubicacion;
+import com.ride_hailing.viajes.dominio.Viaje;
+import com.ride_hailing.viajes.infraestructura.salida.persistencia.InMemoryViajeRepository;
+
 import java.time.Instant;
 import java.util.UUID;
 

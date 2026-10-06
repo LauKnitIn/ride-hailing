@@ -1,7 +1,10 @@
-package com.ride_hailing.viajes;
+package com.ride_hailing.viajes.infraestructura.entrada.web;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.ride_hailing.viajes.aplicacion.ViajeUseCase;
+import com.ride_hailing.viajes.dominio.Viaje;
 
 import java.util.List;
 import java.util.UUID;

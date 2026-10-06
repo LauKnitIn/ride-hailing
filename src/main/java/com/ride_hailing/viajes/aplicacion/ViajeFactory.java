@@ -1,9 +1,15 @@
-package com.ride_hailing.viajes;
+package com.ride_hailing.viajes.aplicacion;
+
+import org.springframework.stereotype.Component;
+
+import com.ride_hailing.viajes.dominio.Ubicacion;
+import com.ride_hailing.viajes.dominio.Viaje;
 
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
+@Component
 public class ViajeFactory {
 
     public Viaje solicitar(UUID pasajeroId, Ubicacion origen, Ubicacion destino) {

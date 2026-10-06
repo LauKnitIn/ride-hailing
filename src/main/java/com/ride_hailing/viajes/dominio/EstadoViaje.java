@@ -1,4 +1,4 @@
-package com.ride_hailing.viajes;
+package com.ride_hailing.viajes.dominio;
 
 import java.util.EnumMap;
 import java.util.Map;

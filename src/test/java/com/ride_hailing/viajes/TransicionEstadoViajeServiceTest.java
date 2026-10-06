@@ -2,6 +2,13 @@ package com.ride_hailing.viajes;
 
 import org.junit.jupiter.api.Test;
 
+import com.ride_hailing.viajes.aplicacion.ConductorNoDisponibleException;
+import com.ride_hailing.viajes.aplicacion.TransicionEstadoViajeService;
+import com.ride_hailing.viajes.aplicacion.ViajeFactory;
+import com.ride_hailing.viajes.dominio.EstadoViaje;
+import com.ride_hailing.viajes.dominio.Ubicacion;
+import com.ride_hailing.viajes.dominio.Viaje;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;

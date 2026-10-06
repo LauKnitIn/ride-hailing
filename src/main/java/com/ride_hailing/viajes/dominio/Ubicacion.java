@@ -1,4 +1,4 @@
-package com.ride_hailing.viajes;
+package com.ride_hailing.viajes.dominio;
 
 public record Ubicacion(double latitud, double longitud) {
 

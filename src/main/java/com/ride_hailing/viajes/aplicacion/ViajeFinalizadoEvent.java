@@ -1,4 +1,4 @@
-package com.ride_hailing.viajes;
+package com.ride_hailing.viajes.aplicacion;
 
 import java.time.Duration;
 import java.time.Instant;
