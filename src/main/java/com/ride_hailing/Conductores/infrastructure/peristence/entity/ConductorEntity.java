@@ -3,6 +3,13 @@ package com.ride_hailing.Conductores.infrastructure.peristence.entity;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+
+
+
 @Entity
 @Table(name = "conductores")
 public class ConductorEntity {
@@ -32,7 +39,6 @@ public class ConductorEntity {
     @Column(name = "longitud")
     private Double longitud;
 
-    // Constructor sin argumentos (Requerido por JPA/Hibernate)
     public ConductorEntity() {
     }
 
@@ -56,7 +62,6 @@ public class ConductorEntity {
         this.longitud = longitud;
     }
 
-    // --- GETTERS Y SETTERS ---
 
     public String getIdConductor() {
         return idConductor;

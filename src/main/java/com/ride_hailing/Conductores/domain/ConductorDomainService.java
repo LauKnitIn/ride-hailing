@@ -12,7 +12,6 @@ public class ConductorDomainService {
     }
 
     public DisponibilidadRegistradaEvent registrarDisponibilidad(Conductor conductor) {
-        // Regla de Negocio (Pág. 1): No puede tener un viaje en curso
         if (viajeActivoChecker.tieneViajeEnCurso(conductor.getIdConductor())) {
             throw new IllegalStateException("El conductor no puede registrar disponibilidad mientras tiene un viaje en curso.");
         }

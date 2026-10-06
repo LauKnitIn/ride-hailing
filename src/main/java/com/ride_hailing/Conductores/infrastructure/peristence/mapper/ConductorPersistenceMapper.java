@@ -8,6 +8,7 @@ import com.ride_hailing.Conductores.domain.DriverId;
 import com.ride_hailing.Conductores.domain.EstadoDisponibilidad;
 import com.ride_hailing.Conductores.domain.TipoDocumento;
 import com.ride_hailing.Conductores.domain.UbicacionGeografica;
+import com.ride_hailing.Conductores.infrastructure.peristence.entity.ConductorEntity;
 
 @Component 
 public class ConductorPersistenceMapper {
@@ -44,7 +45,7 @@ public class ConductorPersistenceMapper {
         DriverId driverId = new DriverId(entity.getIdConductor());
         
         TipoDocumento tipoDoc = TipoDocumento.valueOf(entity.getTipoDocumento());
-        DocumentoIdentidad documento = new DocumentoIdentidad(tipoDoc, entity.getNumeroDocumento());
+        DocumentoIdentidad documento = new DocumentoIdentidad(entity.getNumeroDocumento(),tipoDoc);
 
         Conductor conductor = new Conductor(
             driverId,
