@@ -18,7 +18,7 @@ class CalculadoraTarifaServiceTest {
         double valorKm = 2.00;
         double valorMinuto = 0.50;
 
-        Monto resultado = calculadora.calcularTarifa(
+        Monto resultado = calculadora.calcularMonto(
                 1.0,
                 2,
                 tarifaMinima,
@@ -35,7 +35,7 @@ class CalculadoraTarifaServiceTest {
         double valorKm = 2.00;
         double valorMinuto = 0.50;
 
-        Monto resultado = calculadora.calcularTarifa(
+        Monto resultado = calculadora.calcularMonto(
                 10.0,
                 15,
                 tarifaMinima,
