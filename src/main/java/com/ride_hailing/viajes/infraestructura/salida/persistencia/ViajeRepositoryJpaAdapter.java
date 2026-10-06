@@ -1,5 +1,6 @@
 package com.ride_hailing.viajes.infraestructura.salida.persistencia;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import com.ride_hailing.viajes.aplicacion.RepositorioViajes;
@@ -10,6 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
+@Primary
 public class ViajeRepositoryJpaAdapter implements RepositorioViajes {
 
     private final ViajeRepository viajeRepository;

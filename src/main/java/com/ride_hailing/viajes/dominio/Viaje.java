@@ -1,24 +1,44 @@
 package com.ride_hailing.viajes.dominio;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
+@Entity
+@Table(name = "viajes")
 public class Viaje {
 
-    private final UUID id;
-    private final UUID pasajeroId;
+    @Id
+    private UUID id;
+    private UUID pasajeroId;
     private UUID conductorId; // null hasta que ConductorAsignado ocurre
-    private final Ubicacion origen;
-    private final Ubicacion destino;
+    @Embedded
+    @AttributeOverride(name = "latitud", column = @Column(name = "origen_latitud"))
+    @AttributeOverride(name = "longitud", column = @Column(name = "origen_longitud"))
+    private Ubicacion origen;
+    @Embedded
+    @AttributeOverride(name = "latitud", column = @Column(name = "destino_latitud"))
+    @AttributeOverride(name = "longitud", column = @Column(name = "destino_longitud"))
+    private Ubicacion destino;
+    @Embedded
     private EstadoViaje estado;
-    private final Instant horaSolicitud;
+    private Instant horaSolicitud;
     private Instant horaAsignacion;
     private Instant horaInicio;
     private Instant horaFinalizacion;
     private String motivoCancelacion;
     private Double distanciaKm;
+
+    protected Viaje() {
+    }
 
     public Viaje(UUID id, UUID pasajeroId, Ubicacion origen, Ubicacion destino, Instant horaSolicitud) {
         this.id = id;

@@ -1,9 +1,12 @@
 package com.ride_hailing.viajes.dominio;
 
+import jakarta.persistence.Embeddable;
+
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 
+@Embeddable
 public record EstadoViaje(Valor valor) {
 
     public enum Valor {

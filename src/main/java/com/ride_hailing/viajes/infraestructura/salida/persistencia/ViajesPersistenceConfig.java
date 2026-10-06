@@ -1,7 +1,7 @@
 package com.ride_hailing.viajes.infraestructura.salida.persistencia;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -17,7 +17,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableJpaRepositories(
-    basePackages = "com.uptc.g3.viajes.infraestructura.salida.persistencia",
+    basePackages = "com.ride_hailing.viajes.infraestructura.salida.persistencia",
     entityManagerFactoryRef = "viajesEntityManagerFactory",
     transactionManagerRef = "viajesTransactionManager"
 )
@@ -25,17 +25,26 @@ public class ViajesPersistenceConfig {
 
     @Primary
     @Bean(name = "viajesDataSource")
-    @ConfigurationProperties(prefix = "app.datasource.viajes")
-    public DataSource viajesDataSource() {
-        return DataSourceBuilder.create().build();
+    public DataSource viajesDataSource(
+            @Value("${app.datasource.viajes.url}") String url,
+            @Value("${app.datasource.viajes.driver-class-name}") String driverClassName,
+            @Value("${app.datasource.viajes.username}") String username,
+            @Value("${app.datasource.viajes.password}") String password) {
+        return DataSourceBuilder.create()
+                .url(url)
+                .driverClassName(driverClassName)
+                .username(username)
+                .password(password)
+                .build();
     }
 
     @Primary
     @Bean(name = "viajesEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean viajesEntityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean viajesEntityManagerFactory(
+            DataSource viajesDataSource) {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-        factory.setDataSource(viajesDataSource());
-        factory.setPackagesToScan("com.uptc.g3.viajes.dominio");
+        factory.setDataSource(viajesDataSource);
+        factory.setPackagesToScan("com.ride_hailing.viajes.dominio");
         factory.setPersistenceUnitName("viajes");
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -51,7 +60,8 @@ public class ViajesPersistenceConfig {
 
     @Primary
     @Bean(name = "viajesTransactionManager")
-    public PlatformTransactionManager viajesTransactionManager() {
-        return new JpaTransactionManager(viajesEntityManagerFactory().getObject());
+    public PlatformTransactionManager viajesTransactionManager(
+            LocalContainerEntityManagerFactoryBean viajesEntityManagerFactory) {
+        return new JpaTransactionManager(viajesEntityManagerFactory.getObject());
     }
 }

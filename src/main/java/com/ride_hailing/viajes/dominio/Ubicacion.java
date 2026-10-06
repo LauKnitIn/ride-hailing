@@ -1,5 +1,8 @@
 package com.ride_hailing.viajes.dominio;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public record Ubicacion(double latitud, double longitud) {
 
     private static final double RADIO_TIERRA_KM = 6371.0;
