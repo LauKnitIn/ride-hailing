@@ -2,6 +2,9 @@ package com.ride_hailing.calificacion.infraestructure.salida;
 import com.ride_hailing.calificacion.application.DatosViajeCalificacion;
 import com.ride_hailing.calificacion.application.RepositorioViajes;
 
+import org.springframework.stereotype.Component;
+
+@Component("calificacionViajeAdapter")
 public class ViajeAdapter implements RepositorioViajes {
 
     @Override

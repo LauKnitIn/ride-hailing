@@ -3,7 +3,9 @@ package com.ride_hailing.calificacion.application;
 import com.ride_hailing.calificacion.domain.Calificacion;
 import com.ride_hailing.calificacion.domain.ClasificacionFactory;
 import com.ride_hailing.calificacion.domain.Puntuacion;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CalificarConductorApplicationService
         implements CalificarConductorUseCase {
 

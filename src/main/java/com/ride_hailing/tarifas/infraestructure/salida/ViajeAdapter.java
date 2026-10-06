@@ -2,9 +2,12 @@ package com.ride_hailing.tarifas.infraestructure.salida;
 
 import java.util.UUID;
 
+import org.springframework.stereotype.Component;
+
 import com.ride_hailing.tarifas.application.DatosViajeTarifa;
 import com.ride_hailing.tarifas.application.RepositorioViajes;
 
+@Component("tarifasViajeAdapter")
 public class ViajeAdapter implements RepositorioViajes {
 
     @Override

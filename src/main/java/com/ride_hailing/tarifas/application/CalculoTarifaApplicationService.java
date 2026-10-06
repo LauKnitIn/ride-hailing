@@ -2,9 +2,12 @@ package com.ride_hailing.tarifas.application;
 
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
 import com.ride_hailing.tarifas.domain.CalculadoraTarifaService;
 import com.ride_hailing.tarifas.domain.Monto;
 
+@Service
 public class CalculoTarifaApplicationService
         implements CalculoTarifaUseCase {
 
