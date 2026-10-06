@@ -12,7 +12,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.ride_hailing.Conductores.application.RegistrarConductorUseCase;
 import com.ride_hailing.Conductores.domain.factory.ConductorFactory;
 import com.ride_hailing.Conductores.domain.model.Conductor;

@@ -1,7 +1,9 @@
  package com.ride_hailing.viajes;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration 
 public class ViajesConfig {
     @Bean
     public ViajeRepository viajeRepository() {
