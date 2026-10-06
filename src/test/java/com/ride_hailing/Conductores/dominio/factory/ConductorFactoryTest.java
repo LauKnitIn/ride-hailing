@@ -3,12 +3,9 @@ package com.ride_hailing.Conductores.dominio.factory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.time.LocalDate;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import com.ride_hailing.Conductores.domain.factory.ConductorFactory;
 import com.ride_hailing.Conductores.domain.model.Conductor;
 
@@ -16,16 +13,13 @@ public class ConductorFactoryTest {
     @Test
     @DisplayName("Debe crear un Conductor válido con DriverId asignado automáticamente")
     void crearConductorExitoso() {
-        // Arrange
-        String tipoDoc = "CC";
+        String tipoDoc = "CEDULA_CIUDADANIA";
         String numDoc = "1018400123";
         String nombre = "Laura Barreto";
         LocalDate fechaNacimiento = LocalDate.of(1998, 5, 20);
 
-        // Act
         Conductor conductor = ConductorFactory.crearConductor(tipoDoc, numDoc, nombre, fechaNacimiento);
 
-        // Assert
         assertNotNull(conductor);
         assertNotNull(conductor.getIdConductor());
         assertNotNull(conductor.getIdConductor().value());

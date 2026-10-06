@@ -7,9 +7,9 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,21 +18,19 @@ import com.ride_hailing.Conductores.domain.factory.ConductorFactory;
 import com.ride_hailing.Conductores.domain.model.Conductor;
 import com.ride_hailing.Conductores.infrastructure.web.dto.RegistrarConductorRequest;
 import org.springframework.http.MediaType;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ConductorController.class)
 public class ConductorControllerTest {
-    @Autowired
+   @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Mock
+    @MockitoBean
     private RegistrarConductorUseCase registrarConductorUseCase;
 
     @Test

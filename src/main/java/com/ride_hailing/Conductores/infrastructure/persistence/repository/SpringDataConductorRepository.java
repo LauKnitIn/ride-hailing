@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @Repository 
 public interface SpringDataConductorRepository extends JpaRepository<ConductorEntity, String>{
 
-    Optional<ConductorEntity> findByDocumentoIdentidad (String numeroDocumento);
+    Optional<ConductorEntity> findByNumeroDocumento (String numeroDocumento);
     boolean existsByNumeroDocumento(String numeroDocumento);
 
 }

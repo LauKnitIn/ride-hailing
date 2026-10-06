@@ -53,7 +53,7 @@ public class ConductorFactory {
 
     private static TipoDocumento parsearTipoDocumento(String tipoStr) {
         try {
-            return TipoDocumento.valueOf(tipoStr.toUpperCase());
+            return TipoDocumento.desde(tipoStr.toUpperCase());
         } catch (IllegalArgumentException | NullPointerException e) {
             throw new IllegalArgumentException("El tipo de documento '" + tipoStr + "' no es válido.");
         }

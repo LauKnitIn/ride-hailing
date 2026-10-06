@@ -28,7 +28,7 @@ public class ConductorService {
         String nombre,
         LocalDate fechaNacimiento
     ){
-        DocumentoIdentidad documentoIdentidad = new DocumentoIdentidad(numeroDocumento, TipoDocumento.valueOf(tipoDocumento));
+        DocumentoIdentidad documentoIdentidad = new DocumentoIdentidad(numeroDocumento, TipoDocumento.desde(tipoDocumento));
         DriverId idConductor = DriverId.generar();
         Conductor driverToRegister = new Conductor(idConductor, documentoIdentidad, nombre, fechaNacimiento);
         conductorRepository.save(driverToRegister);

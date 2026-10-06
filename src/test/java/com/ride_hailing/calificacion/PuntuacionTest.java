@@ -1,4 +1,4 @@
-package com.ride_hailing.pasajeros.calificacion;
+package com.ride_hailing.calificacion;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

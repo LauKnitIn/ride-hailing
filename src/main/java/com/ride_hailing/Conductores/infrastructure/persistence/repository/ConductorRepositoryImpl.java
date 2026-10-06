@@ -40,7 +40,7 @@ public class ConductorRepositoryImpl implements ConductorRepository {
 
     @Override
     public Optional<Conductor> findByDocumentoIdentidad(DocumentoIdentidad documentoIdentidad) {
-        return jpaRepository.findByDocumentoIdentidad(documentoIdentidad.getNumeroDocumento())
+        return jpaRepository.findByNumeroDocumento(documentoIdentidad.getNumeroDocumento())
                 .map(mapper::toDomain);
     }
 
