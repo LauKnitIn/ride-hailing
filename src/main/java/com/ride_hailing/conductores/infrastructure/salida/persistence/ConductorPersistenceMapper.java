@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import com.ride_hailing.conductores.domain.model.Conductor;
 import com.ride_hailing.conductores.domain.model.DocumentoIdentidad;
 import com.ride_hailing.conductores.domain.model.DriverId;
-import com.ride_hailing.conductores.domain.model.EstadoDisponibilidad;
 import com.ride_hailing.conductores.domain.model.TipoDocumento;
 import com.ride_hailing.conductores.domain.model.UbicacionGeografica;
 
@@ -14,10 +13,11 @@ class ConductorPersistenceMapper {
 
     ConductorJpaEntity aEntidad(Conductor c) {
         ConductorJpaEntity e = new ConductorJpaEntity();
-        e.id = String.valueOf(c.getIdConductor().value());
+        e.id = c.getIdConductor().value();
         e.nombreCompleto = c.getNombreCompleto();
-        e.tipoDocumento = c.getDocumentoIdentidad().getTipoDocumento();
+        e.tipoDocumento = aTipoDocumento(c.getDocumentoIdentidad().getTipoDocumento());   
         e.numeroDocumento = c.getDocumentoIdentidad().getNumeroDocumento();
+        e.fechaNacimiento = c.getFechaNacimiento();                       
         e.estado = c.getDisponibilidad();
         UbicacionGeografica u = c.getUbicacionActual();
         e.latitud = u == null ? null : u.latitud();
@@ -29,10 +29,20 @@ class ConductorPersistenceMapper {
         UbicacionGeografica ubicacion = (e.latitud == null || e.longitud == null)
                 ? null : new UbicacionGeografica(e.latitud, e.longitud);
         return Conductor.reconstruir(
-                DriverId.de(e.id),
+                new DriverId(e.id),                                                        
+                new DocumentoIdentidad(e.numeroDocumento, e.tipoDocumento),  
                 e.nombreCompleto,
-                new DocumentoIdentidad(e.numeroDocumento, e.tipoDocumento),
+                e.fechaNacimiento,                                                          
                 e.estado,
                 ubicacion);
     }
+
+    TipoDocumento aTipoDocumento(String texto) {
+    for (TipoDocumento tipo : TipoDocumento.values()) {
+        if (tipo.toString().equals(texto) || tipo.name().equals(texto)) {
+            return tipo;
+        }
+    }
+    throw new IllegalArgumentException("Tipo de documento desconocido: " + texto);
+}
 }

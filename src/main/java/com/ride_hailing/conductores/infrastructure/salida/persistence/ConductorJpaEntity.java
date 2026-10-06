@@ -1,6 +1,8 @@
 package com.ride_hailing.conductores.infrastructure.salida.persistence;
 
 
+import java.time.LocalDate;
+
 import com.ride_hailing.conductores.domain.model.EstadoDisponibilidad;
 import com.ride_hailing.conductores.domain.model.TipoDocumento;
 
@@ -26,6 +28,7 @@ class ConductorJpaEntity {
     EstadoDisponibilidad estado;
     Double latitud;
     Double longitud;
+    public LocalDate fechaNacimiento;
 
     protected ConductorJpaEntity() {
     }

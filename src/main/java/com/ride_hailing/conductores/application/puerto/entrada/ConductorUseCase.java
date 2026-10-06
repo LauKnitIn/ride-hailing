@@ -15,7 +15,6 @@ public interface ConductorUseCase {
 
     Conductor buscarPorId(DriverId id);
     List<Conductor> buscarDisponibles();
-    Conductor ponerFueraDeServicio(DriverId id);
     Conductor registrar(String nombreCompleto, TipoDocumento tipoDocumento, String numeroDocumento, LocalDate fechaNacimiento);
     Conductor registrarDisponibilidad(DriverId id, UbicacionGeografica ubicacion);
     Conductor actualizarUbicacion(DriverId id, UbicacionGeografica ubicacion);

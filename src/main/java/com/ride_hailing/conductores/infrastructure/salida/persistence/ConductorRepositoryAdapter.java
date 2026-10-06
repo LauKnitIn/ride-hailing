@@ -34,7 +34,9 @@ public class ConductorRepositoryAdapter implements ConductorRepositoryPort {
 
     @Override
     public boolean existeDocumento(DocumentoIdentidad documento) {
-        return jpaRepository.existsByTipoDocumentoAndNumeroDocumento(documento.getTipoDocumento(), documento.getNumeroDocumento());
+        return jpaRepository.existsByTipoDocumentoAndNumeroDocumento(
+                mapper.aTipoDocumento(documento.getTipoDocumento()),     // ← String → enum
+                documento.getNumeroDocumento());
     }
 
     @Override

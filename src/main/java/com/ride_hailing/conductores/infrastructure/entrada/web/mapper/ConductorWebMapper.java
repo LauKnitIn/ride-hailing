@@ -24,8 +24,6 @@ return new ConductorResponse(
         return new UbicacionGeografica(r.latitud(), r.longitud());
     }
 
-    public TipoDocumento aTipoDocumento(String valor) {
-        return TipoDocumento.valueOf(valor);
-    }
+      public TipoDocumento aTipoDocumento(String valor) { return TipoDocumento.valueOf(valor); }
 
 }

@@ -38,9 +38,9 @@ public class ConductorController {
     public ResponseEntity<ConductorResponse> registrar(@Valid @RequestBody RegistrarConductorRequest request) {   // ← @Valid
     Conductor conductor = conductorUseCase.registrar(
             request.nombreCompleto(),
-            mapper.aTipoDocumento(request.tipoDocumento()),
+              mapper.aTipoDocumento(request.tipoDocumento()),     
             request.numeroDocumento(),
-            request.fechaNacimiento());                                   // ← corrección 1
+            request.fechaNacimiento());                                   
     return ResponseEntity.status(HttpStatus.CREATED).body(mapper.aRespuesta(conductor));
     }
 
