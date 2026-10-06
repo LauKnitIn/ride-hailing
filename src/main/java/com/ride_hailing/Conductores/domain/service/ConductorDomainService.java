@@ -3,6 +3,8 @@ package com.ride_hailing.Conductores.domain;
 import com.ride_hailing.Conductores.domain.Event.DisponibilidadDesactivadaEvent;
 import com.ride_hailing.Conductores.domain.Event.DisponibilidadRegistradaEvent;
 import com.ride_hailing.Conductores.domain.Event.UbicacionConductorActualizadaEvent;
+import com.ride_hailing.Conductores.domain.model.Conductor;
+import com.ride_hailing.Conductores.domain.model.UbicacionGeografica;
 
 public class ConductorDomainService {
     private final ViajeActivoCheckerRepository viajeActivoChecker;

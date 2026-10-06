@@ -1,6 +1,9 @@
-package com.ride_hailing.Conductores.domain;
+package com.ride_hailing.Conductores.domain.event;
 
 import java.time.Instant;
+
+import com.ride_hailing.Conductores.domain.model.DriverId;
+import com.ride_hailing.Conductores.domain.model.UbicacionGeografica;
 
 public class Event {
 

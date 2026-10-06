@@ -2,7 +2,7 @@ package com.ride_hailing.Conductores.infrastructure.web.mapper;
 
 import org.springframework.stereotype.Component;
 
-import com.ride_hailing.Conductores.domain.Conductor;
+import com.ride_hailing.Conductores.domain.model.Conductor;
 import com.ride_hailing.Conductores.infrastructure.web.dto.ConductorResponse;
 
 @Component 

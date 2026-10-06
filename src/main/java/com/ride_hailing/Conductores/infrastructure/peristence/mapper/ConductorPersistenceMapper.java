@@ -2,12 +2,12 @@ package com.ride_hailing.Conductores.infrastructure.peristence.mapper;
 
 import org.springframework.stereotype.Component;
 
-import com.ride_hailing.Conductores.domain.Conductor;
-import com.ride_hailing.Conductores.domain.DocumentoIdentidad;
-import com.ride_hailing.Conductores.domain.DriverId;
-import com.ride_hailing.Conductores.domain.EstadoDisponibilidad;
-import com.ride_hailing.Conductores.domain.TipoDocumento;
-import com.ride_hailing.Conductores.domain.UbicacionGeografica;
+import com.ride_hailing.Conductores.domain.model.Conductor;
+import com.ride_hailing.Conductores.domain.model.DocumentoIdentidad;
+import com.ride_hailing.Conductores.domain.model.DriverId;
+import com.ride_hailing.Conductores.domain.model.EstadoDisponibilidad;
+import com.ride_hailing.Conductores.domain.model.TipoDocumento;
+import com.ride_hailing.Conductores.domain.model.UbicacionGeografica;
 import com.ride_hailing.Conductores.infrastructure.peristence.entity.ConductorEntity;
 
 @Component 

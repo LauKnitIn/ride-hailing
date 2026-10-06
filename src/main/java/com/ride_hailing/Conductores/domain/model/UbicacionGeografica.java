@@ -1,4 +1,4 @@
-package com.ride_hailing.Conductores.domain;
+package com.ride_hailing.Conductores.domain.model;
 
 public record UbicacionGeografica(double latitud, double longitud) {
     public UbicacionGeografica{
