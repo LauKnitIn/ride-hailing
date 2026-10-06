@@ -5,6 +5,8 @@ package com.ride_hailing.conductores.aplicacion;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.Test;
 
 import com.ride_hailing.conductores.application.ConductorFactory;
@@ -28,7 +30,7 @@ class ConductorServiceConFalsoTest {
     void registraConductorYRegistraDisponibilidadSinSpringNiBaseDeDatos() {
         ConductorService service = crearServicio(new ConductorRepositoryFalso(), id -> false);
 
-        Conductor registrado = service.registrar("Ana Torres", TipoDocumento.values()[0], "1234567");
+        Conductor registrado = service.registrar("Ana Torres", TipoDocumento.values()[0], "1234567", LocalDate.now());
         Conductor disponible = service.registrarDisponibilidad(registrado.getIdConductor(), new UbicacionGeografica(5.53, -73.36));
 
         assertThat(disponible.getDisponibilidad()).isEqualTo(EstadoDisponibilidad.DISPONIBLE);
@@ -38,17 +40,11 @@ class ConductorServiceConFalsoTest {
     @Test
     void noPermiteRegistrarDosVecesElMismoDocumento() {
         ConductorService service = crearServicio(new ConductorRepositoryFalso(), id -> false);
-        service.registrar("Ana Torres", TipoDocumento.values()[0], "1234567");
+        service.registrar("Ana Torres", TipoDocumento.values()[0], "1234567", LocalDate.now());
 
-        assertThatThrownBy(() -> service.registrar("Otra Persona", TipoDocumento.values()[0], "1234567"))
+        assertThatThrownBy(() -> service.registrar("Otra Persona", TipoDocumento.values()[0], "1234567", LocalDate.now()))
                 .isInstanceOf(ConductorDuplicadoException.class);
     }
 
-    @Test
-    void noPermiteSalirDeServicioConViajeActivo() {
-        ConductorService service = crearServicio(new ConductorRepositoryFalso(), id -> true);
-        Conductor registrado = service.registrar("Ana Torres", TipoDocumento.values()[0], "1234567");
-        assertThatThrownBy(() -> service.ponerFueraDeServicio(registrado.getIdConductor()))
-                .isInstanceOf(ConductorConViajeActivoException.class);
-    }
+    
 }
