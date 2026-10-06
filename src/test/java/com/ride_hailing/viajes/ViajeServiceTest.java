@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.ride_hailing.viajes.aplicacion.ConductorNoDisponibleException;
+import com.ride_hailing.viajes.aplicacion.RepositorioViajes;
 import com.ride_hailing.viajes.aplicacion.SolicitudRechazadaEvent;
 import com.ride_hailing.viajes.aplicacion.TransicionEstadoViajeService;
 import com.ride_hailing.viajes.aplicacion.ViajeAsignadoEvent;
@@ -11,7 +12,6 @@ import com.ride_hailing.viajes.aplicacion.ViajeCanceladoEvent;
 import com.ride_hailing.viajes.aplicacion.ViajeFactory;
 import com.ride_hailing.viajes.aplicacion.ViajeFinalizadoEvent;
 import com.ride_hailing.viajes.aplicacion.ViajeNoEncontradoException;
-import com.ride_hailing.viajes.aplicacion.ViajeRepository;
 import com.ride_hailing.viajes.aplicacion.ViajeService;
 import com.ride_hailing.viajes.aplicacion.ViajeSolicitadoEvent;
 import com.ride_hailing.viajes.dominio.EstadoViaje;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.*;
 
 class ViajeServiceTest {
 
-    private ViajeRepository viajeRepository;
+    private RepositorioViajes viajeRepository;
     private InMemoryPublicadorEventosViaje publicadorEventos;
     private ViajeService viajeService;
 
@@ -40,7 +40,7 @@ class ViajeServiceTest {
 
     @BeforeEach
     void setUp() {
-        viajeRepository = mock(ViajeRepository.class);
+        viajeRepository = mock(RepositorioViajes.class);
         publicadorEventos = new InMemoryPublicadorEventosViaje();
         viajeService = new ViajeService(
             viajeRepository, new ViajeFactory(), new TransicionEstadoViajeService(), publicadorEventos);

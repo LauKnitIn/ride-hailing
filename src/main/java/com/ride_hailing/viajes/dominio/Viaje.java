@@ -54,7 +54,7 @@ public class Viaje {
         this.estado = this.estado.transicionarA(EstadoViaje.Valor.CANCELADO);
         this.motivoCancelacion = motivo;
     }
-
+    
     public Duration getDuracion() {
         if (horaInicio == null || horaFinalizacion == null) {
             return null;

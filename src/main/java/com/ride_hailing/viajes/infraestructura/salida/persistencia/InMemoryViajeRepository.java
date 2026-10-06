@@ -2,7 +2,7 @@ package com.ride_hailing.viajes.infraestructura.salida.persistencia;
 
 import org.springframework.stereotype.Repository;
 
-import com.ride_hailing.viajes.aplicacion.ViajeRepository;
+import com.ride_hailing.viajes.aplicacion.RepositorioViajes;
 import com.ride_hailing.viajes.dominio.Viaje;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Repository
-public class InMemoryViajeRepository implements ViajeRepository {
+public class InMemoryViajeRepository implements RepositorioViajes {
 
     private final Map<UUID, Viaje> viajesPorId = new ConcurrentHashMap<>();
 

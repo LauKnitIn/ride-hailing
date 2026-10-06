@@ -12,12 +12,12 @@ import java.util.UUID;
 @Service
 public class ViajeService implements ViajeUseCase {
 
-    private final ViajeRepository viajeRepository;
+    private final RepositorioViajes viajeRepository;
     private final ViajeFactory viajeFactory;
     private final TransicionEstadoViajeService transicionEstadoViajeService;
     private final PublicadorEventosViaje publicadorEventosViaje;
 
-    public ViajeService(ViajeRepository viajeRepository,
+    public ViajeService(RepositorioViajes viajeRepository,
                          ViajeFactory viajeFactory,
                          TransicionEstadoViajeService transicionEstadoViajeService,
                          PublicadorEventosViaje publicadorEventosViaje) {

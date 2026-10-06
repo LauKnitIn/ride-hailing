@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import com.ride_hailing.viajes.dominio.Viaje;
 
-public interface ViajeRepository {
+public interface RepositorioViajes {
 
     void guardar(Viaje viaje);
 
