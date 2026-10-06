@@ -1,7 +1,10 @@
 package com.ride_hailing.pasajeros.dominio;
 
+import jakarta.persistence.Embeddable;
+
 import java.util.regex.Pattern;
 
+@Embeddable
 public record Correo(String valor) {
 
     private static final Pattern FORMATO_VALIDO =

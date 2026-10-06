@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.ride_hailing.pasajeros.aplicacion.PasajeroFactory;
-import com.ride_hailing.pasajeros.aplicacion.PasajeroRepository;
+import com.ride_hailing.pasajeros.aplicacion.RepositorioPasajeros;
 import com.ride_hailing.pasajeros.aplicacion.PasajeroService;
 import com.ride_hailing.pasajeros.aplicacion.RegistroPasajeroService;
 import com.ride_hailing.pasajeros.dominio.CorreoYaRegistradoException;
@@ -20,12 +20,12 @@ import static org.mockito.Mockito.*;
 
 class PasajeroServiceTest {
 
-    private PasajeroRepository pasajeroRepository;
+    private RepositorioPasajeros pasajeroRepository;
     private PasajeroService pasajeroService;
 
     @BeforeEach
     void setUp() {
-        pasajeroRepository = mock(PasajeroRepository.class);
+        pasajeroRepository = mock(RepositorioPasajeros.class);
         pasajeroService = new PasajeroService(
             pasajeroRepository, new PasajeroFactory(new RegistroPasajeroService()), new RegistroPasajeroService());
     }

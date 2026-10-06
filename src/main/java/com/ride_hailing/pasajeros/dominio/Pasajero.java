@@ -1,14 +1,32 @@
 package com.ride_hailing.pasajeros.dominio;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 import java.util.Objects;
 import java.util.UUID;
 
+@Entity
+@Table(name = "pasajeros")
 public class Pasajero {
 
-    private final UUID id;
+    @Id
+    private UUID id;
     private String nombre;
+    @Embedded
+    @AttributeOverride(name = "valor", column = @Column(name = "correo"))
     private Correo correo;
+    @Embedded
+    @AttributeOverride(name = "valor", column = @Column(name = "telefono"))
     private Telefono telefono;
+
+    protected Pasajero() {
+        
+    }
 
     public Pasajero(UUID id, String nombre, Correo correo, Telefono telefono) {
         this.id = id;

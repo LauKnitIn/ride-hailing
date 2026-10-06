@@ -8,11 +8,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Repository;
 
-import com.ride_hailing.pasajeros.aplicacion.PasajeroRepository;
+import com.ride_hailing.pasajeros.aplicacion.RepositorioPasajeros;
 import com.ride_hailing.pasajeros.dominio.Pasajero;
 
 @Repository
-public class InMemoryPasajeroRepository implements PasajeroRepository {
+public class InMemoryPasajeroRepository implements RepositorioPasajeros {
 
     private final Map<UUID, Pasajero> pasajerosPorId = new ConcurrentHashMap<>();
 
