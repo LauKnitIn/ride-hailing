@@ -1,26 +1,39 @@
 package com.ride_hailing.viajes;
 
-import java.time.LocalDateTime;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.UUID;
 
 public record ViajeResponse(
     UUID id,
     UUID pasajeroId,
     UUID conductorId,
-    String origen,
-    String destino,
+    double latitudOrigen,
+    double longitudOrigen,
+    double latitudDestino,
+    double longitudDestino,
     EstadoViaje.Valor estado,
-    LocalDateTime horaSolicitud
+    Instant horaSolicitud,
+    Instant horaInicio,
+    Instant horaFinalizacion,
+    Double distanciaKm,
+    Duration duracion
 ) {
     public static ViajeResponse desde(Viaje viaje) {
         return new ViajeResponse(
             viaje.getId(),
             viaje.getPasajeroId(),
             viaje.getConductorId(),
-            viaje.getOrigen(),
-            viaje.getDestino(),
+            viaje.getOrigen().latitud(),
+            viaje.getOrigen().longitud(),
+            viaje.getDestino().latitud(),
+            viaje.getDestino().longitud(),
             viaje.getEstado().valor(),
-            viaje.getHoraSolicitud()
+            viaje.getHoraSolicitud(),
+            viaje.getHoraInicio(),
+            viaje.getHoraFinalizacion(),
+            viaje.getDistanciaKm(),
+            viaje.getDuracion()
         );
     }
 }

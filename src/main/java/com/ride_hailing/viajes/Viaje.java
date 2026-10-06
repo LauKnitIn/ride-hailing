@@ -1,38 +1,26 @@
 package com.ride_hailing.viajes;
 
-import java.time.LocalDateTime;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Paso 4 · Límite del Agregado.
- *
- * Raíz del Agregado del subdominio "Viajes y seguimiento" (Dev 2).
- *
- * Regla de límite: {@code Viaje} referencia a Pasajero y Conductor SOLO por su
- * id (nunca por el objeto completo), porque esas entidades pertenecen a otros
- * subdominios (Pasajero, y Conductor del subdominio "Disponibilidad de
- * conductores" de Dev 1) — igual que {@code Publicacion.investigadorCorreo} en
- * el ejemplo de RICA del taller.
- *
- * La construcción está delegada a {@link ViajeFactory}: este constructor es
- * de paquete (no público) para que nadie cree un Viaje saltándose las
- * validaciones de la Factory.
- */
 public class Viaje {
 
     private final UUID id;
     private final UUID pasajeroId;
     private UUID conductorId; // null hasta que ConductorAsignado ocurre
-    private final String origen;
-    private final String destino;
+    private final Ubicacion origen;
+    private final Ubicacion destino;
     private EstadoViaje estado;
-    private final LocalDateTime horaSolicitud;
-    private LocalDateTime horaAsignacion;
-    private LocalDateTime horaFinalizacion;
+    private final Instant horaSolicitud;
+    private Instant horaAsignacion;
+    private Instant horaInicio;
+    private Instant horaFinalizacion;
     private String motivoCancelacion;
+    private Double distanciaKm;
 
-    Viaje(UUID id, UUID pasajeroId, String origen, String destino, LocalDateTime horaSolicitud) {
+    public Viaje(UUID id, UUID pasajeroId, Ubicacion origen, Ubicacion destino, Instant horaSolicitud) {
         this.id = id;
         this.pasajeroId = pasajeroId;
         this.origen = origen;
@@ -41,32 +29,37 @@ public class Viaje {
         this.estado = EstadoViaje.solicitado();
     }
 
-    /** HU-03 / HU-04: se asigna un conductor (por id) al viaje. */
-    public void asignarConductor(UUID conductorId, LocalDateTime momento) {
+    public void asignarConductor(UUID conductorId, Instant momento) {
         Objects.requireNonNull(conductorId, "conductorId no puede ser nulo");
         this.estado = this.estado.transicionarA(EstadoViaje.Valor.ASIGNADO);
         this.conductorId = conductorId;
         this.horaAsignacion = momento;
     }
 
-    /** El conductor recoge al pasajero y el viaje pasa a "en curso". */
-    public void iniciar() {
+    public void iniciar(Instant momento) {
         this.estado = this.estado.transicionarA(EstadoViaje.Valor.EN_CURSO);
+        this.horaInicio = momento;
     }
 
-    /** HU-06 / HU-07: el viaje termina y queda listo para el cálculo de tarifa. */
-    public void finalizar(LocalDateTime momento) {
+    public void finalizar(Instant momento) {
         this.estado = this.estado.transicionarA(EstadoViaje.Valor.FINALIZADO);
         this.horaFinalizacion = momento;
+        this.distanciaKm = origen.distanciaHaciaKm(destino);
     }
 
-    /** HU-10: el pasajero o el conductor cancelan, con motivo obligatorio. */
     public void cancelar(String motivo) {
         if (motivo == null || motivo.isBlank()) {
             throw new IllegalArgumentException("El motivo de cancelación es obligatorio (HU-10)");
         }
         this.estado = this.estado.transicionarA(EstadoViaje.Valor.CANCELADO);
         this.motivoCancelacion = motivo;
+    }
+
+    public Duration getDuracion() {
+        if (horaInicio == null || horaFinalizacion == null) {
+            return null;
+        }
+        return Duration.between(horaInicio, horaFinalizacion);
     }
 
     public UUID getId() {
@@ -81,11 +74,11 @@ public class Viaje {
         return conductorId;
     }
 
-    public String getOrigen() {
+    public Ubicacion getOrigen() {
         return origen;
     }
 
-    public String getDestino() {
+    public Ubicacion getDestino() {
         return destino;
     }
 
@@ -93,19 +86,27 @@ public class Viaje {
         return estado;
     }
 
-    public LocalDateTime getHoraSolicitud() {
+    public Instant getHoraSolicitud() {
         return horaSolicitud;
     }
 
-    public LocalDateTime getHoraAsignacion() {
+    public Instant getHoraAsignacion() {
         return horaAsignacion;
     }
 
-    public LocalDateTime getHoraFinalizacion() {
+    public Instant getHoraInicio() {
+        return horaInicio;
+    }
+
+    public Instant getHoraFinalizacion() {
         return horaFinalizacion;
     }
 
     public String getMotivoCancelacion() {
         return motivoCancelacion;
+    }
+
+    public Double getDistanciaKm() {
+        return distanciaKm;
     }
 }

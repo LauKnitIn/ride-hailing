@@ -18,13 +18,22 @@ public class ViajeController {
 
     @PostMapping
     public ResponseEntity<ViajeResponse> solicitar(@RequestBody SolicitarViajeRequest request) {
-        Viaje viaje = viajeUseCase.solicitarViaje(request.pasajeroId(), request.origen(), request.destino());
+        Viaje viaje = viajeUseCase.solicitarViaje(
+                request.pasajeroId(),
+                request.latitudOrigen(), request.longitudOrigen(),
+                request.latitudDestino(), request.longitudDestino());
         return ResponseEntity.ok(ViajeResponse.desde(viaje));
     }
 
     @PostMapping("/{id}/conductor/{conductorId}")
     public ResponseEntity<Void> asignarConductor(@PathVariable UUID id, @PathVariable UUID conductorId) {
         viajeUseCase.asignarConductor(id, conductorId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/rechazar-sin-conductores")
+    public ResponseEntity<Void> rechazarPorFaltaDeConductores(@PathVariable UUID id, @RequestBody String motivo) {
+        viajeUseCase.rechazarPorFaltaDeConductores(id, motivo);
         return ResponseEntity.noContent().build();
     }
 

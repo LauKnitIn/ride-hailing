@@ -1,0 +1,19 @@
+package com.ride_hailing.viajes;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+public class InMemoryPublicadorEventosViaje implements PublicadorEventosViaje {
+
+    private final List<Object> eventosPublicados = new CopyOnWriteArrayList<>();
+
+    @Override
+    public void publicar(Object evento) {
+        eventosPublicados.add(evento);
+    }
+
+    public List<Object> eventosPublicados() {
+        return Collections.unmodifiableList(eventosPublicados);
+    }
+}

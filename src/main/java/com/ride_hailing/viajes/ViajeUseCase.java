@@ -5,9 +5,12 @@ import java.util.UUID;
 
 public interface ViajeUseCase {
 
-    Viaje solicitarViaje(UUID pasajeroId, String origen, String destino);
+    Viaje solicitarViaje(UUID pasajeroId, double latitudOrigen, double longitudOrigen,
+                          double latitudDestino, double longitudDestino);
 
     void asignarConductor(UUID viajeId, UUID conductorId);
+
+    void rechazarPorFaltaDeConductores(UUID viajeId, String motivo);
 
     void iniciarViaje(UUID viajeId);
 
