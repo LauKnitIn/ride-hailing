@@ -14,7 +14,6 @@ import com.ride_hailing.emparejamientoOfertas.aplicacion.AceptarOfertaUseCase;
 import com.ride_hailing.emparejamientoOfertas.aplicacion.ProcesarSolicitudEmparejamientoUseCase;
 import com.ride_hailing.emparejamientoOfertas.aplicacion.RechazarOfertaUseCase;
 import com.ride_hailing.emparejamientoOfertas.dominio.Oferta;
-import com.ride_hailing.emparejamientoOfertas.infrastructure.controllers.dto.SolicitudEmparejamientoRequest;
 
 @RestController
 @RequestMapping("/api/v1/emparejamiento")

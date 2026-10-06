@@ -3,6 +3,9 @@ package com.ride_hailing.emparejamientoOfertas.aplicacion;
 import java.util.List;
 import java.util.UUID;
 
+import org.hibernate.annotations.SecondaryRow;
+import org.springframework.stereotype.Service;
+
 import com.ride_hailing.emparejamientoOfertas.AsignacionViajePort;
 import com.ride_hailing.emparejamientoOfertas.ConductoresPort;
 import com.ride_hailing.emparejamientoOfertas.dominio.EmparejamientoDomainService;
@@ -12,6 +15,7 @@ import com.ride_hailing.emparejamientoOfertas.dominio.Oferta;
 import com.ride_hailing.emparejamientoOfertas.dominio.OfertaFactory;
 import com.ride_hailing.emparejamientoOfertas.dominio.OfertaRepository;
 
+@Service 
 public class ProcesarSolicitudEmparejamientoUseCase {
 
     private final EmparejamientoDomainService emparejamientoDomainService;

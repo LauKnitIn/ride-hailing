@@ -26,7 +26,6 @@ public class RechazarOfertaUseCase {
         oferta.rechazar();
         ofertaRepository.guardar(oferta);
 
-        // Buscar al siguiente candidato disponible
         procesarSolicitudUseCase.ejecutar(
                 oferta.getViajeId(),
                 oferta.getOrigenLat(),
