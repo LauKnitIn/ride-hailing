@@ -18,6 +18,7 @@ import com.ride_hailing.emparejamientoOfertas.infrastructure.controllers.dto.Sol
 @RestController
 @RequestMapping("/api/v1/emparejamiento")
 public class EmparejamientoRestController {
+
     private final ProcesarSolicitudEmparejamientoUseCase procesarSolicitudEmparejamientoUseCase;
     private final ResponderOfertaUseCase responderOfertaUseCase;
 
@@ -33,10 +34,7 @@ public class EmparejamientoRestController {
         procesarSolicitudEmparejamientoUseCase.ejecutar(
                 request.viajeId(),
                 request.origenLat(),
-                request.origenLon(),
-                request.candidatos(),
-                request.rechazados(),
-                request.radioKm()
+                request.origenLon()
         );
         return ResponseEntity.accepted().build();
     }

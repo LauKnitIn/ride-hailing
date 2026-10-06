@@ -3,8 +3,7 @@ package com.ride_hailing.emparejamientoOfertas.aplicacion;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.stereotype.Service;
-
+import com.ride_hailing.emparejamientoOfertas.AsignacionViajePort;
 import com.ride_hailing.emparejamientoOfertas.ConductoresPort;
 import com.ride_hailing.emparejamientoOfertas.dominio.EmparejamientoDomainService;
 import com.ride_hailing.emparejamientoOfertas.dominio.EmparejamientoDomainService.CandidatoConductor;
@@ -13,62 +12,49 @@ import com.ride_hailing.emparejamientoOfertas.dominio.Oferta;
 import com.ride_hailing.emparejamientoOfertas.dominio.OfertaFactory;
 import com.ride_hailing.emparejamientoOfertas.dominio.OfertaRepository;
 
-@Service
 public class ProcesarSolicitudEmparejamientoUseCase {
-    private static final double RADIO_DEFAULT_KM = 5.0;
 
     private final EmparejamientoDomainService emparejamientoDomainService;
     private final OfertaRepository ofertaRepository;
     private final ConductoresPort conductoresPort;
+    private final AsignacionViajePort asignacionViajePort;
+    private final double radioKm;
 
     public ProcesarSolicitudEmparejamientoUseCase(
             EmparejamientoDomainService emparejamientoDomainService,
             OfertaRepository ofertaRepository,
-            ConductoresPort conductoresPort) {
+            ConductoresPort conductoresPort,
+            AsignacionViajePort asignacionViajePort,
+            double radioKm) {
         this.emparejamientoDomainService = emparejamientoDomainService;
         this.ofertaRepository = ofertaRepository;
         this.conductoresPort = conductoresPort;
+        this.asignacionViajePort = asignacionViajePort;
+        this.radioKm = radioKm;
     }
 
-    public void ejecutar(UUID viajeId, double origenLat, double origenLon) {
+    public synchronized Oferta ejecutar(UUID viajeId, double origenLat, double origenLon) {
         List<CandidatoConductor> candidatos = conductoresPort.obtenerConductoresDisponibles(
-                origenLat,
-                origenLon,
-                RADIO_DEFAULT_KM
-        );
+                origenLat, origenLon, radioKm);
 
         List<UUID> rechazados = ofertaRepository.buscarPorViajeId(viajeId)
                 .stream()
                 .map(Oferta::getConductorId)
                 .toList();
 
-        ejecutar(viajeId, origenLat, origenLon, candidatos, rechazados, RADIO_DEFAULT_KM);
-    }
-
-    // Método principal de 6 parámetros
-    public void ejecutar(
-            UUID viajeId,
-            double origenLat,
-            double origenLon,
-            List<CandidatoConductor> candidatos,
-            List<UUID> rechazados,
-            double radioKm) {
-
         List<Oferta> ofertasPendientes = ofertaRepository.buscarPorEstado(EstadoOferta.PENDIENTE);
 
         CandidatoConductor candidato = emparejamientoDomainService.seleccionarSiguienteCandidato(
-                origenLat, origenLon, candidatos, rechazados, ofertasPendientes, radioKm
-        );
+                origenLat, origenLon, candidatos, rechazados, ofertasPendientes, radioKm);
 
         if (candidato != null) {
-            // Se le pasan las coordenadas origenLat y origenLon a la fábrica
             Oferta nuevaOferta = OfertaFactory.crearNuevaOferta(
-                    viajeId, 
-                    candidato.conductorId(), 
-                    origenLat, 
-                    origenLon
-            );
-            ofertaRepository.guardar(nuevaOferta);
+                    viajeId, candidato.conductorId(), origenLat, origenLon);
+            return ofertaRepository.guardar(nuevaOferta);
+        } else {
+            asignacionViajePort.notificarSinConductoresDisponibles(
+                    viajeId, "Sin conductores disponibles en el radio de búsqueda");
+            return null;
         }
     }
 }

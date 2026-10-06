@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-@Service
 public class EmparejamientoDomainService {
 
     public record CandidatoConductor(UUID conductorId, double latitud, double longitud) {}
