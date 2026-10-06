@@ -1,4 +1,4 @@
-package com.ride_hailing.emparejamientoOfertas.aplicacion;
+package com.ride_hailing.emparejamientoOfertas.infrastructure.persistence.repositories;
 
 import java.util.List;
 import java.util.UUID;
@@ -45,7 +45,6 @@ public class ProcesarSolicitudEmparejamientoUseCase {
         ejecutar(viajeId, origenLat, origenLon, candidatos, rechazados, RADIO_DEFAULT_KM);
     }
 
-    // Método principal de 6 parámetros
     public void ejecutar(
             UUID viajeId,
             double origenLat,
@@ -57,11 +56,15 @@ public class ProcesarSolicitudEmparejamientoUseCase {
         List<Oferta> ofertasPendientes = ofertaRepository.buscarPorEstado(EstadoOferta.PENDIENTE);
 
         CandidatoConductor candidato = emparejamientoDomainService.seleccionarSiguienteCandidato(
-                origenLat, origenLon, candidatos, rechazados, ofertasPendientes, radioKm
+                origenLat, 
+                origenLon, 
+                candidatos, 
+                rechazados, 
+                ofertasPendientes, 
+                radioKm
         );
 
         if (candidato != null) {
-            // Se le pasan las coordenadas origenLat y origenLon a la fábrica
             Oferta nuevaOferta = OfertaFactory.crearNuevaOferta(
                     viajeId, 
                     candidato.conductorId(), 

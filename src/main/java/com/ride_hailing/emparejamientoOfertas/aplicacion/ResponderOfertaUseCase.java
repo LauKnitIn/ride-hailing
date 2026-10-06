@@ -2,11 +2,14 @@ package com.ride_hailing.emparejamientoOfertas.aplicacion;
 
 import java.time.Instant;
 
+import org.springframework.stereotype.Service;
+
 import com.ride_hailing.emparejamientoOfertas.AsignacionViajePort;
 import com.ride_hailing.emparejamientoOfertas.dominio.Oferta;
 import com.ride_hailing.emparejamientoOfertas.dominio.OfertaId;
 import com.ride_hailing.emparejamientoOfertas.dominio.OfertaRepository;
 
+@Service 
 public class ResponderOfertaUseCase {
     private final OfertaRepository ofertaRepository;
     private final AsignacionViajePort asignacionViajePort;

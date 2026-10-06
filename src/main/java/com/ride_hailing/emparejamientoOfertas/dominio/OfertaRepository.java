@@ -8,4 +8,5 @@ public interface OfertaRepository {
     Oferta guardar(Oferta oferta);
     Optional<Oferta> buscarPorId(OfertaId id);
     List<Oferta> buscarPorViajeId(UUID viajeId);
+    List<Oferta> buscarPorEstado(EstadoOferta estado);
 }

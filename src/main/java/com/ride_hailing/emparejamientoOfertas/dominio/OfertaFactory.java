@@ -4,22 +4,26 @@ import java.time.Instant;
 import java.util.UUID;
 
 public class OfertaFactory {
-    /**
-     * Crear una nueva oferta de viaje (nueva en el sistema)
-     */
-    public static Oferta crearNuevaOferta(UUID viajeId, UUID conductorId) {
-        return new Oferta(OfertaId.generar(), viajeId, conductorId);
+
+    public static Oferta crearNuevaOferta(UUID viajeId, UUID conductorId, double origenLat, double origenLon) {
+        return new Oferta(
+                OfertaId.generar(),
+                viajeId,
+                conductorId,
+                origenLat,
+                origenLon,
+                EstadoOferta.PENDIENTE,
+                Instant.now()
+        );
     }
 
-
-    /**
-     * Reconstruir una oferta existente desde la capa de infraestructura (JPA/Base de Datos)
-     */
-    public static Oferta reconstruir(UUID id, UUID viajeId, UUID conductorId, EstadoOferta estado, Instant fechaCreacion) {
+    public static Oferta reconstruir(UUID id, UUID viajeId, UUID conductorId, double origenLat, double origenLon, EstadoOferta estado, Instant fechaCreacion) {
         return new Oferta(
                 new OfertaId(id),
                 viajeId,
                 conductorId,
+                origenLat,
+                origenLon,
                 estado,
                 fechaCreacion
         );
