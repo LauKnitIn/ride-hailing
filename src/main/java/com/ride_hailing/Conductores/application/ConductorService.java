@@ -4,12 +4,12 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
 
-import com.ride_hailing.Conductores.domain.ConductorRepository;
 import com.ride_hailing.Conductores.domain.model.Conductor;
 import com.ride_hailing.Conductores.domain.model.DocumentoIdentidad;
 import com.ride_hailing.Conductores.domain.model.DriverId;
 import com.ride_hailing.Conductores.domain.model.TipoDocumento;
 import com.ride_hailing.Conductores.domain.model.UbicacionGeografica;
+import com.ride_hailing.Conductores.domain.repository.ConductorRepository;
 
 @Service 
 public class ConductorService {

@@ -1,4 +1,4 @@
-package com.ride_hailing.Conductores.infrastructure.peristence.entity;
+package com.ride_hailing.Conductores.infrastructure.persistence.entity;
 
 import java.time.LocalDate;
 import java.util.Objects;

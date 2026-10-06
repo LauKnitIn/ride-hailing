@@ -1,4 +1,4 @@
-package com.ride_hailing.Conductores.domain;
+package com.ride_hailing.Conductores.domain.repository;
 
 import com.ride_hailing.Conductores.domain.model.DriverId;
 

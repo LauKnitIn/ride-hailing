@@ -1,4 +1,4 @@
-package com.ride_hailing.Conductores.infrastructure.peristence.mapper;
+package com.ride_hailing.Conductores.infrastructure.persistence.mapper;
 
 import org.springframework.stereotype.Component;
 
@@ -8,13 +8,11 @@ import com.ride_hailing.Conductores.domain.model.DriverId;
 import com.ride_hailing.Conductores.domain.model.EstadoDisponibilidad;
 import com.ride_hailing.Conductores.domain.model.TipoDocumento;
 import com.ride_hailing.Conductores.domain.model.UbicacionGeografica;
-import com.ride_hailing.Conductores.infrastructure.peristence.entity.ConductorEntity;
+import com.ride_hailing.Conductores.infrastructure.persistence.entity.ConductorEntity;
 
 @Component 
 public class ConductorPersistenceMapper {
-    /**
-     * Convierte del Agregado de Dominio a la Entidad JPA para guardar en base de datos.
-     */
+
     public ConductorEntity toEntity(Conductor conductor) {
         if (conductor == null) {
             return null;
