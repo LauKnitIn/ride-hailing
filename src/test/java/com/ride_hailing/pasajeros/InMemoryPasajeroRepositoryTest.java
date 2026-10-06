@@ -2,6 +2,11 @@ package com.ride_hailing.pasajeros;
 
 import org.junit.jupiter.api.Test;
 
+import com.ride_hailing.pasajeros.aplicacion.PasajeroFactory;
+import com.ride_hailing.pasajeros.aplicacion.RegistroPasajeroService;
+import com.ride_hailing.pasajeros.dominio.Pasajero;
+import com.ride_hailing.pasajeros.infraestructura.salida.persistencia.InMemoryPasajeroRepository;
+
 import java.util.List;
 import java.util.UUID;
 

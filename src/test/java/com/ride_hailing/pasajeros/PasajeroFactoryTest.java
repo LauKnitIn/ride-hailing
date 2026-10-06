@@ -2,6 +2,11 @@ package com.ride_hailing.pasajeros;
 
 import org.junit.jupiter.api.Test;
 
+import com.ride_hailing.pasajeros.aplicacion.PasajeroFactory;
+import com.ride_hailing.pasajeros.aplicacion.RegistroPasajeroService;
+import com.ride_hailing.pasajeros.dominio.CorreoYaRegistradoException;
+import com.ride_hailing.pasajeros.dominio.Pasajero;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

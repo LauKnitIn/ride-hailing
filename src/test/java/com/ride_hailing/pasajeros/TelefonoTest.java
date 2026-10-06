@@ -2,6 +2,8 @@ package com.ride_hailing.pasajeros;
 
 import org.junit.jupiter.api.Test;
 
+import com.ride_hailing.pasajeros.dominio.Telefono;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TelefonoTest {
