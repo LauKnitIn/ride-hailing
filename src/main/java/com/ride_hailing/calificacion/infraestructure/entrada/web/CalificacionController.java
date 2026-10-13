@@ -24,6 +24,7 @@ public class CalificacionController {
             @RequestBody CalificarConductorRequest request) {
         Calificacion calificacion = calificarConductor.calificarConductor(
                 request.viajeId(),
+                request.pasajeroId(),
                 request.puntuacion(),
                 request.comentario()
         );

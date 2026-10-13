@@ -1,0 +1,33 @@
+meta {
+  name: Solicitar viaje
+  type: http
+  seq: 9
+}
+
+post {
+  url: localhost:8080/api/viajes
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "pasajeroId": "{{pasajeroId}}",
+    "latitudOrigen": 4.711,
+    "longitudOrigen": -74.0721,
+    "latitudDestino": 4.65,
+    "longitudDestino": -74.1
+  }
+}
+
+vars:post-response {
+  viajeId: res.body.id
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  HU-01. Dispara el emparejamiento automatico: se crea una oferta PROPUESTA al conductor mas cercano.
+}

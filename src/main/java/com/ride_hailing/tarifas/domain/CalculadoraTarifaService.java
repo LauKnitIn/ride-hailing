@@ -15,4 +15,12 @@ public class CalculadoraTarifaService {
         }
     }
 
+    /** Cargo parcial por cancelar tras la asignacion: una fraccion (0 a 1) de la tarifa minima. */
+    public Monto calcularCargoParcial(Monto montoMinimo, double porcentaje) {
+        if (porcentaje < 0 || porcentaje > 1) {
+            throw new IllegalArgumentException("El porcentaje del cargo parcial debe estar entre 0 y 1.");
+        }
+        return new Monto(montoMinimo.getValue() * porcentaje);
+    }
+
 }

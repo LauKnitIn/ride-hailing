@@ -1,0 +1,20 @@
+meta {
+  name: Desactivar conductor
+  type: http
+  seq: 19
+}
+
+put {
+  url: {{baseUrl}}/api/conductores/{{conductorId}}/desactivar
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.disponibilidad: eq INACTIVO
+}
+
+docs {
+  Solo posible sin viaje activo; si esta EN_VIAJE responde 409.
+}

@@ -1,0 +1,19 @@
+meta {
+  name: Tarifa del viaje
+  type: http
+  seq: 18
+}
+
+get {
+  url: localhost:8080/api/tarifas/{{viajeId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  HU-07. Calculada automaticamente al finalizar.
+}

@@ -70,6 +70,6 @@ public class ConductorController {
 
     @PutMapping("/{id}/desactivar")
     public ConductorResponse desactivar(@PathVariable String id) {
-        return mapper.aRespuesta(conductorUseCase.desactivarDisponibilidad(new DriverId(id)));   // ← correcciones 2 y DriverId
+        return mapper.aRespuesta(conductorUseCase.desactivarDisponibilidad(new DriverId(id)));  
     }
 }

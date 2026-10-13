@@ -1,0 +1,15 @@
+meta {
+  name: Iniciar viaje
+  type: http
+  seq: 16
+}
+
+post {
+  url: localhost:8080/api/viajes/{{viajeId}}/iniciar
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 204
+}

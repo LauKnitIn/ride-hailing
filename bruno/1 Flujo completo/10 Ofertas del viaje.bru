@@ -1,0 +1,24 @@
+meta {
+  name: Ofertas del viaje
+  type: http
+  seq: 10
+}
+
+get {
+  url: localhost:8080/api/ofertas/viaje/{{viajeId}}
+  body: none
+  auth: none
+}
+
+vars:post-response {
+  ofertaId: res.body[0].id
+}
+
+assert {
+  res.status: eq 200
+  res.body[0].estado: eq PROPUESTA
+}
+
+docs {
+  HU-03. Guarda ofertaId de la primera oferta.
+}

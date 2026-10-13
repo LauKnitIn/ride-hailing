@@ -1,0 +1,15 @@
+meta {
+  name: E - Finalizar viaje
+  type: http
+  seq: 18
+}
+
+post {
+  url: {{baseUrl}}/api/viajes/{{viajeEId}}/finalizar
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 204
+}

@@ -1,0 +1,28 @@
+meta {
+  name: Calificar conductor
+  type: http
+  seq: 20
+}
+
+post {
+  url: localhost:8080/api/calificaciones
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "viajeId": "{{viajeId}}",
+    "pasajeroId": "{{pasajeroId}}",
+    "puntuacion": 5,
+    "comentario": "Excelente servicio"
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  HU-08.
+}

@@ -12,7 +12,7 @@ import com.ride_hailing.conductores.domain.model.EstadoDisponibilidad;
 
 public interface ConductorRepositoryPort {
 
-     Optional<Conductor> buscarPorId(DriverId id);
+    Optional<Conductor> buscarPorId(DriverId id);
 
     List<Conductor> buscarPorEstado(EstadoDisponibilidad estado);
 

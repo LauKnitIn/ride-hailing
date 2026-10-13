@@ -1,0 +1,23 @@
+meta {
+  name: D - Rechazar por falta de conductores
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{baseUrl}}/api/viajes/{{viajeDId}}/rechazar-sin-conductores
+  body: text
+  auth: none
+}
+
+headers {
+  Content-Type: text/plain
+}
+
+body:text {
+  Sin conductores disponibles
+}
+
+assert {
+  res.status: eq 204
+}

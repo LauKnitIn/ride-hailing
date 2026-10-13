@@ -2,6 +2,7 @@ package com.ride_hailing.viajes.aplicacion;
 
 import org.springframework.stereotype.Service;
 
+import com.ride_hailing.viajes.dominio.EstadoViaje;
 import com.ride_hailing.viajes.dominio.Ubicacion;
 import com.ride_hailing.viajes.dominio.Viaje;
 
@@ -39,7 +40,8 @@ public class ViajeService implements ViajeUseCase {
         publicadorEventosViaje.publicar(new ViajeSolicitadoEvent(
             viaje.getId(), pasajeroId, latitudOrigen, longitudOrigen, viaje.getHoraSolicitud()));
 
-        return viaje;
+        // El emparejamiento reacciona al evento y puede haber cambiado el estado del viaje.
+        return viajeRepository.buscarPorId(viaje.getId()).orElse(viaje);
     }
 
     @Override
@@ -97,6 +99,12 @@ public class ViajeService implements ViajeUseCase {
     @Override
     public Viaje consultarViaje(UUID viajeId) {
         return obtenerOFallar(viajeId);
+    }
+
+    @Override
+    public boolean conductorTieneViajeEnCurso(UUID conductorId) {
+        return viajeRepository.buscarPorConductorId(conductorId).stream()
+            .anyMatch(v -> v.getEstado().valor() == EstadoViaje.Valor.EN_CURSO);
     }
 
     @Override

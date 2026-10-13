@@ -1,0 +1,27 @@
+meta {
+  name: B - Cancelar viaje asignado
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/viajes/{{viajeBId}}/cancelar
+  body: text
+  auth: none
+}
+
+headers {
+  Content-Type: text/plain
+}
+
+body:text {
+  El pasajero cambio de planes
+}
+
+assert {
+  res.status: eq 204
+}
+
+docs {
+  HU-10. Cancelar tras la asignacion genera cargo parcial.
+}

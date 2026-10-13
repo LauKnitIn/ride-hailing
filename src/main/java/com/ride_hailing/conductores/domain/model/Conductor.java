@@ -55,6 +55,20 @@ public class Conductor {
         this.disponibilidad = EstadoDisponibilidad.DISPONIBLE;
     }
 
+    public void marcarEnViaje() {
+        if (this.disponibilidad != EstadoDisponibilidad.DISPONIBLE) {
+            throw new IllegalStateException("Solo un conductor disponible puede pasar a estar en viaje.");
+        }
+        this.disponibilidad = EstadoDisponibilidad.EN_VIAJE;
+    }
+
+    /** Al terminar el viaje el conductor vuelve a quedar disponible; si no estaba en viaje no hace nada. */
+    public void liberarDeViaje() {
+        if (this.disponibilidad == EstadoDisponibilidad.EN_VIAJE) {
+            this.disponibilidad = EstadoDisponibilidad.DISPONIBLE;
+        }
+    }
+
     public void desactivarDisponibilidad() {
         if (this.disponibilidad == EstadoDisponibilidad.EN_VIAJE) {
             throw new IllegalStateException("No es posible desactivar la disponibilidad durante un viaje activo.");

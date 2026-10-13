@@ -1,0 +1,22 @@
+meta {
+  name: Actualizar perfil pasajero
+  type: http
+  seq: 3
+}
+
+put {
+  url: localhost:8080/api/pasajeros/b8636fdc-dcab-48fa-a778-c1ab9d25156a/perfil
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "Ana Pasajera Actualizada",
+    "telefono": "3109876543"
+  }
+}
+
+assert {
+  res.status: eq 204
+}

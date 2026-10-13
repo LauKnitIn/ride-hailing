@@ -1,8 +1,9 @@
 package com.ride_hailing.calificacion.application;
 
+import java.util.UUID;
+
 public record DatosViajeCalificacion(
-
-        Long pasajeroId,
-        Long conductorId
-
+        UUID pasajeroId,
+        UUID conductorId,
+        boolean finalizado
 ) {}

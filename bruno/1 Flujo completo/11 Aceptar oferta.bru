@@ -1,0 +1,20 @@
+meta {
+  name: Aceptar oferta
+  type: http
+  seq: 11
+}
+
+post {
+  url: localhost:8080/api/ofertas/{{ofertaId}}/aceptar
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.estado: eq ACEPTADA
+}
+
+docs {
+  HU-04. Asigna el conductor al viaje (ASIGNADO) y lo marca EN_VIAJE.
+}

@@ -17,9 +17,9 @@ public class ConductorFactory {
     }
 
     public Conductor crear(String nombreCompleto, DocumentoIdentidad documento, LocalDate fechaNacimiento) {
-    if (conductorRepository.existeDocumento(documento)) {
-        throw new ConductorDuplicadoException(documento);
+        if (conductorRepository.existeDocumento(documento)) {
+            throw new ConductorDuplicadoException(documento);
+        }
+        return new Conductor(DriverId.generar(), documento, nombreCompleto, fechaNacimiento);   
     }
-    return new Conductor(DriverId.generar(), documento, nombreCompleto, fechaNacimiento);   // ← antes: Conductor.crear(...)
-}
 }

@@ -12,6 +12,5 @@ public interface ConductorRepository {
     Optional<Conductor> findById(DriverId driverIdStr);
     Optional<Conductor> findByDocumentoIdentidad(DocumentoIdentidad documentoIdentidad);
     boolean existsByDocumento(DocumentoIdentidad documento);
-    
 
 }

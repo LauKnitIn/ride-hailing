@@ -22,5 +22,7 @@ public interface ViajeUseCase {
 
     Viaje consultarViaje(UUID viajeId);
 
+    boolean conductorTieneViajeEnCurso(UUID conductorId);
+
     List<Viaje> listarViajesDelPasajero(UUID pasajeroId);
 }

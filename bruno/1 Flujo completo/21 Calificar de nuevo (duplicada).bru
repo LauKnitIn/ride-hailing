@@ -1,0 +1,24 @@
+meta {
+  name: Calificar de nuevo (duplicada)
+  type: http
+  seq: 21
+}
+
+post {
+  url: localhost:8080/api/calificaciones
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "viajeId": "{{viajeId}}",
+    "pasajeroId": "{{pasajeroId}}",
+    "puntuacion": 4,
+    "comentario": "Otra vez"
+  }
+}
+
+assert {
+  res.status: eq 409
+}
