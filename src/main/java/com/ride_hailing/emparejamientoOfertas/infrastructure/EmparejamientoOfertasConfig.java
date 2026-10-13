@@ -32,12 +32,14 @@ public class EmparejamientoOfertasConfig {
             ConductoresPort conductoresPort,
             OfertaRepositoryPort ofertaRepositoryPort,
             SeleccionConductorDomainService seleccionDomainService,
+            AsignacionViajePort asignacionViajePort,
             OfertaFactory ofertaFactory) {
         return new ProcesarSolicitudEmparejamientoService(
                 conductoresPort,
                 ofertaRepositoryPort,
                 seleccionDomainService,
-                ofertaFactory
+                asignacionViajePort,
+                ofertaFactory  
         );
     }
 

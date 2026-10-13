@@ -1,19 +1,27 @@
 package com.ride_hailing.emparejamientoOfertas.infrastructure.salida.viajes;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 import com.ride_hailing.emparejamientoOfertas.application.puerto.salida.AsignacionViajePort;
+import com.ride_hailing.viajes.aplicacion.ViajeUseCase;
 
 @Component
 public class AsignacionViajeAdapter implements AsignacionViajePort {
 
-    private static final Logger log = LoggerFactory.getLogger(AsignacionViajeAdapter.class);
+     private final ViajeUseCase viajeUseCase;
+
+    public AsignacionViajeAdapter(ViajeUseCase viajeUseCase) {
+        this.viajeUseCase = viajeUseCase;
+    }
 
     @Override
     public void asignar(String viajeId, String conductorId) {
-        // TODO: Conectar al puerto de entrada de Viajes cuando dicho subdominio sea implementado
-        log.info("Asignando el viaje {} al conductor {}", viajeId, conductorId);
+        viajeUseCase.asignarConductor(UUID.fromString(viajeId), UUID.fromString(conductorId));
+    }
+
+    @Override
+    public void rechazarPorFaltaDeConductores(String viajeId, String motivo) {
+        viajeUseCase.rechazarPorFaltaDeConductores(UUID.fromString(viajeId), motivo);
     }
 }

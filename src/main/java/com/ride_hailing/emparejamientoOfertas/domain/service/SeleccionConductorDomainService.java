@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.ride_hailing.emparejamientoOfertas.domain.model.ConductorCandidato;
 
 public class SeleccionConductorDomainService {
+    
     public Optional<ConductorCandidato> seleccionarMasCercano(
             List<ConductorCandidato> candidatos,
             double origenLatitud,

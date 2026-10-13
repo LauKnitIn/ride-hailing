@@ -1,6 +1,7 @@
 package com.ride_hailing.emparejamientoOfertas.application;
 
 import com.ride_hailing.emparejamientoOfertas.application.puerto.entrada.ProcesarSolicitudEmparejamientoUseCase;
+import com.ride_hailing.emparejamientoOfertas.application.puerto.salida.AsignacionViajePort;
 import com.ride_hailing.emparejamientoOfertas.application.puerto.salida.ConductoresPort;
 import com.ride_hailing.emparejamientoOfertas.application.puerto.salida.OfertaRepositoryPort;
 import com.ride_hailing.emparejamientoOfertas.domain.factory.OfertaFactory;
@@ -20,16 +21,19 @@ public class ProcesarSolicitudEmparejamientoService implements ProcesarSolicitud
     private final OfertaRepositoryPort ofertaRepositoryPort;
     private final SeleccionConductorDomainService seleccionDomainService;
     private final OfertaFactory ofertaFactory;
+    private final AsignacionViajePort asignacionViajePort;
 
     public ProcesarSolicitudEmparejamientoService(
             ConductoresPort conductoresPort,
             OfertaRepositoryPort ofertaRepositoryPort,
             SeleccionConductorDomainService seleccionDomainService,
+            AsignacionViajePort asignacionViajePort,
             OfertaFactory ofertaFactory) {
         this.conductoresPort = conductoresPort;
         this.ofertaRepositoryPort = ofertaRepositoryPort;
         this.seleccionDomainService = seleccionDomainService;
         this.ofertaFactory = ofertaFactory;
+        this.asignacionViajePort = asignacionViajePort;
     }
 
     @Override
@@ -48,6 +52,7 @@ public class ProcesarSolicitudEmparejamientoService implements ProcesarSolicitud
                 candidatosElegibles, origenLatitud, origenLongitud);
 
         if (seleccionado.isEmpty()) {
+            asignacionViajePort.rechazarPorFaltaDeConductores(viajeIdStr, "No hay conductores disponibles");
             return Optional.empty();
         }
 
