@@ -47,6 +47,7 @@ private OfertaRepositoryFalso ofertaRepositoryFalso;
                 conductoresPortFake,
                 ofertaRepositoryFalso,
                 seleccionService,
+                asignacionViajePortFake,
                 ofertaFactory
         );
 
