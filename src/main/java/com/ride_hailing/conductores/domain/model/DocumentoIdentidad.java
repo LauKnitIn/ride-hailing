@@ -30,4 +30,16 @@ public class DocumentoIdentidad {
         return this.tipoDocumento.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof DocumentoIdentidad otro
+                && java.util.Objects.equals(numeroDocumento, otro.numeroDocumento)
+                && tipoDocumento == otro.tipoDocumento;
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(numeroDocumento, tipoDocumento);
+    }
+
 }

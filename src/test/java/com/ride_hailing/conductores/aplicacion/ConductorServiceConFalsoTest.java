@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDate;
+import java.time.Month;
 
 import org.junit.jupiter.api.Test;
 
@@ -26,10 +27,10 @@ class ConductorServiceConFalsoTest {
     }
 
     @Test
-    void registraConductorYRegistraDisponibilidadSinSpringNiBaseDeDatos() {
+    void registraConductorDisponibilidad() {
         ConductorService service = crearServicio(new ConductorRepositoryFalso(), id -> false);
 
-        Conductor registrado = service.registrar("Ana Torres", TipoDocumento.values()[0], "1234567", LocalDate.now());
+        Conductor registrado = service.registrar("Ana Torres", TipoDocumento.values()[0], "1234567", LocalDate.of(1980, Month.SEPTEMBER, 5));
         Conductor disponible = service.registrarDisponibilidad(registrado.getIdConductor(), new UbicacionGeografica(5.53, -73.36));
 
         assertThat(disponible.getDisponibilidad()).isEqualTo(EstadoDisponibilidad.DISPONIBLE);
@@ -37,11 +38,11 @@ class ConductorServiceConFalsoTest {
     }
 
     @Test
-    void noPermiteRegistrarDosVecesElMismoDocumento() {
-        ConductorService service = crearServicio(new ConductorRepositoryFalso(), id -> false);
-        service.registrar("Ana Torres", TipoDocumento.values()[0], "1234567", LocalDate.now());
-
-        assertThatThrownBy(() -> service.registrar("Otra Persona", TipoDocumento.values()[0], "1234567", LocalDate.now()))
+    void noPermiteRegistrarMismoDocumento() {
+        ConductorRepositoryFalso repoFalso = new ConductorRepositoryFalso();
+        ConductorService service = crearServicio(repoFalso, id -> false);
+        service.registrar("Ana Torres", TipoDocumento.values()[0], "1234567", LocalDate.of(1980, Month.SEPTEMBER, 5));
+        assertThatThrownBy(() -> service.registrar("Otra Persona", TipoDocumento.values()[0], "1234567", LocalDate.of(1980, Month.SEPTEMBER, 5)))
                 .isInstanceOf(ConductorDuplicadoException.class);
     }
 

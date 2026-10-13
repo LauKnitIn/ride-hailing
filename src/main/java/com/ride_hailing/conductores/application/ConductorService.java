@@ -3,15 +3,15 @@ package com.ride_hailing.conductores.application;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
 import com.ride_hailing.conductores.application.puerto.entrada.ConductorUseCase;
 import com.ride_hailing.conductores.application.puerto.salida.ConductorRepositoryPort;
 import com.ride_hailing.conductores.application.puerto.salida.ViajeActivoPort;
+import com.ride_hailing.conductores.domain.excepcion.ConductorDuplicadoException;
 import com.ride_hailing.conductores.domain.excepcion.ConductorNoEncontradoException;
 import com.ride_hailing.conductores.domain.model.Conductor;
 import com.ride_hailing.conductores.domain.model.DocumentoIdentidad;
 import com.ride_hailing.conductores.domain.model.DriverId;
+import com.ride_hailing.conductores.domain.model.EstadoDisponibilidad;
 import com.ride_hailing.conductores.domain.model.TipoDocumento;
 import com.ride_hailing.conductores.domain.model.UbicacionGeografica;
 import com.ride_hailing.conductores.domain.service.ConductorDomainService;
@@ -44,8 +44,13 @@ public class ConductorService implements ConductorUseCase {
     @Override
     public Conductor registrar(String nombreCompleto, TipoDocumento tipoDocumento, String numeroDocumento,
                             LocalDate fechaNacimiento) {
-        Conductor conductor = conductorFactory.crear(
+        DocumentoIdentidad aValidar = new DocumentoIdentidad(numeroDocumento, tipoDocumento);
+        if (conductorRepository.existeDocumento(aValidar)) { 
+            throw new ConductorDuplicadoException(aValidar);
+        }
+            Conductor conductor = conductorFactory.crear(
                 nombreCompleto, new DocumentoIdentidad(numeroDocumento, tipoDocumento), fechaNacimiento);
+        
         return conductorRepository.guardar(conductor);
     }
 
@@ -80,7 +85,6 @@ public class ConductorService implements ConductorUseCase {
 
     @Override
     public List<Conductor> buscarDisponibles() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'buscarDisponibles'");
+        return conductorRepository.buscarPorEstado(EstadoDisponibilidad.DISPONIBLE);
     }
 }
