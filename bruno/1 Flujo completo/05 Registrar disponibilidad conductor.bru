@@ -1,0 +1,27 @@
+meta {
+  name: Registrar disponibilidad conductor
+  type: http
+  seq: 5
+}
+
+put {
+  url: localhost:8080/api/conductores/{{conductorId}}/disponibilidad
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "latitud": 4.712,
+    "longitud": -74.073
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.disponibilidad: eq DISPONIBLE
+}
+
+docs {
+  HU-02. Requiere ubicacion: queda DISPONIBLE.
+}

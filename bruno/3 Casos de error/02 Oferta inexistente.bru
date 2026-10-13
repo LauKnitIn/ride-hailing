@@ -1,0 +1,15 @@
+meta {
+  name: Oferta inexistente
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/ofertas/no-existe/aceptar
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+}

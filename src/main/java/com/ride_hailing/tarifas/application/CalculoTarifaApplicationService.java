@@ -11,6 +11,9 @@ import com.ride_hailing.tarifas.domain.Monto;
 public class CalculoTarifaApplicationService
         implements CalculoTarifaUseCase {
 
+    static final Monto TARIFA_MINIMA = new Monto(5000);
+    static final double PORCENTAJE_CARGO_PARCIAL = 0.5;
+
     private final RepositorioViajes repositorioViajes;
     private final CalculadoraTarifaService calculadora;
 
@@ -31,9 +34,14 @@ public class CalculoTarifaApplicationService
         return calculadora.calcularMonto(
                 viaje.distanciaKm(),
                 viaje.tiempoMinutos(),
-                new Monto(5000),
+                TARIFA_MINIMA,
                 1500,
                 300
         );
+    }
+
+    @Override
+    public Monto calcularCargoParcial() {
+        return calculadora.calcularCargoParcial(TARIFA_MINIMA, PORCENTAJE_CARGO_PARCIAL);
     }
 }

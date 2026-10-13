@@ -1,0 +1,19 @@
+meta {
+  name: Ubicacion del conductor y ETA
+  type: http
+  seq: 14
+}
+
+get {
+  url: localhost:8080/api/viajes/{{viajeId}}/ubicacion-conductor
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  HU-05. Ubicacion en vivo y tiempo estimado de llegada (polling).
+}

@@ -1,0 +1,15 @@
+meta {
+  name: D - Consultar viaje cancelado
+  type: http
+  seq: 14
+}
+
+get {
+  url: {{baseUrl}}/api/viajes/{{viajeDId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.body.estado: eq CANCELADO
+}

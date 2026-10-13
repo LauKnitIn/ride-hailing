@@ -1,5 +1,6 @@
 package com.ride_hailing.viajes.infraestructura.salida.persistencia;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,8 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
+
+import jakarta.persistence.EntityManagerFactory;
 import java.util.Properties;
 
 @Configuration
@@ -61,7 +64,7 @@ public class ViajesPersistenceConfig {
     @Primary
     @Bean(name = "viajesTransactionManager")
     public PlatformTransactionManager viajesTransactionManager(
-            LocalContainerEntityManagerFactoryBean viajesEntityManagerFactory) {
-        return new JpaTransactionManager(viajesEntityManagerFactory.getObject());
+            @Qualifier("viajesEntityManagerFactory") EntityManagerFactory viajesEntityManagerFactory) {
+        return new JpaTransactionManager(viajesEntityManagerFactory);
     }
 }

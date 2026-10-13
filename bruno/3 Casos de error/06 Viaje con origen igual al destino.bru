@@ -1,0 +1,25 @@
+meta {
+  name: Viaje con origen igual al destino
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/viajes
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "pasajeroId": "{{pasajeroId}}",
+    "latitudOrigen": 4.71,
+    "longitudOrigen": -74.07,
+    "latitudDestino": 4.71,
+    "longitudDestino": -74.07
+  }
+}
+
+assert {
+  res.status: eq 400
+}

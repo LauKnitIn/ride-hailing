@@ -71,6 +71,20 @@ public class ConductorService implements ConductorUseCase {
     }
 
     @Override
+    public Conductor marcarEnViaje(DriverId id) {
+        Conductor conductor = cargar(id);
+        conductor.marcarEnViaje();
+        return conductorRepository.guardar(conductor);
+    }
+
+    @Override
+    public Conductor liberarDeViaje(DriverId id) {
+        Conductor conductor = cargar(id);
+        conductor.liberarDeViaje();
+        return conductorRepository.guardar(conductor);
+    }
+
+    @Override
     public Conductor actualizarUbicacion(DriverId id, UbicacionGeografica ubicacion) {
         Conductor conductor = cargar(id);
         conductor.actualizarUbicacion(ubicacion);

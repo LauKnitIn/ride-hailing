@@ -1,0 +1,19 @@
+meta {
+  name: Ubicacion de viaje no asignado
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/viajes/{{viajeDId}}/ubicacion-conductor
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 409
+}
+
+docs {
+  Viaje D esta cancelado: no hay seguimiento.
+}

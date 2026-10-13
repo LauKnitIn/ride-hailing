@@ -1,0 +1,28 @@
+meta {
+  name: Calificar como otro pasajero
+  type: http
+  seq: 22
+}
+
+post {
+  url: localhost:8080/api/calificaciones
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "viajeId": "{{viajeId}}",
+    "pasajeroId": "00000000-0000-0000-0000-000000000000",
+    "puntuacion": 4,
+    "comentario": "Intruso"
+  }
+}
+
+vars:pre-request {
+  baseUrl: localhost:8080
+}
+
+assert {
+  res.status: eq 403
+}

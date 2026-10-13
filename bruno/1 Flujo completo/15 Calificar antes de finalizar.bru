@@ -1,0 +1,28 @@
+meta {
+  name: Calificar antes de finalizar
+  type: http
+  seq: 15
+}
+
+post {
+  url: localhost:8080/api/calificaciones
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "viajeId": "{{viajeId}}",
+    "pasajeroId": "{{pasajeroId}}",
+    "puntuacion": 5,
+    "comentario": "Muy bien"
+  }
+}
+
+assert {
+  res.status: eq 409
+}
+
+docs {
+  Rechazado: el viaje aun no esta finalizado.
+}

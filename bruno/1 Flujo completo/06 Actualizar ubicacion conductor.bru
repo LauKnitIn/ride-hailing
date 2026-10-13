@@ -1,0 +1,22 @@
+meta {
+  name: Actualizar ubicacion conductor
+  type: http
+  seq: 6
+}
+
+put {
+  url: localhost:8080/api/conductores/{{conductorId}}/ubicacion
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "latitud": 4.712,
+    "longitud": -74.073
+  }
+}
+
+assert {
+  res.status: eq 200
+}

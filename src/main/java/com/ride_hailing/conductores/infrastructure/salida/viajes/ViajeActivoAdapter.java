@@ -2,8 +2,6 @@ package com.ride_hailing.conductores.infrastructure.salida.viajes;
 
 import java.util.UUID;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.ride_hailing.conductores.application.puerto.salida.ViajeActivoPort;

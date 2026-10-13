@@ -1,0 +1,19 @@
+meta {
+  name: C - Ofertas del viaje
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/ofertas/viaje/{{viajeCId}}
+  body: none
+  auth: none
+}
+
+vars:post-response {
+  ofertaCId: res.body[0].id
+}
+
+assert {
+  res.status: eq 200
+}

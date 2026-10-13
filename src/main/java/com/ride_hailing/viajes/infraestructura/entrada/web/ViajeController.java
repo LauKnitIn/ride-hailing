@@ -3,6 +3,7 @@ package com.ride_hailing.viajes.infraestructura.entrada.web;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.ride_hailing.viajes.aplicacion.SeguimientoViajeUseCase;
 import com.ride_hailing.viajes.aplicacion.ViajeUseCase;
 import com.ride_hailing.viajes.dominio.Viaje;
 
@@ -14,9 +15,11 @@ import java.util.UUID;
 public class ViajeController {
 
     private final ViajeUseCase viajeUseCase;
+    private final SeguimientoViajeUseCase seguimientoViajeUseCase;
 
-    public ViajeController(ViajeUseCase viajeUseCase) {
+    public ViajeController(ViajeUseCase viajeUseCase, SeguimientoViajeUseCase seguimientoViajeUseCase) {
         this.viajeUseCase = viajeUseCase;
+        this.seguimientoViajeUseCase = seguimientoViajeUseCase;
     }
 
     @PostMapping
@@ -61,6 +64,11 @@ public class ViajeController {
     @GetMapping("/{id}")
     public ResponseEntity<ViajeResponse> consultar(@PathVariable UUID id) {
         return ResponseEntity.ok(ViajeResponse.desde(viajeUseCase.consultarViaje(id)));
+    }
+
+    @GetMapping("/{id}/ubicacion-conductor")
+    public ResponseEntity<SeguimientoViajeUseCase.SeguimientoViaje> ubicacionConductor(@PathVariable UUID id) {
+        return ResponseEntity.ok(seguimientoViajeUseCase.seguirConductor(id));
     }
 
     @GetMapping("/pasajero/{pasajeroId}")

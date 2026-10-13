@@ -1,0 +1,19 @@
+meta {
+  name: E - Asignar conductor directo
+  type: http
+  seq: 16
+}
+
+post {
+  url: {{baseUrl}}/api/viajes/{{viajeEId}}/conductor/{{conductorId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 204
+}
+
+docs {
+  Asignacion manual (sin pasar por la oferta). El conductor debe estar DISPONIBLE.
+}

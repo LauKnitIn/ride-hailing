@@ -1,0 +1,15 @@
+meta {
+  name: Conductor en viaje
+  type: http
+  seq: 13
+}
+
+get {
+  url: localhost:8080/api/conductores/{{conductorId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.body.disponibilidad: eq EN_VIAJE
+}

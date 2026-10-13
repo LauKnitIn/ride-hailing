@@ -27,5 +27,4 @@ public class ConsultarOfertasService implements ConsultarOfertasUseCase {
     public List<Oferta> porViaje(String viajeId) {
         return ofertaRepositoryPort.buscarPorViajeId(new ViajeId(viajeId));
     }
-
 }

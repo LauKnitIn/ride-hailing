@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Configuration;
 
 import com.ride_hailing.emparejamientoOfertas.application.AceptarOfertaService;
 import com.ride_hailing.emparejamientoOfertas.application.ProcesarSolicitudEmparejamientoService;
+import com.ride_hailing.emparejamientoOfertas.application.ConsultarOfertasService;
 import com.ride_hailing.emparejamientoOfertas.application.RechazarOfertaService;
+import com.ride_hailing.emparejamientoOfertas.application.puerto.entrada.ConsultarOfertasUseCase;
 import com.ride_hailing.emparejamientoOfertas.application.puerto.entrada.AceptarOfertaUseCase;
 import com.ride_hailing.emparejamientoOfertas.application.puerto.entrada.ProcesarSolicitudEmparejamientoUseCase;
 import com.ride_hailing.emparejamientoOfertas.application.puerto.entrada.RechazarOfertaUseCase;
@@ -41,6 +43,11 @@ public class EmparejamientoOfertasConfig {
                 asignacionViajePort,
                 ofertaFactory  
         );
+    }
+
+    @Bean
+    public ConsultarOfertasUseCase consultarOfertasUseCase(OfertaRepositoryPort ofertaRepositoryPort) {
+        return new ConsultarOfertasService(ofertaRepositoryPort);
     }
 
     @Bean
