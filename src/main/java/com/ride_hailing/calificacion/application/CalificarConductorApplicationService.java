@@ -10,11 +10,14 @@ public class CalificarConductorApplicationService
         implements CalificarConductorUseCase {
 
     private final RepositorioViajes repositorioViajes;
+    private final RepositorioCalificaciones repositorioCalificaciones;
 
     public CalificarConductorApplicationService(
-            RepositorioViajes repositorioViajes
+            RepositorioViajes repositorioViajes,
+            RepositorioCalificaciones repositorioCalificaciones
     ) {
         this.repositorioViajes = repositorioViajes;
+        this.repositorioCalificaciones = repositorioCalificaciones;
     }
 
     @Override
@@ -29,7 +32,7 @@ public class CalificarConductorApplicationService
                         viajeId
                 );
 
-        return ClasificacionFactory
+        Calificacion calificacion = ClasificacionFactory
                 .crearCalificacion(
                         viajeId,
                         viaje.pasajeroId(),
@@ -37,5 +40,6 @@ public class CalificarConductorApplicationService
                         new Puntuacion(puntuacion),
                         comentario
                 );
+        return repositorioCalificaciones.guardar(calificacion);
     }
 }

@@ -23,7 +23,8 @@ class CalculoTarifaApplicationServiceConFakeTest {
         CalculoTarifaApplicationService service =
                 new CalculoTarifaApplicationService(
                         repositorio,
-                        calculadora
+                        calculadora,
+                        (viajeId, monto) -> {}
                 );
 
         Monto tarifa =

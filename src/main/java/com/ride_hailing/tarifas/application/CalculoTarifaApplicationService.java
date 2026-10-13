@@ -13,13 +13,16 @@ public class CalculoTarifaApplicationService
 
     private final RepositorioViajes repositorioViajes;
     private final CalculadoraTarifaService calculadora;
+    private final RepositorioTarifas repositorioTarifas;
 
 
     public CalculoTarifaApplicationService(
             RepositorioViajes repositorioViajes,
-            CalculadoraTarifaService calculadora) {
+            CalculadoraTarifaService calculadora,
+            RepositorioTarifas repositorioTarifas) {
         this.repositorioViajes = repositorioViajes;
         this.calculadora = calculadora;
+        this.repositorioTarifas = repositorioTarifas;
     }
     
     @Override
@@ -28,12 +31,14 @@ public class CalculoTarifaApplicationService
         DatosViajeTarifa viaje =
                 repositorioViajes.buscarPorId(viajeId);
 
-        return calculadora.calcularMonto(
+        Monto monto = calculadora.calcularMonto(
                 viaje.distanciaKm(),
                 viaje.tiempoMinutos(),
                 new Monto(5000),
                 1500,
                 300
         );
+        repositorioTarifas.guardar(viajeId, monto);
+        return monto;
     }
 }

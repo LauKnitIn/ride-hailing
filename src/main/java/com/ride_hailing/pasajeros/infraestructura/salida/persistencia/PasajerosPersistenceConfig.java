@@ -1,6 +1,7 @@
 package com.ride_hailing.pasajeros.infraestructura.salida.persistencia;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +39,7 @@ public class PasajerosPersistenceConfig {
 
     @Bean(name = "pasajerosEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean pasajerosEntityManagerFactory(
-            DataSource pasajerosDataSource) {
+            @Qualifier("pasajerosDataSource") DataSource pasajerosDataSource) {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setDataSource(pasajerosDataSource);
         factory.setPackagesToScan("com.ride_hailing.pasajeros.dominio");
@@ -57,6 +58,7 @@ public class PasajerosPersistenceConfig {
 
     @Bean(name = "pasajerosTransactionManager")
     public PlatformTransactionManager pasajerosTransactionManager(
+            @Qualifier("pasajerosEntityManagerFactory")
             LocalContainerEntityManagerFactoryBean pasajerosEntityManagerFactory) {
         return new JpaTransactionManager(pasajerosEntityManagerFactory.getObject());
     }

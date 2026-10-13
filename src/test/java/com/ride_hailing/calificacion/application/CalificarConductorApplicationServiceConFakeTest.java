@@ -14,7 +14,8 @@ class CalificarConductorApplicationServiceConFakeTest {
 
         CalificarConductorApplicationService service =
                 new CalificarConductorApplicationService(
-                        repositorio
+                        repositorio,
+                        calificacion -> calificacion
                 );
 
         Calificacion calificacion =

@@ -2,20 +2,37 @@ package com.ride_hailing.calificacion.domain;
 
 import java.time.Instant;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import com.ride_hailing.calificacion.infraestructure.salida.persistencia.PuntuacionConverter;
 
 @Getter
 @Setter
+@Entity
+@Table(name = "calificaciones")
 public class Calificacion {
 
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
    private Long viajeId;
    private Long pasajeroId;
    private Long conductorId;
-   private Puntuacion puntuacion; 
+   @Convert(converter = PuntuacionConverter.class)
+   @Column(name = "puntuacion")
+   private Puntuacion puntuacion;
    private String comentario;
    private Instant fechaCreacion;
+
+   protected Calificacion() {
+   }
 
    public Long getId() {
       return id;
