@@ -2,7 +2,6 @@ package com.ride_hailing.emparejamientoOfertas.application;
 
 import com.ride_hailing.emparejamientoOfertas.application.puerto.entrada.ProcesarSolicitudEmparejamientoUseCase;
 import com.ride_hailing.emparejamientoOfertas.application.puerto.salida.ConductoresPort;
-import com.ride_hailing.emparejamientoOfertas.application.puerto.salida.ConductoresPort;
 import com.ride_hailing.emparejamientoOfertas.application.puerto.salida.OfertaRepositoryPort;
 import com.ride_hailing.emparejamientoOfertas.domain.factory.OfertaFactory;
 import com.ride_hailing.emparejamientoOfertas.domain.model.ConductorCandidato;
