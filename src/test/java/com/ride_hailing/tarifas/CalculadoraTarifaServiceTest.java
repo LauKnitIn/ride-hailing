@@ -13,6 +13,17 @@ class CalculadoraTarifaServiceTest {
     private final CalculadoraTarifaService calculadora = new CalculadoraTarifaService();
 
     @Test
+    void cargoParcialEsUnaFraccionDeLaTarifaMinima() {
+        assertThat(calculadora.calcularCargoParcial(new Monto(5000), 0.5).valor()).isEqualTo(2500.0);
+    }
+
+    @Test
+    void cargoParcialRechazaPorcentajesInvalidos() {
+        assertThatThrownBy(() -> calculadora.calcularCargoParcial(new Monto(5000), 1.5))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
     void deberiaAplicarTarifaMinimaCuandoElCalculoEsMenor() {
         Monto tarifaMinima = new Monto(8.00);
         double valorKm = 2.00;

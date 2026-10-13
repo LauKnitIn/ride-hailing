@@ -7,4 +7,7 @@ import com.ride_hailing.tarifas.domain.Monto;
 public interface CalculoTarifaUseCase {
 
     Monto calcularTarifa(UUID viajeId);
+
+    /** Cargo al pasajero por cancelar un viaje ya asignado (HU-10). */
+    Monto calcularCargoParcial();
 }

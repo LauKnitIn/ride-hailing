@@ -1,14 +1,15 @@
 package com.ride_hailing.calificacion.infraestructure.entrada.web;
 
 import java.time.Instant;
+import java.util.UUID;
 
 import com.ride_hailing.calificacion.domain.Calificacion;
 
 public record CalificacionResponse(
-        Long id,
-        Long viajeId,
-        Long pasajeroId,
-        Long conductorId,
+        UUID id,
+        UUID viajeId,
+        UUID pasajeroId,
+        UUID conductorId,
         int puntuacion,
         String comentario,
         Instant fechaCreacion

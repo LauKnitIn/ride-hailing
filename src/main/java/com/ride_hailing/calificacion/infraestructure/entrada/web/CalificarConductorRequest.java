@@ -1,7 +1,10 @@
 package com.ride_hailing.calificacion.infraestructure.entrada.web;
 
+import java.util.UUID;
+
 public record CalificarConductorRequest(
-        Long viajeId,
+        UUID viajeId,
+        UUID pasajeroId,
         int puntuacion,
         String comentario
 ) {

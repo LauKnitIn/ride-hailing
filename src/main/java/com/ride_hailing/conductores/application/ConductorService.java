@@ -12,6 +12,7 @@ import com.ride_hailing.conductores.domain.excepcion.ConductorNoEncontradoExcept
 import com.ride_hailing.conductores.domain.model.Conductor;
 import com.ride_hailing.conductores.domain.model.DocumentoIdentidad;
 import com.ride_hailing.conductores.domain.model.DriverId;
+import com.ride_hailing.conductores.domain.model.EstadoDisponibilidad;
 import com.ride_hailing.conductores.domain.model.TipoDocumento;
 import com.ride_hailing.conductores.domain.model.UbicacionGeografica;
 import com.ride_hailing.conductores.domain.service.ConductorDomainService;
@@ -66,6 +67,20 @@ public class ConductorService implements ConductorUseCase {
     }
 
     @Override
+    public Conductor marcarEnViaje(DriverId id) {
+        Conductor conductor = cargar(id);
+        conductor.marcarEnViaje();
+        return conductorRepository.guardar(conductor);
+    }
+
+    @Override
+    public Conductor liberarDeViaje(DriverId id) {
+        Conductor conductor = cargar(id);
+        conductor.liberarDeViaje();
+        return conductorRepository.guardar(conductor);
+    }
+
+    @Override
     public Conductor actualizarUbicacion(DriverId id, UbicacionGeografica ubicacion) {
         Conductor conductor = cargar(id);
         conductor.actualizarUbicacion(ubicacion);
@@ -80,7 +95,6 @@ public class ConductorService implements ConductorUseCase {
 
     @Override
     public List<Conductor> buscarDisponibles() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'buscarDisponibles'");
+        return conductorRepository.buscarPorEstado(EstadoDisponibilidad.DISPONIBLE);
     }
 }

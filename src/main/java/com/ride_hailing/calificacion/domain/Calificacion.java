@@ -1,51 +1,47 @@
 package com.ride_hailing.calificacion.domain;
 
 import java.time.Instant;
+import java.util.UUID;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class Calificacion {
 
-   private Long id;
-   private Long viajeId;
-   private Long pasajeroId;
-   private Long conductorId;
-   private Puntuacion puntuacion; 
+   private UUID id;
+   private UUID viajeId;
+   private UUID pasajeroId;
+   private UUID conductorId;
+   private Puntuacion puntuacion;
    private String comentario;
    private Instant fechaCreacion;
 
-   public Long getId() {
+   public UUID getId() {
       return id;
    }
 
-   public void setId(Long id) {
+   public void setId(UUID id) {
       this.id = id;
    }
 
-   public Long getViajeId() {
+   public UUID getViajeId() {
       return viajeId;
    }
 
-   public void setViajeId(Long viajeId) {
+   public void setViajeId(UUID viajeId) {
       this.viajeId = viajeId;
    }
 
-   public Long getPasajeroId() {
+   public UUID getPasajeroId() {
       return pasajeroId;
    }
 
-   public void setPasajeroId(Long pasajeroId) {
+   public void setPasajeroId(UUID pasajeroId) {
       this.pasajeroId = pasajeroId;
    }
 
-   public Long getConductorId() {
+   public UUID getConductorId() {
       return conductorId;
    }
 
-   public void setConductorId(Long conductorId) {
+   public void setConductorId(UUID conductorId) {
       this.conductorId = conductorId;
    }
 

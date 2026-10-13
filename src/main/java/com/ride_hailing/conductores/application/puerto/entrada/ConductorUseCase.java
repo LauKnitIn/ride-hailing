@@ -18,5 +18,7 @@ public interface ConductorUseCase {
     Conductor registrar(String nombreCompleto, TipoDocumento tipoDocumento, String numeroDocumento, LocalDate fechaNacimiento);
     Conductor registrarDisponibilidad(DriverId id, UbicacionGeografica ubicacion);
     Conductor actualizarUbicacion(DriverId id, UbicacionGeografica ubicacion);
-    Conductor desactivarDisponibilidad(DriverId id); 
+    Conductor desactivarDisponibilidad(DriverId id);
+    Conductor marcarEnViaje(DriverId id);
+    Conductor liberarDeViaje(DriverId id);
 }
