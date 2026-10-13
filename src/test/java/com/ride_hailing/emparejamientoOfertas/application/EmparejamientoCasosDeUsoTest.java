@@ -24,8 +24,9 @@ public class EmparejamientoCasosDeUsoTest {
 private OfertaRepositoryFalso ofertaRepositoryFalso;
     private List<ConductorCandidato> conductoresSimulados;
     private ConductoresPort conductoresPortFake;
-    private List<String> viajesAsignadosLog;
     private AsignacionViajePort asignacionViajePortFake;
+    private List<String> viajesAsignadosLog;
+    private List<String> viajesRechazadosLog;
 
     private ProcesarSolicitudEmparejamientoService procesarService;
     private AceptarOfertaService aceptarService;
@@ -37,8 +38,8 @@ private OfertaRepositoryFalso ofertaRepositoryFalso;
         conductoresSimulados = new ArrayList<>();
         conductoresPortFake = () -> conductoresSimulados;
         viajesAsignadosLog = new ArrayList<>();
-        asignacionViajePortFake = (viajeId, conductorId) ->
-                viajesAsignadosLog.add(viajeId + ":" + conductorId);
+        viajesRechazadosLog = new ArrayList<>();
+        asignacionViajePortFake = new AsignacionViajePortFake(viajesAsignadosLog, viajesRechazadosLog);
 
         SeleccionConductorDomainService seleccionService = new SeleccionConductorDomainService();
         OfertaFactory ofertaFactory = new OfertaFactory();

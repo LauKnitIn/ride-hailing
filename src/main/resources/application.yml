@@ -1,0 +1,41 @@
+server:
+    port: 8080
+
+app:
+  datasource:
+    viajes:
+      url: jdbc:h2:mem:viajesdb;DB_CLOSE_DELAY=-1
+      driver-class-name: org.h2.Driver
+      username: sa
+      password:
+    pasajeros:
+      url: jdbc:h2:mem:pasajerosdb;DB_CLOSE_DELAY=-1
+      driver-class-name: org.h2.Driver
+      username: sa
+      password:
+    conductores:
+      url: jdbc:h2:mem:conductoresdb;DB_CLOSE_DELAY=-1
+      driver-class-name: org.h2.Driver
+      username: sa
+      password:
+    emparejamiento:
+      url: jdbc:h2:mem:emparejamientodb;DB_CLOSE_DELAY=-1
+      driver-class-name: org.h2.Driver
+      username: sa
+      password:
+    tarifas:
+      url: jdbc:h2:mem:tarifasdb;DB_CLOSE_DELAY=-1
+      driver-class-name: org.h2.Driver
+      username: sa
+      password:
+    calificacion:
+      url: jdbc:h2:mem:calificaciondb;DB_CLOSE_DELAY=-1
+      driver-class-name: org.h2.Driver
+      username: sa
+      password:
+
+spring:
+    application:
+        name: ride-hailing
+    jpa:
+        open-in-view: false
