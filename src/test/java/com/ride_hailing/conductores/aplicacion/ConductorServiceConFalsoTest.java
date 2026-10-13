@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import com.ride_hailing.conductores.application.ConductorFactory;
 import com.ride_hailing.conductores.application.ConductorService;
 import com.ride_hailing.conductores.application.puerto.salida.ViajeActivoPort;
-import com.ride_hailing.conductores.domain.excepcion.ConductorConViajeActivoException;
 import com.ride_hailing.conductores.domain.excepcion.ConductorDuplicadoException;
 import com.ride_hailing.conductores.domain.model.Conductor;
 import com.ride_hailing.conductores.domain.model.EstadoDisponibilidad;
