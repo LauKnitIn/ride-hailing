@@ -1,0 +1,24 @@
+meta {
+  name: Conductor menor de edad
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/conductores
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombreCompleto": "Menor",
+    "tipoDocumento": "CEDULA_CIUDADANIA",
+    "numeroDocumento": "999{{ts}}",
+    "fechaNacimiento": "2020-01-01"
+  }
+}
+
+assert {
+  res.status: eq 400
+}

@@ -1,0 +1,15 @@
+meta {
+  name: Conductores disponibles
+  type: http
+  seq: 7
+}
+
+get {
+  url: localhost:8080/api/conductores/disponibles
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}

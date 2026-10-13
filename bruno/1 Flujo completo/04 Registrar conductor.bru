@@ -1,0 +1,32 @@
+meta {
+  name: Registrar conductor
+  type: http
+  seq: 4
+}
+
+post {
+  url: localhost:8080/api/conductores
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombreCompleto": "Carlos Conductor",
+    "tipoDocumento": "CEDULA_CIUDADANIA",
+    "numeroDocumento": "{{ts}}",
+    "fechaNacimiento": "1990-01-01"
+  }
+}
+
+vars:post-response {
+  conductorId: res.body.id
+}
+
+assert {
+  res.status: eq 201
+}
+
+docs {
+  Debe ser mayor de edad. Guarda conductorId.
+}

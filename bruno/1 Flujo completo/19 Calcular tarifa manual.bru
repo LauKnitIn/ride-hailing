@@ -1,0 +1,15 @@
+meta {
+  name: Calcular tarifa manual
+  type: http
+  seq: 19
+}
+
+post {
+  url: localhost:8080/api/tarifas/{{viajeId}}/calcular
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}

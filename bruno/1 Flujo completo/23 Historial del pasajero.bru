@@ -1,0 +1,19 @@
+meta {
+  name: Historial del pasajero
+  type: http
+  seq: 23
+}
+
+get {
+  url: localhost:8080/api/viajes/pasajero/{{pasajeroId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  HU-09.
+}

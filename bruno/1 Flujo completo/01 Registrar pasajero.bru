@@ -1,0 +1,35 @@
+meta {
+  name: Registrar pasajero
+  type: http
+  seq: 1
+}
+
+post {
+  url: localhost:8080/api/pasajeros
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "Ana Pasajera",
+    "correo": "ana{{ts}}@test.com",
+    "telefono": "3001234567"
+  }
+}
+
+vars:post-response {
+  pasajeroId: res.body.id
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:pre-request {
+  bru.setVar("ts", Date.now().toString());
+}
+
+docs {
+  Crea el pasajero y guarda pasajeroId. Genera un correo unico por ejecucion.
+}
