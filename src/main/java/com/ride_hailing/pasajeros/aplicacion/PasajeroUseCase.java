@@ -1,5 +1,6 @@
 package com.ride_hailing.pasajeros.aplicacion;
 
+import java.util.List;
 import java.util.UUID;
 
 import com.ride_hailing.pasajeros.dominio.Pasajero;
@@ -13,4 +14,6 @@ public interface PasajeroUseCase {
     void cambiarCorreo(UUID pasajeroId, String nuevoCorreo);
 
     Pasajero consultar(UUID pasajeroId);
+
+    List<Pasajero> listarTodos();
 }

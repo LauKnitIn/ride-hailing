@@ -53,6 +53,11 @@ public class PasajeroService implements PasajeroUseCase {
         return obtenerOFallar(pasajeroId);
     }
 
+    @Override
+    public List<Pasajero> listarTodos() {
+        return pasajeroRepository.listarTodos();
+    }
+
     private Pasajero obtenerOFallar(UUID pasajeroId) {
         return pasajeroRepository.buscarPorId(pasajeroId)
             .orElseThrow(() -> new PasajeroNoEncontradoException(pasajeroId));
