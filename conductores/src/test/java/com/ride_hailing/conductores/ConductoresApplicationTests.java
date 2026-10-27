@@ -1,4 +1,4 @@
-package com.matchin_rides.conductores;
+package com.ride_hailing.conductores;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
