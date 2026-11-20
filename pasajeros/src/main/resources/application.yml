@@ -12,3 +12,6 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: update
+  grpc:
+    server:
+      port: 9193
