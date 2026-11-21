@@ -19,7 +19,7 @@ import com.ride_hailing.calificacion.application.DatosViajeCalificacion;
 import com.ride_hailing.calificacion.application.RepositorioViajes;
 import com.ride_hailing.calificacion.application.ServicioViajesNoDisponibleException;
 
-@SpringBootTest
+@SpringBootTest(properties = "eureka.client.enabled=false")
 @AutoConfigureMockMvc
 class CalificacionesServiceIntegrationTest {
 
