@@ -1,5 +1,6 @@
 package com.ride_hailing.calificacion.infraestructure.salida.persistence;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,6 +23,14 @@ class CalificacionRepositoryAdapter implements RepositorioCalificaciones {
     @Override
     public boolean existePorViaje(UUID viajeId) {
         return jpaRepository.existsByViajeId(viajeId);
+    }
+
+    @Override
+    public List<Calificacion> buscarPorConductor(UUID conductorId) {
+        return jpaRepository.findAllByConductorIdOrderByFechaCreacionDesc(conductorId)
+                .stream()
+                .map(this::aDominio)
+                .toList();
     }
 
     @Override

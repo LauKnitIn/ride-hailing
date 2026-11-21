@@ -1,6 +1,8 @@
 package com.ride_hailing.calificacion;
 
 import static org.mockito.BDDMockito.given;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,6 +52,41 @@ class CalificacionesServiceIntegrationTest {
 
         mvc.perform(post("/api/calificaciones").contentType(MediaType.APPLICATION_JSON).content(body))
                 .andExpect(status().isConflict());
+    }
+
+    @Test
+    void consultaLasCalificacionesDeUnConductor() throws Exception {
+        UUID conductorId = UUID.randomUUID();
+        UUID viajeUno = UUID.randomUUID();
+        UUID viajeDos = UUID.randomUUID();
+        UUID pasajeroUno = UUID.randomUUID();
+        UUID pasajeroDos = UUID.randomUUID();
+        given(repositorioViajes.buscarPorId(viajeUno))
+                .willReturn(new DatosViajeCalificacion(pasajeroUno, conductorId, true));
+        given(repositorioViajes.buscarPorId(viajeDos))
+                .willReturn(new DatosViajeCalificacion(pasajeroDos, conductorId, true));
+
+        mvc.perform(post("/api/calificaciones")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request(viajeUno, pasajeroUno, 5)))
+                .andExpect(status().isOk());
+        mvc.perform(post("/api/calificaciones")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request(viajeDos, pasajeroDos, 4)))
+                .andExpect(status().isOk());
+
+        mvc.perform(get("/api/calificaciones/conductor/{conductorId}", conductorId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[*].puntuacion").value(containsInAnyOrder(4, 5)))
+                .andExpect(jsonPath("$[*].pasajeroId").doesNotExist());
+    }
+
+    @Test
+    void devuelveListaVaciaSiElConductorAunNoTieneCalificaciones() throws Exception {
+        mvc.perform(get("/api/calificaciones/conductor/{conductorId}", UUID.randomUUID()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(0));
     }
 
     @Test
