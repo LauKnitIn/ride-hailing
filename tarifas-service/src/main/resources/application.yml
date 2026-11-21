@@ -8,11 +8,28 @@ spring:
     server:
       port: ${GRPC_SERVER_PORT:9194}
   datasource:
-    url: ${TARIFAS_DB_URL:jdbc:h2:mem:tarifasdb;DB_CLOSE_DELAY=-1}
-    driver-class-name: ${TARIFAS_DB_DRIVER:org.h2.Driver}
-    username: ${TARIFAS_DB_USERNAME:sa}
-    password: ${TARIFAS_DB_PASSWORD:}
+    url: ${TARIFAS_DB_URL:jdbc:postgresql://localhost:5435/tarifas}
+    driver-class-name: ${TARIFAS_DB_DRIVER:org.postgresql.Driver}
+    username: ${TARIFAS_DB_USERNAME:tarifas}
+    password: ${TARIFAS_DB_PASSWORD:tarifas}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     open-in-view: false
+  flyway:
+    enabled: true
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP_ID:tarifas-service}
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka}
