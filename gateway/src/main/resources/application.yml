@@ -30,7 +30,7 @@ spring:
               predicates:
                 - Path=/api/tarifas/**
             - id: calificacion-route
-              uri: lb://calificacion-service
+              uri: lb://calificaciones-service
               predicates:
                 - Path=/api/calificaciones/**
 
