@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import com.ride_hailing.conductores.application.ConductorFactory;
 import com.ride_hailing.conductores.application.ConductorService;
 import com.ride_hailing.conductores.application.puerto.salida.ViajeActivoPort;
+import com.ride_hailing.conductores.domain.excepcion.ConductorConViajeActivoException;
 import com.ride_hailing.conductores.domain.excepcion.ConductorDuplicadoException;
 import com.ride_hailing.conductores.domain.model.Conductor;
 import com.ride_hailing.conductores.domain.model.EstadoDisponibilidad;
@@ -44,6 +45,18 @@ class ConductorServiceConFalsoTest {
         service.registrar("Ana Torres", TipoDocumento.values()[0], "1234567", LocalDate.of(1980, Month.SEPTEMBER, 5));
         assertThatThrownBy(() -> service.registrar("Otra Persona", TipoDocumento.values()[0], "1234567", LocalDate.of(1980, Month.SEPTEMBER, 5)))
                 .isInstanceOf(ConductorDuplicadoException.class);
+    }
+
+    @Test
+    void noPermiteDesactivarConViajeActivo() {
+        ConductorRepositoryFalso repo = new ConductorRepositoryFalso();
+        ConductorService service = crearServicio(repo, id -> true);
+        Conductor c = service.registrar("Ana Torres", TipoDocumento.values()[0], "1234567",
+                LocalDate.of(1980, Month.SEPTEMBER, 5));
+        service.registrarDisponibilidad(c.getIdConductor(), new UbicacionGeografica(5.53, -73.36));
+
+        assertThatThrownBy(() -> service.desactivarDisponibilidad(c.getIdConductor()))
+                .isInstanceOf(ConductorConViajeActivoException.class);
     }
 
     

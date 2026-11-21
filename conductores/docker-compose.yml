@@ -1,0 +1,9 @@
+services:
+  conductores-db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: conductores
+      POSTGRES_USER: conductores
+      POSTGRES_PASSWORD: conductores
+    ports:
+      - "5433:5432"

@@ -1,0 +1,14 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: conductores-service
+  datasource:
+    url: jdbc:postgresql://localhost:5433/conductores
+    username: conductores
+    password: conductores
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
