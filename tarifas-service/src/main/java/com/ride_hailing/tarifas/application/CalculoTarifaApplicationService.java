@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ride_hailing.tarifas.domain.CalculadoraTarifaService;
@@ -42,6 +43,7 @@ public class CalculoTarifaApplicationService implements CalculoTarifaUseCase {
     }
 
     @Override
+    @Transactional
     public void registrarViajeFinalizado(UUID viajeId, DatosViajeTarifa datosViaje) {
         tarifasCalculadas.registrarDatosViaje(viajeId, datosViaje);
         tarifasCalculadas.registrar(viajeId, calcularCotizacion(datosViaje));
@@ -53,6 +55,7 @@ public class CalculoTarifaApplicationService implements CalculoTarifaUseCase {
     }
 
     @Override
+    @Transactional
     public void registrarCargoParcial(UUID viajeId) {
         tarifasCalculadas.registrarCargoParcial(viajeId, calcularCargoParcial());
     }

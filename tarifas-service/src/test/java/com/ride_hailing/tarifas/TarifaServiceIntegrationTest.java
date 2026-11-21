@@ -14,12 +14,25 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-@SpringBootTest
+import com.ride_hailing.tarifas.infraestructure.entrada.mensajeria.ViajesKafkaConsumer;
+
+@SpringBootTest(properties = {
+        "spring.datasource.url=jdbc:h2:mem:tarifasdb;DB_CLOSE_DELAY=-1",
+        "spring.datasource.driver-class-name=org.h2.Driver",
+        "spring.datasource.username=sa",
+        "spring.datasource.password=",
+        "spring.jpa.hibernate.ddl-auto=validate",
+        "spring.kafka.listener.auto-startup=false",
+        "eureka.client.enabled=false"
+})
 @AutoConfigureMockMvc
 class TarifaServiceIntegrationTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @Autowired
+    private ViajesKafkaConsumer viajesKafkaConsumer;
 
     @Test
     void finalizacionAlimentaLaTarifaQueConsultanLosClientes() throws Exception {
@@ -56,5 +69,20 @@ class TarifaServiceIntegrationTest {
     void calcularUnViajeSinDatosDeFinalizacionRespondeNoEncontrado() throws Exception {
         mvc.perform(post("/api/tarifas/{id}/calcular", UUID.randomUUID()))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void reentregarUnEventoFinalizadoActualizaLaMismaTarifaDeFormaIdempotente() throws Exception {
+        UUID viajeId = UUID.randomUUID();
+        String evento = """
+                {"viajeId":"%s","distanciaKm":10.0,"duracionMinutos":20.0}
+                """.formatted(viajeId);
+
+        viajesKafkaConsumer.alFinalizarViaje(evento);
+        viajesKafkaConsumer.alFinalizarViaje(evento);
+
+        mvc.perform(get("/api/tarifas/{id}", viajeId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.monto").value(21000.0));
     }
 }
