@@ -1,0 +1,42 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: pasajeros-route
+              uri: lb://pasajeros-service
+              predicates:
+                - Path=/api/pasajeros/**
+            - id: viajes-route
+              uri: lb://viajes-service
+              predicates:
+                - Path=/api/viajes/**
+            - id: conductores-route
+              uri: lb://conductores-service
+              predicates:
+                - Path=/api/conductores/**
+            - id: emparejamiento-route
+              uri: lb://emparejamiento-service
+              predicates:
+                - Path=/api/ofertas/**
+            - id: tarifas-route
+              uri: lb://tarifas-service
+              predicates:
+                - Path=/api/tarifas/**
+            - id: calificacion-route
+              uri: lb://calificacion-service
+              predicates:
+                - Path=/api/calificaciones/**
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
