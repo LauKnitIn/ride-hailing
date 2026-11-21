@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public record Correo(String valor) {
 
     private static final Pattern FORMATO_VALIDO =
-        Pattern.compile("^[\\w.+-]+@[\\w-]+\\.[a-zA-Z]{2,}$");
+        Pattern.compile("^[\\w.+-]+@([\\w-]+\\.)+[a-zA-Z]{2,}$");
 
     public Correo {
         if (valor == null || valor.isBlank()) {
