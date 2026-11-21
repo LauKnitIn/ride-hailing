@@ -1,0 +1,14 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: viajes-service
+  datasource:
+    url: jdbc:postgresql://localhost:5434/viajes
+    username: viajes
+    password: viajes
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
