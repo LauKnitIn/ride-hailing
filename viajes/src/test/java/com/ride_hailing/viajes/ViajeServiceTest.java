@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.ride_hailing.viajes.aplicacion.ConductorNoDisponibleException;
+import com.ride_hailing.viajes.aplicacion.PasajeroNoEncontradoException;
 import com.ride_hailing.viajes.aplicacion.RepositorioViajes;
 import com.ride_hailing.viajes.aplicacion.SolicitudRechazadaEvent;
 import com.ride_hailing.viajes.aplicacion.TransicionEstadoViajeService;
@@ -25,6 +26,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class ViajeServiceTest {
@@ -43,7 +45,7 @@ class ViajeServiceTest {
         viajeRepository = mock(RepositorioViajes.class);
         publicadorEventos = new InMemoryPublicadorEventosViaje();
         viajeService = new ViajeService(
-            viajeRepository, new ViajeFactory(), new TransicionEstadoViajeService(), publicadorEventos);
+            viajeRepository, new ViajeFactory(), new TransicionEstadoViajeService(), publicadorEventos, pasejeroId -> true);
     }
 
     @Test
@@ -142,4 +144,17 @@ class ViajeServiceTest {
         ViajeCanceladoEvent evento = (ViajeCanceladoEvent) publicadorEventos.eventosPublicados().get(0);
         assertFalse(evento.requiereCargoParcial());
     }
+
+    @Test
+    void noSolicitaElViajeSiElPasajeroNoExiste() {
+        ViajeService servicio = new ViajeService(
+            viajeRepository, new ViajeFactory(), new TransicionEstadoViajeService(), publicadorEventos,
+            pasajeroId -> false);
+
+        assertThrows(PasajeroNoEncontradoException.class, () ->
+            servicio.solicitarViaje(UUID.randomUUID(), LAT_ORIGEN, LON_ORIGEN, LAT_DESTINO, LON_DESTINO));
+        verify(viajeRepository, never()).guardar(any());
+        assertTrue(publicadorEventos.eventosPublicados().isEmpty());
+    }
+
 }

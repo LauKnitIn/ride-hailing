@@ -12,3 +12,8 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: update
+  grpc:
+    client:
+      channel:
+        pasajeros:
+          target: static://localhost:9193  

@@ -8,15 +8,22 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.ride_hailing.viajes.aplicacion.ConductorNoDisponibleException;
+import com.ride_hailing.viajes.aplicacion.PasajeroNoEncontradoException;
+import com.ride_hailing.viajes.aplicacion.ServicioNoDisponibleException;
 import com.ride_hailing.viajes.aplicacion.ViajeNoEncontradoException;
 import com.ride_hailing.viajes.dominio.EstadoViajeInvalidoException;
 
 @RestControllerAdvice
 public class ManejadorErroresViajes {
 
-    @ExceptionHandler(ViajeNoEncontradoException.class)
+    @ExceptionHandler({ViajeNoEncontradoException.class, PasajeroNoEncontradoException.class})
     public ResponseEntity<Map<String, String>> noEncontrado(RuntimeException e) {
         return respuesta(HttpStatus.NOT_FOUND, e);
+    }
+
+    @ExceptionHandler(ServicioNoDisponibleException.class)
+    public ResponseEntity<Map<String, String>> servicioNoDisponible(RuntimeException e) {
+        return respuesta(HttpStatus.SERVICE_UNAVAILABLE, e);
     }
 
     @ExceptionHandler({EstadoViajeInvalidoException.class, ConductorNoDisponibleException.class,
@@ -33,4 +40,6 @@ public class ManejadorErroresViajes {
     private ResponseEntity<Map<String, String>> respuesta(HttpStatus status, RuntimeException e) {
         return ResponseEntity.status(status).body(Map.of("error", String.valueOf(e.getMessage())));
     }
+
+    
 }

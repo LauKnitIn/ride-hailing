@@ -17,15 +17,18 @@ public class ViajeService implements ViajeUseCase {
     private final ViajeFactory viajeFactory;
     private final TransicionEstadoViajeService transicionEstadoViajeService;
     private final PublicadorEventosViaje publicadorEventosViaje;
+    private final VerificadorPasajero verificadorPasajero;
 
     public ViajeService(RepositorioViajes viajeRepository,
                          ViajeFactory viajeFactory,
                          TransicionEstadoViajeService transicionEstadoViajeService,
-                         PublicadorEventosViaje publicadorEventosViaje) {
+                         PublicadorEventosViaje publicadorEventosViaje,
+                         VerificadorPasajero verificadorPasajero) {
         this.viajeRepository = viajeRepository;
         this.viajeFactory = viajeFactory;
         this.transicionEstadoViajeService = transicionEstadoViajeService;
         this.publicadorEventosViaje = publicadorEventosViaje;
+        this.verificadorPasajero = verificadorPasajero;
     }
 
     @Override
@@ -35,6 +38,9 @@ public class ViajeService implements ViajeUseCase {
         Ubicacion destino = new Ubicacion(latitudDestino, longitudDestino);
 
         Viaje viaje = viajeFactory.solicitar(pasajeroId, origen, destino);
+        if (!verificadorPasajero.existe(pasajeroId)) {
+            throw new PasajeroNoEncontradoException(pasajeroId);
+        }
         viajeRepository.guardar(viaje);
 
         publicadorEventosViaje.publicar(new ViajeSolicitadoEvent(
