@@ -1,0 +1,10 @@
+services:
+  pasajeros-db:
+    image: postgres:16
+    container_name: pasajeros-db
+    environment:
+      POSTGRES_DB: pasajeros
+      POSTGRES_USER: pasajeros
+      POSTGRES_PASSWORD: pasajeros
+    ports:
+      - "5435:5432"
