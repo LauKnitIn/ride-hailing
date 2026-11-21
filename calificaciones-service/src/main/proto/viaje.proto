@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option java_package = "com.ride_hailing.viajes.grpc";
+option java_multiple_files = true;
+option java_outer_classname = "ViajeProto";
+
+service ViajeGrpc {
+  rpc ConsultarViaje (ViajeIdRequest) returns (ViajeDetalle) {}
+}
+
+message ViajeIdRequest {
+  string viajeId = 1;
+}
+
+message ViajeDetalle {
+  string viajeId = 1;
+  string pasajeroId = 2;
+  string conductorId = 3;
+  string estado = 4;
+  double distanciaKm = 5;
+  double duracionMinutos = 6;
+}

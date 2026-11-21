@@ -2,60 +2,67 @@ package com.ride_hailing.calificacion;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withResourceNotFound;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.web.client.RestClient;
 
+import com.ride_hailing.calificacion.application.ServicioViajesNoDisponibleException;
 import com.ride_hailing.calificacion.domain.ViajeNoEncontradoException;
 import com.ride_hailing.calificacion.infraestructure.salida.ViajeAdapter;
+import com.ride_hailing.viajes.grpc.ViajeDetalle;
+import com.ride_hailing.viajes.grpc.ViajeGrpcGrpc.ViajeGrpcBlockingStub;
+import com.ride_hailing.viajes.grpc.ViajeIdRequest;
+
+import io.grpc.Status;
 
 class ViajeAdapterTest {
 
     @Test
     void consultaDatosDelViajeAlServicioDeViajes() {
-        RestClient.Builder builder = RestClient.builder();
-        MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
-        ViajeAdapter adapter = new ViajeAdapter(builder, "http://viajes.test");
+        ViajeGrpcBlockingStub stub = mock(ViajeGrpcBlockingStub.class);
+        when(stub.withDeadlineAfter(5, TimeUnit.SECONDS)).thenReturn(stub);
         UUID viajeId = UUID.randomUUID();
         UUID pasajeroId = UUID.randomUUID();
         UUID conductorId = UUID.randomUUID();
-
-        server.expect(requestTo("http://viajes.test/api/viajes/" + viajeId))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withSuccess("""
-                        {"pasajeroId":"%s","conductorId":"%s","estado":"FINALIZADO"}
-                        """.formatted(pasajeroId, conductorId), MediaType.APPLICATION_JSON));
+        when(stub.consultarViaje(ViajeIdRequest.newBuilder().setViajeId(viajeId.toString()).build()))
+                .thenReturn(ViajeDetalle.newBuilder()
+                        .setPasajeroId(pasajeroId.toString())
+                        .setConductorId(conductorId.toString())
+                        .setEstado("FINALIZADO")
+                        .build());
+        ViajeAdapter adapter = new ViajeAdapter(stub);
 
         var viaje = adapter.buscarPorId(viajeId);
 
         assertThat(viaje.pasajeroId()).isEqualTo(pasajeroId);
         assertThat(viaje.conductorId()).isEqualTo(conductorId);
         assertThat(viaje.finalizado()).isTrue();
-        server.verify();
     }
 
     @Test
     void traduceElViajeInexistente() {
-        RestClient.Builder builder = RestClient.builder();
-        MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
-        ViajeAdapter adapter = new ViajeAdapter(builder, "http://viajes.test");
-        UUID viajeId = UUID.randomUUID();
+        ViajeGrpcBlockingStub stub = mock(ViajeGrpcBlockingStub.class);
+        when(stub.withDeadlineAfter(5, TimeUnit.SECONDS)).thenReturn(stub);
+        when(stub.consultarViaje(any())).thenThrow(Status.NOT_FOUND.asRuntimeException());
+        ViajeAdapter adapter = new ViajeAdapter(stub);
 
-        server.expect(requestTo("http://viajes.test/api/viajes/" + viajeId))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withResourceNotFound());
-
-        assertThatThrownBy(() -> adapter.buscarPorId(viajeId))
+        assertThatThrownBy(() -> adapter.buscarPorId(UUID.randomUUID()))
                 .isInstanceOf(ViajeNoEncontradoException.class);
-        server.verify();
+    }
+
+    @Test
+    void traduceLaIndisponibilidadDeViajes() {
+        ViajeGrpcBlockingStub stub = mock(ViajeGrpcBlockingStub.class);
+        when(stub.withDeadlineAfter(5, TimeUnit.SECONDS)).thenReturn(stub);
+        when(stub.consultarViaje(any())).thenThrow(Status.UNAVAILABLE.asRuntimeException());
+        ViajeAdapter adapter = new ViajeAdapter(stub);
+
+        assertThatThrownBy(() -> adapter.buscarPorId(UUID.randomUUID()))
+                .isInstanceOf(ServicioViajesNoDisponibleException.class);
     }
 }

@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.RestClientException;
 
+import com.ride_hailing.calificacion.application.ServicioViajesNoDisponibleException;
 import com.ride_hailing.calificacion.domain.CalificacionDuplicadaException;
 import com.ride_hailing.calificacion.domain.PasajeroNoAutorizadoException;
 import com.ride_hailing.calificacion.domain.ViajeNoCalificableException;
@@ -36,8 +36,9 @@ public class CalificacionesErrorHandler {
         return respuesta(HttpStatus.BAD_REQUEST, exception);
     }
 
-    @ExceptionHandler(RestClientException.class)
-    public ResponseEntity<Map<String, String>> servicioViajesNoDisponible(RestClientException exception) {
+    @ExceptionHandler(ServicioViajesNoDisponibleException.class)
+    public ResponseEntity<Map<String, String>> servicioViajesNoDisponible(
+            ServicioViajesNoDisponibleException exception) {
         return respuesta(HttpStatus.SERVICE_UNAVAILABLE, exception);
     }
 

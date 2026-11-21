@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.ride_hailing.calificacion.application.DatosViajeCalificacion;
 import com.ride_hailing.calificacion.application.RepositorioViajes;
+import com.ride_hailing.calificacion.application.ServicioViajesNoDisponibleException;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -74,6 +75,19 @@ class CalificacionesServiceIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request(viajeId, UUID.randomUUID(), 5)))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void respondeServicioNoDisponibleCuandoViajesNoResponde() throws Exception {
+        UUID viajeId = UUID.randomUUID();
+        given(repositorioViajes.buscarPorId(viajeId))
+                .willThrow(new ServicioViajesNoDisponibleException("Viajes no disponible", new RuntimeException()));
+
+        mvc.perform(post("/api/calificaciones")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request(viajeId, UUID.randomUUID(), 5)))
+                .andExpect(status().isServiceUnavailable())
+                .andExpect(jsonPath("$.error").value("Viajes no disponible"));
     }
 
     @Test
