@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.jayway.jsonpath.JsonPath;
 
 /** HU-01 a HU-04 de punta a punta: viajes, conductores y emparejamiento conectados. */
-@SpringBootTest
+@SpringBootTest(properties = "services.tarifas.enabled=false")
 @AutoConfigureMockMvc
 class EmparejamientoFlujoCompletoTest {
 
@@ -87,15 +87,6 @@ class EmparejamientoFlujoCompletoTest {
         mvc.perform(get("/api/viajes/" + viajeId + "/ubicacion-conductor"))
                 .andExpect(jsonPath("$.latitud").value(40.0005));
 
-        // HU-08: no se puede calificar un viaje que no ha finalizado.
-        String viaje = mvc.perform(get("/api/viajes/" + viajeId)).andReturn().getResponse().getContentAsString();
-        String pasajeroId = JsonPath.read(viaje, "$.pasajeroId");
-        String calificacion = "{\"viajeId\":\"%s\",\"pasajeroId\":\"%s\",\"puntuacion\":5,\"comentario\":\"Excelente\"}"
-                .formatted(viajeId, pasajeroId);
-        String deOtroPasajero = calificacion.replace(pasajeroId, UUID.randomUUID().toString());
-        mvc.perform(post("/api/calificaciones").contentType(MediaType.APPLICATION_JSON).content(calificacion))
-                .andExpect(status().isConflict());
-
         mvc.perform(post("/api/viajes/" + viajeId + "/iniciar")).andExpect(status().isNoContent());
         mvc.perform(post("/api/viajes/" + viajeId + "/finalizar")).andExpect(status().isNoContent());
 
@@ -104,19 +95,6 @@ class EmparejamientoFlujoCompletoTest {
                 .andExpect(jsonPath("$.disponibilidad").value("DISPONIBLE"));
         mvc.perform(get("/api/viajes/" + viajeId + "/ubicacion-conductor")).andExpect(status().isConflict());
 
-        // HU-07: la tarifa se calcula sola al finalizar (mínimo configurado: 5000).
-        mvc.perform(get("/api/tarifas/" + viajeId))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.monto").value(org.hamcrest.Matchers.greaterThanOrEqualTo(5000.0)));
-
-        // HU-08: solo el pasajero del viaje puede calificar; luego, una vez y rechazada la segunda.
-        mvc.perform(post("/api/calificaciones").contentType(MediaType.APPLICATION_JSON).content(deOtroPasajero))
-                .andExpect(status().isForbidden());
-        mvc.perform(post("/api/calificaciones").contentType(MediaType.APPLICATION_JSON).content(calificacion))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.conductorId").value(cercano));
-        mvc.perform(post("/api/calificaciones").contentType(MediaType.APPLICATION_JSON).content(calificacion))
-                .andExpect(status().isConflict());
     }
 
     @Test
@@ -167,10 +145,6 @@ class EmparejamientoFlujoCompletoTest {
                         .content("El pasajero cambió de planes"))
                 .andExpect(status().isNoContent());
 
-        // 50% de la tarifa mínima (5000).
-        mvc.perform(get("/api/tarifas/" + viajeId + "/cargo-parcial"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.monto").value(2500.0));
         mvc.perform(get("/api/conductores/" + conductor))
                 .andExpect(jsonPath("$.disponibilidad").value("DISPONIBLE"));
     }
@@ -184,7 +158,6 @@ class EmparejamientoFlujoCompletoTest {
                         .content("Ya no lo necesito"))
                 .andExpect(status().isNoContent());
 
-        mvc.perform(get("/api/tarifas/" + viajeId + "/cargo-parcial")).andExpect(status().isNotFound());
     }
 
     private String ofertaPendiente(String viajeId) throws Exception {

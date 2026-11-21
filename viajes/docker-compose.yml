@@ -1,0 +1,10 @@
+services:
+  viajes-db:
+    image: postgres:16
+    container_name: viajes-db
+    environment:
+      POSTGRES_DB: viajes
+      POSTGRES_USER: viajes
+      POSTGRES_PASSWORD: viajes
+    ports:
+      - "5434:5432"

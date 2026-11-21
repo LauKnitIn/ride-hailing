@@ -7,9 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.ride_hailing.calificacion.domain.CalificacionDuplicadaException;
-import com.ride_hailing.calificacion.domain.PasajeroNoAutorizadoException;
-import com.ride_hailing.calificacion.domain.ViajeNoCalificableException;
 import com.ride_hailing.conductores.domain.excepcion.ConductorConViajeActivoException;
 import com.ride_hailing.conductores.domain.excepcion.ConductorDuplicadoException;
 import com.ride_hailing.conductores.domain.excepcion.ConductorNoEncontradoException;
@@ -30,15 +27,9 @@ public class ManejadorErroresGlobal {
 
     @ExceptionHandler({EstadoViajeInvalidoException.class, ConductorNoDisponibleException.class,
             ConductorDuplicadoException.class, ConductorConViajeActivoException.class,
-            CalificacionDuplicadaException.class, ViajeNoCalificableException.class,
             IllegalStateException.class})
     public ResponseEntity<Map<String, String>> conflicto(RuntimeException e) {
         return respuesta(HttpStatus.CONFLICT, e);
-    }
-
-    @ExceptionHandler(PasajeroNoAutorizadoException.class)
-    public ResponseEntity<Map<String, String>> prohibido(RuntimeException e) {
-        return respuesta(HttpStatus.FORBIDDEN, e);
     }
 
     @ExceptionHandler({IllegalArgumentException.class, NullPointerException.class})

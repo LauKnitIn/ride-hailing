@@ -1,0 +1,24 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: pasajeros-service
+  datasource:
+    url: jdbc:postgresql://localhost:5435/pasajeros
+    username: pasajeros
+    password: pasajeros
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+  grpc:
+    server:
+      port: 9193
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

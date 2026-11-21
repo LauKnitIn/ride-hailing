@@ -28,14 +28,13 @@ app:
       driver-class-name: org.h2.Driver
       username: sa
       password:
-    calificacion:
-      url: jdbc:h2:mem:calificaciondb;DB_CLOSE_DELAY=-1
-      driver-class-name: org.h2.Driver
-      username: sa
-      password:
-
 spring:
     application:
         name: ride-hailing
     jpa:
         open-in-view: false
+
+services:
+    tarifas:
+        enabled: ${TARIFAS_SERVICE_ENABLED:true}
+        url: ${TARIFAS_SERVICE_URL:http://localhost:8081}
