@@ -8,6 +8,8 @@ public interface CalculoTarifaUseCase {
 
     Monto calcularTarifa(UUID viajeId);
 
+    Monto calcularCotizacion(DatosViajeTarifa datosViaje);
+
     void registrarViajeFinalizado(UUID viajeId, DatosViajeTarifa datosViaje);
 
     Monto calcularCargoParcial();

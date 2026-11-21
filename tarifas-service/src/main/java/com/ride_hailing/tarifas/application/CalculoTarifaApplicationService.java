@@ -31,15 +31,20 @@ public class CalculoTarifaApplicationService implements CalculoTarifaUseCase {
         DatosViajeTarifa viaje = tarifasCalculadas.buscarDatosViaje(viajeId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "No hay datos de finalización para el viaje " + viajeId));
-        Monto monto = calcular(viaje);
+        Monto monto = calcularCotizacion(viaje);
         tarifasCalculadas.registrar(viajeId, monto);
         return monto;
     }
 
     @Override
+    public Monto calcularCotizacion(DatosViajeTarifa datosViaje) {
+        return calcular(datosViaje);
+    }
+
+    @Override
     public void registrarViajeFinalizado(UUID viajeId, DatosViajeTarifa datosViaje) {
         tarifasCalculadas.registrarDatosViaje(viajeId, datosViaje);
-        tarifasCalculadas.registrar(viajeId, calcular(datosViaje));
+        tarifasCalculadas.registrar(viajeId, calcularCotizacion(datosViaje));
     }
 
     @Override
