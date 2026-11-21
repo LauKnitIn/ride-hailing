@@ -19,3 +19,5 @@ spring:
       channel:
         pasajeros:
           target: static://localhost:9193  
+        conductores:
+          target: static://localhost:9191
