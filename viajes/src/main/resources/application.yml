@@ -21,3 +21,5 @@ spring:
           target: static://localhost:9193  
         conductores:
           target: static://localhost:9191
+  kafka:
+    bootstrap-servers: localhost:9092

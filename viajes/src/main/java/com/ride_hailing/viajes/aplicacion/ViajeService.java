@@ -6,11 +6,14 @@ import com.ride_hailing.viajes.dominio.EstadoViaje;
 import com.ride_hailing.viajes.dominio.Ubicacion;
 import com.ride_hailing.viajes.dominio.Viaje;
 
+import jakarta.transaction.Transactional;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@Transactional 
 public class ViajeService implements ViajeUseCase {
 
     private final RepositorioViajes viajeRepository;
