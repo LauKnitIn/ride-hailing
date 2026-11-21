@@ -1,0 +1,15 @@
+server:
+  port: ${SERVER_PORT:8081}
+
+spring:
+  application:
+    name: tarifas-service
+  datasource:
+    url: ${TARIFAS_DB_URL:jdbc:h2:mem:tarifasdb;DB_CLOSE_DELAY=-1}
+    driver-class-name: ${TARIFAS_DB_DRIVER:org.h2.Driver}
+    username: ${TARIFAS_DB_USERNAME:sa}
+    password: ${TARIFAS_DB_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false

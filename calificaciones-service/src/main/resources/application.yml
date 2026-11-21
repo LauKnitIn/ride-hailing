@@ -1,0 +1,19 @@
+server:
+  port: ${SERVER_PORT:8082}
+
+spring:
+  application:
+    name: calificaciones-service
+  datasource:
+    url: ${CALIFICACIONES_DB_URL:jdbc:h2:mem:calificacionesdb;DB_CLOSE_DELAY=-1}
+    driver-class-name: ${CALIFICACIONES_DB_DRIVER:org.h2.Driver}
+    username: ${CALIFICACIONES_DB_USERNAME:sa}
+    password: ${CALIFICACIONES_DB_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+services:
+  viajes:
+    url: ${VIAJES_SERVICE_URL:http://localhost:8080}
