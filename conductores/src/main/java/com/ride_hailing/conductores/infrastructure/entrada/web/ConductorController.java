@@ -35,13 +35,13 @@ public class ConductorController {
     }
 
     @PostMapping
-    public ResponseEntity<ConductorResponse> registrar(@Valid @RequestBody RegistrarConductorRequest request) {   // ← @Valid
-    Conductor conductor = conductorUseCase.registrar(
-            request.nombreCompleto(),
-              mapper.aTipoDocumento(request.tipoDocumento()),     
-            request.numeroDocumento(),
-            request.fechaNacimiento());                                   
-    return ResponseEntity.status(HttpStatus.CREATED).body(mapper.aRespuesta(conductor));
+    public ResponseEntity<ConductorResponse> registrar(@Valid @RequestBody RegistrarConductorRequest request) {
+        Conductor conductor = conductorUseCase.registrar(
+                request.nombreCompleto(),
+                mapper.aTipoDocumento(request.tipoDocumento()),
+                request.numeroDocumento(),
+                request.fechaNacimiento());
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.aRespuesta(conductor));
     }
 
     @GetMapping("/disponibles")
@@ -51,35 +51,25 @@ public class ConductorController {
 
     @GetMapping("/{id}")
     public ConductorResponse buscarPorId(@PathVariable String id) {
-    return mapper.aRespuesta(conductorUseCase.buscarPorId(new DriverId(id)));          // ← new DriverId(id)
+        return mapper.aRespuesta(conductorUseCase.buscarPorId(new DriverId(id)));
     }
 
     @PutMapping("/{id}/disponibilidad")
     public ConductorResponse registrarDisponibilidad(@PathVariable String id,
-                                                    @Valid @RequestBody UbicacionRequest request) {   // ← @Valid
+                                                     @Valid @RequestBody UbicacionRequest request) {
         return mapper.aRespuesta(
                 conductorUseCase.registrarDisponibilidad(new DriverId(id), mapper.aUbicacion(request)));
     }
 
     @PutMapping("/{id}/ubicacion")
     public ConductorResponse actualizarUbicacion(@PathVariable String id,
-                                                @Valid @RequestBody UbicacionRequest request) {      // ← @Valid
+                                                 @Valid @RequestBody UbicacionRequest request) {
         return mapper.aRespuesta(
                 conductorUseCase.actualizarUbicacion(new DriverId(id), mapper.aUbicacion(request)));
     }
 
     @PutMapping("/{id}/desactivar")
     public ConductorResponse desactivar(@PathVariable String id) {
-        return mapper.aRespuesta(conductorUseCase.desactivarDisponibilidad(new DriverId(id)));  
-    }
-
-    @PutMapping("/{id}/en-viaje")   // TODO: corregir en etapa de comunicación
-    public ConductorResponse marcarEnViaje(@PathVariable String id) {
-        return mapper.aRespuesta(conductorUseCase.marcarEnViaje(new DriverId(id)));
-    }
-
-    @PutMapping("/{id}/liberar")    // TODO: corregir en etapa de comunicación
-    public ConductorResponse liberar(@PathVariable String id) {
-        return mapper.aRespuesta(conductorUseCase.liberarDeViaje(new DriverId(id)));
+        return mapper.aRespuesta(conductorUseCase.desactivarDisponibilidad(new DriverId(id)));
     }
 }

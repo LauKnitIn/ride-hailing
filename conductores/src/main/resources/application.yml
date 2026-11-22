@@ -21,14 +21,15 @@ spring:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     listener:
       ack-mode: batch
+  grpc:
+    server:
+      port: 9191
+    client:
+      channel:
+        viajes:
+          target: static://localhost:9192      
 
-grpc:
-  server:
-    port: 9191
-  client:
-    channel:
-      viajes:
-        target: static://localhost:9192
+
 
 eureka:
   client:

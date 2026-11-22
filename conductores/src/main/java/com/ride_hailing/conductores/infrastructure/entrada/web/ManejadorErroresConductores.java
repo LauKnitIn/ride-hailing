@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.ride_hailing.conductores.application.ServicioNoDisponibleException;
 import com.ride_hailing.conductores.domain.excepcion.ConductorConViajeActivoException;
 import com.ride_hailing.conductores.domain.excepcion.ConductorDuplicadoException;
 import com.ride_hailing.conductores.domain.excepcion.ConductorNoEncontradoException;
@@ -28,6 +29,11 @@ public class ManejadorErroresConductores {
     @ExceptionHandler({IllegalArgumentException.class, NullPointerException.class})
     public ResponseEntity<Map<String, String>> peticionInvalida(RuntimeException e) {
         return respuesta(HttpStatus.BAD_REQUEST, e);
+    }
+
+    @ExceptionHandler(ServicioNoDisponibleException.class)
+    public ResponseEntity<Map<String, String>> servicioNoDisponible(ServicioNoDisponibleException e) {
+        return respuesta(HttpStatus.SERVICE_UNAVAILABLE, e);
     }
 
     private ResponseEntity<Map<String, String>> respuesta(HttpStatus status, RuntimeException e) {
