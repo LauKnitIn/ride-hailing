@@ -10,6 +10,10 @@ get {
   auth: none
 }
 
+vars:pre-request {
+  baseUrl: localhost:8000
+}
+
 assert {
   res.body.estado: eq CANCELADO
 }

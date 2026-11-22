@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-tarifas}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tarifas}
     ports:
-      - "${POSTGRES_PORT:-5435}:5432"
+      - "${POSTGRES_PORT:-5437}:5432"
     volumes:
       - tarifas-data:/var/lib/postgresql/data
     healthcheck:

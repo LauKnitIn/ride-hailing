@@ -18,6 +18,10 @@ body:text {
   Sin conductores disponibles
 }
 
+vars:pre-request {
+  baseUrl: localhost:8000
+}
+
 assert {
   res.status: eq 204
 }

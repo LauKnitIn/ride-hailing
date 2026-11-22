@@ -18,6 +18,10 @@ body:text {
   El pasajero cambio de planes
 }
 
+vars:pre-request {
+  baseUrl: localhost:8000
+}
+
 assert {
   res.status: eq 204
 }

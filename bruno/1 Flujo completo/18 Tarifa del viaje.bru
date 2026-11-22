@@ -10,6 +10,10 @@ get {
   auth: none
 }
 
+vars:pre-request {
+  tarifasUrl: localhost:8000
+}
+
 assert {
   res.status: eq 200
 }

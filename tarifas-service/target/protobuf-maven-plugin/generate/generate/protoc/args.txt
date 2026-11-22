@@ -1,0 +1,9 @@
+--java_out=C:\Users\zoutk\Documents\UPTC\Semestre VII\ride-hailing\tarifas-service\target\generated-sources\protobuf
+--plugin=protoc-gen-0_5d882e17abadd4f7c5940b393874c10ba3663eaf=C:\Users\zoutk\Documents\UPTC\Semestre VII\ride-hailing\tarifas-service\target\protobuf-maven-plugin\generate\generate\artifacts\protoc-gen-grpc-java-1ecf7912d7f3b60b609adc1070a21457e5fa3d4c.exe
+--0_5d882e17abadd4f7c5940b393874c10ba3663eaf_out=C:\Users\zoutk\Documents\UPTC\Semestre VII\ride-hailing\tarifas-service\target\generated-sources\protobuf
+--0_5d882e17abadd4f7c5940b393874c10ba3663eaf_opt=@generated=omit
+C:\Users\zoutk\Documents\UPTC\Semestre VII\ride-hailing\tarifas-service\src\main\proto\tarifa.proto
+--proto_path=C:\Users\zoutk\Documents\UPTC\Semestre VII\ride-hailing\tarifas-service\src\main\proto
+--proto_path=C:\Users\zoutk\Documents\UPTC\Semestre VII\ride-hailing\tarifas-service\target\protobuf-maven-plugin\generate\generate\archives\grpc-services-1.83.1-1f50bef825b9b2246626e158ce6329eb015cea73
+--proto_path=C:\Users\zoutk\Documents\UPTC\Semestre VII\ride-hailing\tarifas-service\target\protobuf-maven-plugin\generate\generate\archives\protobuf-java-3.25.9-c2120c4934590ffb21133e64dc4e07936e2fe72c
+--proto_path=C:\Users\zoutk\Documents\UPTC\Semestre VII\ride-hailing\tarifas-service\target\protobuf-maven-plugin\generate\generate\archives\proto-google-common-protos-2.64.1-846bbf8f592d235bbec84311612596b2f5b133e5

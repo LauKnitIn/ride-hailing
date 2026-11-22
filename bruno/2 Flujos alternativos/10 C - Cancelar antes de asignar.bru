@@ -18,6 +18,10 @@ body:text {
   Ya no lo necesito
 }
 
+vars:pre-request {
+  baseUrl: localhost:8000
+}
+
 assert {
   res.status: gte 200
 }

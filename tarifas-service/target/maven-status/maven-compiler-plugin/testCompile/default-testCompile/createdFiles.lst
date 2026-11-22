@@ -1,0 +1,5 @@
+com\ride_hailing\tarifas\TarifaServiceIntegrationTest.class
+com\ride_hailing\tarifas\infraestructure\entrada\grpc\TarifaGrpcServiceTest$CapturedResponse.class
+com\ride_hailing\tarifas\CalculadoraTarifaServiceTest.class
+com\ride_hailing\tarifas\infraestructure\entrada\grpc\TarifaGrpcServiceTest.class
+com\ride_hailing\tarifas\infraestructure\entrada\mensajeria\ViajesKafkaConsumerTest.class

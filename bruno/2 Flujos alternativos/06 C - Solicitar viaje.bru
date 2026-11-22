@@ -20,6 +20,10 @@ body:json {
   }
 }
 
+vars:pre-request {
+  baseUrl: localhost:8000
+}
+
 vars:post-response {
   viajeCId: res.body.id
 }

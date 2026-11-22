@@ -1,0 +1,8 @@
+--java_out=C:\Users\zoutk\Documents\UPTC\Semestre VII\ride-hailing\calificaciones-service\target\generated-sources\protobuf
+--plugin=protoc-gen-0_b9064f3cd57842755669998229150ea63e75e960=C:\Users\zoutk\Documents\UPTC\Semestre VII\ride-hailing\calificaciones-service\target\protobuf-maven-plugin\generate\generate\artifacts\protoc-gen-grpc-java-1ecf7912d7f3b60b609adc1070a21457e5fa3d4c.exe
+--0_b9064f3cd57842755669998229150ea63e75e960_out=C:\Users\zoutk\Documents\UPTC\Semestre VII\ride-hailing\calificaciones-service\target\generated-sources\protobuf
+--0_b9064f3cd57842755669998229150ea63e75e960_opt=@generated=omit
+C:\Users\zoutk\Documents\UPTC\Semestre VII\ride-hailing\calificaciones-service\src\main\proto\viaje.proto
+--proto_path=C:\Users\zoutk\Documents\UPTC\Semestre VII\ride-hailing\calificaciones-service\src\main\proto
+--proto_path=C:\Users\zoutk\Documents\UPTC\Semestre VII\ride-hailing\calificaciones-service\target\protobuf-maven-plugin\generate\generate\archives\protobuf-java-3.25.9-c2120c4934590ffb21133e64dc4e07936e2fe72c
+--proto_path=C:\Users\zoutk\Documents\UPTC\Semestre VII\ride-hailing\calificaciones-service\target\protobuf-maven-plugin\generate\generate\archives\proto-google-common-protos-2.64.1-846bbf8f592d235bbec84311612596b2f5b133e5
