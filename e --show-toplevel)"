@@ -1,0 +1,25 @@
+[1mdiff --git a/emparejamientoOfertas/pom.xml b/emparejamientoOfertas/pom.xml[m
+[1mindex 46e3330..896af8b 100644[m
+[1m--- a/emparejamientoOfertas/pom.xml[m
+[1m+++ b/emparejamientoOfertas/pom.xml[m
+[36m@@ -102,7 +102,7 @@[m
+ 		</dependency>[m
+ 		<dependency>[m
+ 			<groupId>org.springframework.boot</groupId>[m
+[31m-            <artifactId>spring-boot-starter-kafka</artifactId>[m
+[32m+[m			[32m<artifactId>spring-boot-starter-kafka</artifactId>[m
+ 		</dependency>[m
+ 		<dependency>[m
+ 			<groupId>io.github.resilience4j</groupId>[m
+[36m@@ -117,6 +117,11 @@[m
+ 			<artifactId>spring-boot-starter-data-jpa-test</artifactId>[m
+ 			<scope>test</scope>[m
+ 		</dependency>[m
+[32m+[m		[32m<dependency>[m
+[32m+[m			[32m<groupId>org.springframework.boot</groupId>[m
+[32m+[m			[32m<artifactId>spring-boot-starter-test</artifactId>[m
+[32m+[m			[32m<scope>test</scope>[m
+[32m+[m		[32m</dependency>[m
+ 	</dependencies>[m
+ [m
+ 	<build>[m

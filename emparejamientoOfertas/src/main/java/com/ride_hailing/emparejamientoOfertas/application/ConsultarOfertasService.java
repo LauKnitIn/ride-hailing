@@ -8,6 +8,8 @@ import com.ride_hailing.emparejamientoOfertas.domain.exception.OfertaNoEncontrad
 import com.ride_hailing.emparejamientoOfertas.domain.model.Oferta;
 import com.ride_hailing.emparejamientoOfertas.domain.model.OfertaId;
 import com.ride_hailing.emparejamientoOfertas.domain.model.ViajeId;
+import com.ride_hailing.emparejamientoOfertas.domain.model.EstadoOferta;
+
 
 public class ConsultarOfertasService implements ConsultarOfertasUseCase {
 
@@ -26,5 +28,10 @@ public class ConsultarOfertasService implements ConsultarOfertasUseCase {
     @Override
     public List<Oferta> porViaje(String viajeId) {
         return ofertaRepositoryPort.buscarPorViajeId(new ViajeId(viajeId));
+    }
+
+    @Override
+    public List<Oferta> pendientesDelConductor(String conductorId) {
+        return ofertaRepositoryPort.buscarPorConductorIdyEstado(conductorId, EstadoOferta.PROPUESTA);
     }
 }

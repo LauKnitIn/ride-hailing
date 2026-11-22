@@ -47,8 +47,7 @@ public class EmparejamientoOfertasController {
         Optional<Oferta> ofertaOpt = procesarSolicitudEmparejamientoUseCase.procesar(
                 request.viajeId(),
                 request.origenLatitud(),
-                request.origenLongitud()
-        );
+                request.origenLongitud());
 
         return ofertaOpt
                 .map(oferta -> ResponseEntity.status(HttpStatus.CREATED).body(webMapper.toResponse(oferta)))
@@ -73,5 +72,11 @@ public class EmparejamientoOfertasController {
         return nuevaOferta
                 .map(ofertaGenerada -> ResponseEntity.ok(webMapper.toResponse(ofertaGenerada)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NO_CONTENT).build());
+    }
+
+    @GetMapping("/conductor/{conductorId}/pendientes")
+    public List<OfertaResponse> pendientesDelConductor(@PathVariable String conductorId) {
+        return consultarOfertas.pendientesDelConductor(conductorId).stream()
+                .map(webMapper::toResponse).toList();
     }
 }

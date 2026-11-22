@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.ride_hailing.emparejamientoOfertas.application.puerto.salida.OfertaRepositoryPort;
+import com.ride_hailing.emparejamientoOfertas.domain.model.EstadoOferta;
 import com.ride_hailing.emparejamientoOfertas.domain.model.Oferta;
 import com.ride_hailing.emparejamientoOfertas.domain.model.OfertaId;
 import com.ride_hailing.emparejamientoOfertas.domain.model.ViajeId;
@@ -37,4 +38,13 @@ public class OfertaRepositoryFalso implements OfertaRepositoryPort {
         return almacen.values().stream()
                 .anyMatch(o -> o.getViajeId().equals(viajeId));
     }
+
+    @Override
+    public List<Oferta> buscarPorConductorIdyEstado(String conductorId, EstadoOferta estado) {
+        return almacen.values().stream()
+                .filter(o -> o.getConductorId().equals(conductorId) && o.getEstado() == estado)
+                .toList();
+    }
+
+    
 }
