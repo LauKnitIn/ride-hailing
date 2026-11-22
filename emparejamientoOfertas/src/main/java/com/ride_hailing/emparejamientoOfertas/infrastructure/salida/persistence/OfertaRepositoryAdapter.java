@@ -10,7 +10,6 @@ import com.ride_hailing.emparejamientoOfertas.domain.model.Oferta;
 import com.ride_hailing.emparejamientoOfertas.domain.model.OfertaId;
 import com.ride_hailing.emparejamientoOfertas.domain.model.ViajeId;
 
-
 @Component
 public class OfertaRepositoryAdapter implements OfertaRepositoryPort {
 
@@ -24,15 +23,13 @@ public class OfertaRepositoryAdapter implements OfertaRepositoryPort {
 
     @Override
     public Oferta guardar(Oferta oferta) {
-        OfertaJpaEntity entity = mapper.toJpaEntity(oferta);
-        OfertaJpaEntity savedEntity = jpaRepository.save(entity);
-        return mapper.toDomain(savedEntity);
+        OfertaJpaEntity saved = jpaRepository.save(mapper.toJpaEntity(oferta));
+        return mapper.toDomain(saved);
     }
 
     @Override
     public Optional<Oferta> buscarPorId(OfertaId id) {
-        return jpaRepository.findById(id.value())
-                .map(mapper::toDomain);
+        return jpaRepository.findById(id.value()).map(mapper::toDomain);
     }
 
     @Override
@@ -41,5 +38,9 @@ public class OfertaRepositoryAdapter implements OfertaRepositoryPort {
                 .map(mapper::toDomain)
                 .toList();
     }
-   
+
+    @Override
+    public boolean existePorViajeId(ViajeId viajeId) {
+        return jpaRepository.existsByViajeId(viajeId.value());
+    }
 }

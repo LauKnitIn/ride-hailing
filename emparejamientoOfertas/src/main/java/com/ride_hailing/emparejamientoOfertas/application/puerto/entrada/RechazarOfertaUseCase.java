@@ -5,5 +5,5 @@ import java.util.Optional;
 import com.ride_hailing.emparejamientoOfertas.domain.model.Oferta;
 
 public interface RechazarOfertaUseCase {
-    Optional<Oferta> rechazar(String ofertaId, double origenLatitud, double origenLongitud);
+    Optional<Oferta> rechazar(String ofertaId);
 }

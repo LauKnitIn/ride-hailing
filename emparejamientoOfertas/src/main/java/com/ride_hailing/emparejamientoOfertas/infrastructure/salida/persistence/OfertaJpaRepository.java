@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 interface OfertaJpaRepository extends JpaRepository<OfertaJpaEntity, String> {
 
     List<OfertaJpaEntity> findByViajeId(String viajeId);
+
+    boolean existsByViajeId(String viajeId);
 }

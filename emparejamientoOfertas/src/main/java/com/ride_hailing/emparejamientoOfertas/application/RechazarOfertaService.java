@@ -21,7 +21,7 @@ public class RechazarOfertaService implements RechazarOfertaUseCase {
     }
 
     @Override
-    public Optional<Oferta> rechazar(String ofertaIdStr, double origenLatitud, double origenLongitud) {
+    public Optional<Oferta> rechazar(String ofertaIdStr) {
         OfertaId ofertaId = new OfertaId(ofertaIdStr);
         Oferta oferta = ofertaRepositoryPort.buscarPorId(ofertaId)
                 .orElseThrow(() -> new OfertaNoEncontradaException(ofertaIdStr));
@@ -29,10 +29,11 @@ public class RechazarOfertaService implements RechazarOfertaUseCase {
         oferta.meRechazar();
         ofertaRepositoryPort.guardar(oferta);
 
+        // El origen se toma de la oferta rechazada (Opción A)
         return procesarSolicitudEmparejamientoUseCase.procesar(
                 oferta.getViajeId().value(),
-                origenLatitud,
-                origenLongitud
+                oferta.getOrigenLatitud(),
+                oferta.getOrigenLongitud()
         );
     }
 }

@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ride_hailing.emparejamientoOfertas.application.puerto.entrada.AceptarOfertaUseCase;
+import com.ride_hailing.emparejamientoOfertas.application.puerto.entrada.ConsultarOfertasUseCase;
 import com.ride_hailing.emparejamientoOfertas.application.puerto.entrada.ProcesarSolicitudEmparejamientoUseCase;
 import com.ride_hailing.emparejamientoOfertas.application.puerto.entrada.RechazarOfertaUseCase;
-import com.ride_hailing.emparejamientoOfertas.application.puerto.entrada.ConsultarOfertasUseCase;
 import com.ride_hailing.emparejamientoOfertas.domain.model.Oferta;
 
 @RestController
@@ -42,7 +42,8 @@ public class EmparejamientoOfertasController {
     }
 
     @PostMapping("/emparejamientos")
-    public ResponseEntity<OfertaResponse> procesarEmparejamiento(@RequestBody SolicitudEmparejamientoRequest request) {
+    public ResponseEntity<OfertaResponse> procesarEmparejamiento(
+            @RequestBody SolicitudEmparejamientoRequest request) {
         Optional<Oferta> ofertaOpt = procesarSolicitudEmparejamientoUseCase.procesar(
                 request.viajeId(),
                 request.origenLatitud(),
@@ -58,19 +59,16 @@ public class EmparejamientoOfertasController {
     public List<OfertaResponse> porViaje(@PathVariable String viajeId) {
         return consultarOfertas.porViaje(viajeId).stream().map(webMapper::toResponse).toList();
     }
-    
+
     @PostMapping("/{id}/aceptar")
     public ResponseEntity<OfertaResponse> aceptarOferta(@PathVariable("id") String id) {
         Oferta ofertaAceptada = aceptarOfertaUseCase.aceptar(id);
         return ResponseEntity.ok(webMapper.toResponse(ofertaAceptada));
     }
 
-   @PostMapping("/{id}/rechazar")
-    public ResponseEntity<OfertaResponse> rechazarOferta(@PathVariable("id") String id,
-                                                        @RequestBody RechazarOfertaRequest request) {
-        // TEMPORAL: el origen llega en el body hasta que exista el puerto hacia viajes (etapa 2).
-        Optional<Oferta> nuevaOferta = rechazarOfertaUseCase.rechazar(
-                id, request.origenLatitud(), request.origenLongitud());
+    @PostMapping("/{id}/rechazar")
+    public ResponseEntity<OfertaResponse> rechazarOferta(@PathVariable("id") String id) {
+        Optional<Oferta> nuevaOferta = rechazarOfertaUseCase.rechazar(id);
 
         return nuevaOferta
                 .map(ofertaGenerada -> ResponseEntity.ok(webMapper.toResponse(ofertaGenerada)))

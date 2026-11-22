@@ -56,7 +56,8 @@ public class ProcesarSolicitudEmparejamientoService implements ProcesarSolicitud
             return Optional.empty();
         }
 
-        Oferta nuevaOferta = ofertaFactory.crearOfertaPropuesta(viajeId, seleccionado.get().conductorId());
+        Oferta nuevaOferta = ofertaFactory.crearOfertaPropuesta(
+                viajeId, seleccionado.get().conductorId(), origenLatitud, origenLongitud);
         Oferta guardada = ofertaRepositoryPort.guardar(nuevaOferta);
         return Optional.of(guardada);
     }

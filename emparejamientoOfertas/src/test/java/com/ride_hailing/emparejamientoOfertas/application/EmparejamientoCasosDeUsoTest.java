@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class EmparejamientoCasosDeUsoTest {
 
-private OfertaRepositoryFalso ofertaRepositoryFalso;
+    private OfertaRepositoryFalso ofertaRepositoryFalso;
     private List<ConductorCandidato> conductoresSimulados;
     private ConductoresPort conductoresPortFake;
     private AsignacionViajePort asignacionViajePortFake;
@@ -68,15 +68,14 @@ private OfertaRepositoryFalso ofertaRepositoryFalso;
         conductoresSimulados.add(new ConductorCandidato("conductor-lejano", 10.0, 10.0));
         conductoresSimulados.add(new ConductorCandidato("conductor-cercano", 4.001, -73.001));
 
-        double origenLat = 4.0;
-        double origenLon = -73.0;
-
-        Optional<Oferta> ofertaOpt = procesarService.procesar("viaje-1", origenLat, origenLon);
+        Optional<Oferta> ofertaOpt = procesarService.procesar("viaje-1", 4.0, -73.0);
 
         assertThat(ofertaOpt).isPresent();
         Oferta oferta = ofertaOpt.get();
         assertThat(oferta.getConductorId()).isEqualTo("conductor-cercano");
         assertThat(oferta.getEstado()).isEqualTo(EstadoOferta.PROPUESTA);
+        assertThat(oferta.getOrigenLatitud()).isEqualTo(4.0);
+        assertThat(oferta.getOrigenLongitud()).isEqualTo(-73.0);
 
         Oferta ofertaAceptada = aceptarService.aceptar(oferta.getId().value());
 
@@ -95,23 +94,23 @@ private OfertaRepositoryFalso ofertaRepositoryFalso;
 
     @Test
     void testC_AlRechazarProponeAlSiguienteMasCercanoYNoRepiteAlRechazado() {
-        conductoresSimulados.add(new ConductorCandidato("conductor-1", 4.001, -73.001)); // Más cercano
-        conductoresSimulados.add(new ConductorCandidato("conductor-2", 4.010, -73.010)); // Siguiente más cercano
+        conductoresSimulados.add(new ConductorCandidato("conductor-1", 4.001, -73.001));
+        conductoresSimulados.add(new ConductorCandidato("conductor-2", 4.010, -73.010));
 
-        double origenLat = 4.0;
-        double origenLon = -73.0;
-
-        Optional<Oferta> oferta1Opt = procesarService.procesar("viaje-3", origenLat, origenLon);
+        Optional<Oferta> oferta1Opt = procesarService.procesar("viaje-3", 4.0, -73.0);
         assertThat(oferta1Opt).isPresent();
         Oferta oferta1 = oferta1Opt.get();
         assertThat(oferta1.getConductorId()).isEqualTo("conductor-1");
 
-        Optional<Oferta> oferta2Opt = rechazarService.rechazar(oferta1.getId().value(), origenLat, origenLon);
+        // AHORA SIN lat/lon: el origen sale de la oferta rechazada
+        Optional<Oferta> oferta2Opt = rechazarService.rechazar(oferta1.getId().value());
 
         assertThat(oferta2Opt).isPresent();
         Oferta oferta2 = oferta2Opt.get();
         assertThat(oferta2.getConductorId()).isEqualTo("conductor-2");
         assertThat(oferta2.getId().value()).isNotEqualTo(oferta1.getId().value());
+        assertThat(oferta2.getOrigenLatitud()).isEqualTo(4.0);
+        assertThat(oferta2.getOrigenLongitud()).isEqualTo(-73.0);
 
         Oferta oferta1EnMap = ofertaRepositoryFalso.buscarPorId(oferta1.getId()).orElseThrow();
         assertThat(oferta1EnMap.getEstado()).isEqualTo(EstadoOferta.RECHAZADA);
@@ -125,7 +124,7 @@ private OfertaRepositoryFalso ofertaRepositoryFalso;
         assertThat(ofertaOpt).isPresent();
         Oferta oferta = ofertaOpt.get();
 
-        rechazarService.rechazar(oferta.getId().value(), 4.0, -73.0);
+        rechazarService.rechazar(oferta.getId().value());
 
         assertThatThrownBy(() -> aceptarService.aceptar(oferta.getId().value()))
                 .isInstanceOf(EstadoOfertaInvalidoException.class);

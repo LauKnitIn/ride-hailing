@@ -22,6 +22,12 @@ class OfertaJpaEntity {
     @Column(name = "conductor_id", nullable = false)
     private String conductorId;
 
+    @Column(name = "origen_latitud", nullable = false)
+    private double origenLatitud;
+
+    @Column(name = "origen_longitud", nullable = false)
+    private double origenLongitud;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false)
     private EstadoOferta estado;
@@ -29,42 +35,31 @@ class OfertaJpaEntity {
     public OfertaJpaEntity() {
     }
 
-    public OfertaJpaEntity(String id, String viajeId, String conductorId, EstadoOferta estado) {
+    public OfertaJpaEntity(String id, String viajeId, String conductorId,
+                           double origenLatitud, double origenLongitud, EstadoOferta estado) {
         this.id = id;
         this.viajeId = viajeId;
         this.conductorId = conductorId;
+        this.origenLatitud = origenLatitud;
+        this.origenLongitud = origenLongitud;
         this.estado = estado;
     }
 
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public String getViajeId() { return viajeId; }
+    public void setViajeId(String viajeId) { this.viajeId = viajeId; }
 
-    public String getViajeId() {
-        return viajeId;
-    }
+    public String getConductorId() { return conductorId; }
+    public void setConductorId(String conductorId) { this.conductorId = conductorId; }
 
-    public void setViajeId(String viajeId) {
-        this.viajeId = viajeId;
-    }
+    public double getOrigenLatitud() { return origenLatitud; }
+    public void setOrigenLatitud(double origenLatitud) { this.origenLatitud = origenLatitud; }
 
-    public String getConductorId() {
-        return conductorId;
-    }
+    public double getOrigenLongitud() { return origenLongitud; }
+    public void setOrigenLongitud(double origenLongitud) { this.origenLongitud = origenLongitud; }
 
-    public void setConductorId(String conductorId) {
-        this.conductorId = conductorId;
-    }
-
-    public EstadoOferta getEstado() {
-        return estado;
-    }
-
-    public void setEstado(EstadoOferta estado) {
-        this.estado = estado;
-    }
+    public EstadoOferta getEstado() { return estado; }
+    public void setEstado(EstadoOferta estado) { this.estado = estado; }
 }

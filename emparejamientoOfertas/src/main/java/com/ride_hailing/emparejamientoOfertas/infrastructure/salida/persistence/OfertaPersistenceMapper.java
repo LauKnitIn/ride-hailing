@@ -14,6 +14,8 @@ public class OfertaPersistenceMapper {
                 oferta.getId().value(),
                 oferta.getViajeId().value(),
                 oferta.getConductorId(),
+                oferta.getOrigenLatitud(),
+                oferta.getOrigenLongitud(),
                 oferta.getEstado()
         );
     }
@@ -23,6 +25,8 @@ public class OfertaPersistenceMapper {
                 new OfertaId(entity.getId()),
                 new ViajeId(entity.getViajeId()),
                 entity.getConductorId(),
+                entity.getOrigenLatitud(),
+                entity.getOrigenLongitud(),
                 entity.getEstado()
         );
     }

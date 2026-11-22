@@ -11,4 +11,5 @@ public interface OfertaRepositoryPort {
     Oferta guardar(Oferta oferta);
     Optional<Oferta> buscarPorId(OfertaId id);
     List<Oferta> buscarPorViajeId(ViajeId viajeId);
+    boolean existePorViajeId(ViajeId viajeId);
 }

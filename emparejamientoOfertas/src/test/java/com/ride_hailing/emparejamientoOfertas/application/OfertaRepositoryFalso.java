@@ -10,7 +10,7 @@ import com.ride_hailing.emparejamientoOfertas.domain.model.Oferta;
 import com.ride_hailing.emparejamientoOfertas.domain.model.OfertaId;
 import com.ride_hailing.emparejamientoOfertas.domain.model.ViajeId;
 
-public class OfertaRepositoryFalso implements OfertaRepositoryPort{
+public class OfertaRepositoryFalso implements OfertaRepositoryPort {
 
     private final Map<String, Oferta> almacen = new HashMap<>();
 
@@ -32,4 +32,9 @@ public class OfertaRepositoryFalso implements OfertaRepositoryPort{
                 .toList();
     }
 
+    @Override
+    public boolean existePorViajeId(ViajeId viajeId) {
+        return almacen.values().stream()
+                .anyMatch(o -> o.getViajeId().equals(viajeId));
+    }
 }

@@ -8,21 +8,26 @@ public class Oferta {
     private final OfertaId id;
     private final ViajeId viajeId;
     private final String conductorId;
+    private final double origenLatitud;
+    private final double origenLongitud;
     private EstadoOferta estado;
 
-    public Oferta(OfertaId id, ViajeId viajeId, String conductorId, EstadoOferta estado) {
+    public Oferta(OfertaId id, ViajeId viajeId, String conductorId,
+                  double origenLatitud, double origenLongitud, EstadoOferta estado) {
         this.id = Objects.requireNonNull(id, "id es requerido");
         this.viajeId = Objects.requireNonNull(viajeId, "viajeId es requerido");
         this.conductorId = Objects.requireNonNull(conductorId, "conductorId es requerido");
         if (conductorId.trim().isEmpty()) {
             throw new IllegalArgumentException("conductorId no puede estar vacío");
         }
+        this.origenLatitud = origenLatitud;
+        this.origenLongitud = origenLongitud;
         this.estado = Objects.requireNonNull(estado, "estado es requerido");
     }
 
-
-    public static Oferta reconstruir(OfertaId id, ViajeId viajeId, String conductorId, EstadoOferta estado) {
-        return new Oferta(id, viajeId, conductorId, estado);
+    public static Oferta reconstruir(OfertaId id, ViajeId viajeId, String conductorId,
+                                     double origenLatitud, double origenLongitud, EstadoOferta estado) {
+        return new Oferta(id, viajeId, conductorId, origenLatitud, origenLongitud, estado);
     }
 
     public void aceptar() {
@@ -39,20 +44,10 @@ public class Oferta {
         this.estado = EstadoOferta.RECHAZADA;
     }
 
-    public OfertaId getId() {
-        return id;
-    }
-
-    public ViajeId getViajeId() {
-        return viajeId;
-    }
-
-    public String getConductorId() {
-        return conductorId;
-    }
-
-    public EstadoOferta getEstado() {
-        return estado;
-    }
-
+    public OfertaId getId() { return id; }
+    public ViajeId getViajeId() { return viajeId; }
+    public String getConductorId() { return conductorId; }
+    public double getOrigenLatitud() { return origenLatitud; }
+    public double getOrigenLongitud() { return origenLongitud; }
+    public EstadoOferta getEstado() { return estado; }
 }
