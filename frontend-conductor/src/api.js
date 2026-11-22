@@ -12,7 +12,7 @@ export const api = {
   // emparejamiento-service
   // /conductor/{id} todavía no existe en el backend: está propuesto en la guía. Mientras no exista,
   // la pantalla de ofertas cae a buscar por id de viaje con /viaje/{viajeId}.
-  ofertasDelConductor: (id) => solicitar('GET', `/api/ofertas/conductor/${id}`),
+  ofertasDelConductor: (id) => solicitar('GET', `/api/ofertas/conductor/${id}/pendientes`),
   ofertasDelViaje: (viajeId) => solicitar('GET', `/api/ofertas/viaje/${viajeId}`),
   aceptarOferta: (id) => solicitar('POST', `/api/ofertas/${id}/aceptar`),
   rechazarOferta: (id) => solicitar('POST', `/api/ofertas/${id}/rechazar`),
