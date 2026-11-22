@@ -1,0 +1,9 @@
+**/target
+**/.mvn
+**/mvnw
+**/mvnw.cmd
+.git
+bruno
+evidencias
+ride_hailing
+src

@@ -1,4 +1,22 @@
+# Stack completo de microservicios (sin el monolito ride_hailing).
+#   Levantar todo:        docker compose up -d --build
+#   Solo infraestructura: docker compose up -d kafka
+#   Ver logs:             docker compose logs -f viajes
+
+x-service-build: &service-build
+  context: .
+  dockerfile: Dockerfile
+
+x-eureka-env: &eureka-env
+  EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+
+x-postgres-health: &postgres-health
+  interval: 5s
+  timeout: 5s
+  retries: 10
+
 services:
+  # ============================ INFRAESTRUCTURA ============================
   kafka:
     image: apache/kafka:latest
     container_name: ride-kafka
@@ -8,10 +26,281 @@ services:
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      # INTERNAL -> lo usan los contenedores (kafka:29092)
+      # EXTERNAL -> lo usa tu máquina (localhost:9092)
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+
+  eureka-server:
+    build:
+      <<: *service-build
+      args:
+        SERVICE_DIR: eureka-server
+    container_name: eureka-server
+    restart: unless-stopped
+    ports:
+      - "8761:8761"
+    environment:
+      EUREKA_INSTANCE_HOSTNAME: eureka-server
+
+  gateway:
+    build:
+      <<: *service-build
+      args:
+        SERVICE_DIR: gateway
+    container_name: gateway
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      <<: *eureka-env
+    depends_on:
+      - eureka-server
+
+  # ============================ BASES DE DATOS ============================
+  pasajeros-db:
+    image: postgres:16
+    container_name: pasajeros-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: pasajeros
+      POSTGRES_USER: pasajeros
+      POSTGRES_PASSWORD: pasajeros
+    ports:
+      - "5435:5432"
+    volumes:
+      - pasajeros-data:/var/lib/postgresql/data
+    healthcheck:
+      <<: *postgres-health
+      test: ["CMD-SHELL", "pg_isready -U pasajeros -d pasajeros"]
+
+  viajes-db:
+    image: postgres:16
+    container_name: viajes-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: viajes
+      POSTGRES_USER: viajes
+      POSTGRES_PASSWORD: viajes
+    ports:
+      - "5434:5432"
+    volumes:
+      - viajes-data:/var/lib/postgresql/data
+    healthcheck:
+      <<: *postgres-health
+      test: ["CMD-SHELL", "pg_isready -U viajes -d viajes"]
+
+  conductores-db:
+    image: postgres:16
+    container_name: conductores-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: conductores
+      POSTGRES_USER: conductores
+      POSTGRES_PASSWORD: conductores
+    ports:
+      - "5439:5432"
+    volumes:
+      - conductores-data:/var/lib/postgresql/data
+    healthcheck:
+      <<: *postgres-health
+      test: ["CMD-SHELL", "pg_isready -U conductores -d conductores"]
+
+  emparejamiento-db:
+    image: postgres:16
+    container_name: emparejamiento-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: emparejamiento
+      POSTGRES_USER: emparejamiento
+      POSTGRES_PASSWORD: emparejamiento
+    ports:
+      - "5436:5432"
+    volumes:
+      - emparejamiento-data:/var/lib/postgresql/data
+    healthcheck:
+      <<: *postgres-health
+      test: ["CMD-SHELL", "pg_isready -U emparejamiento -d emparejamiento"]
+
+  tarifas-db:
+    image: postgres:16
+    container_name: tarifas-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: tarifas
+      POSTGRES_USER: tarifas
+      POSTGRES_PASSWORD: tarifas
+    ports:
+      - "5437:5432"
+    volumes:
+      - tarifas-data:/var/lib/postgresql/data
+    healthcheck:
+      <<: *postgres-health
+      test: ["CMD-SHELL", "pg_isready -U tarifas -d tarifas"]
+
+  calificaciones-db:
+    image: postgres:16
+    container_name: calificaciones-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: calificaciones
+      POSTGRES_USER: calificaciones
+      POSTGRES_PASSWORD: calificaciones
+    ports:
+      - "5438:5432"
+    volumes:
+      - calificaciones-data:/var/lib/postgresql/data
+    healthcheck:
+      <<: *postgres-health
+      test: ["CMD-SHELL", "pg_isready -U calificaciones -d calificaciones"]
+
+  # ============================ MICROSERVICIOS ============================
+  pasajeros:
+    build:
+      <<: *service-build
+      args:
+        SERVICE_DIR: pasajeros
+    container_name: pasajeros-service
+    restart: unless-stopped
+    ports:
+      - "8083:8083"   # HTTP
+      - "9193:9193"   # gRPC
+    environment:
+      <<: *eureka-env
+      SPRING_DATASOURCE_URL: jdbc:postgresql://pasajeros-db:5432/pasajeros
+    depends_on:
+      pasajeros-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+
+  viajes:
+    build:
+      <<: *service-build
+      args:
+        SERVICE_DIR: viajes
+    container_name: viajes-service
+    restart: unless-stopped
+    ports:
+      - "8082:8082"   # HTTP
+      - "9192:9192"   # gRPC
+    environment:
+      <<: *eureka-env
+      SPRING_DATASOURCE_URL: jdbc:postgresql://viajes-db:5432/viajes
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      SPRING_GRPC_CLIENT_CHANNEL_PASAJEROS_TARGET: static://pasajeros:9193
+      SPRING_GRPC_CLIENT_CHANNEL_CONDUCTORES_TARGET: static://conductores:9191
+    depends_on:
+      viajes-db:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      eureka-server:
+        condition: service_started
+
+  conductores:
+    build:
+      <<: *service-build
+      args:
+        SERVICE_DIR: conductores
+    container_name: conductores-service
+    restart: unless-stopped
+    ports:
+      - "8085:8085"   # HTTP
+      - "9191:9191"   # gRPC
+    environment:
+      <<: *eureka-env
+      SPRING_DATASOURCE_URL: jdbc:postgresql://conductores-db:5432/conductores
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      SPRING_GRPC_CLIENT_CHANNEL_VIAJES_TARGET: static://viajes:9192
+    depends_on:
+      conductores-db:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      eureka-server:
+        condition: service_started
+
+  emparejamiento:
+    build:
+      <<: *service-build
+      args:
+        SERVICE_DIR: emparejamientoOfertas
+    container_name: emparejamiento-service
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+    environment:
+      <<: *eureka-env
+      SPRING_DATASOURCE_URL: jdbc:postgresql://emparejamiento-db:5432/emparejamiento
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      CONDUCTORES_GRPC_TARGET: static://conductores:9191
+      VIAJES_GRPC_TARGET: static://viajes:9192
+    depends_on:
+      emparejamiento-db:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      eureka-server:
+        condition: service_started
+
+  tarifas:
+    build:
+      <<: *service-build
+      args:
+        SERVICE_DIR: tarifas-service
+    container_name: tarifas-service
+    restart: unless-stopped
+    ports:
+      - "8081:8081"   # HTTP
+      - "9194:9194"   # gRPC
+    environment:
+      <<: *eureka-env
+      TARIFAS_DB_URL: jdbc:postgresql://tarifas-db:5432/tarifas
+      TARIFAS_DB_USERNAME: tarifas
+      TARIFAS_DB_PASSWORD: tarifas
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      tarifas-db:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      eureka-server:
+        condition: service_started
+
+  calificaciones:
+    build:
+      <<: *service-build
+      args:
+        SERVICE_DIR: calificaciones-service
+    container_name: calificaciones-service
+    restart: unless-stopped
+    ports:
+      - "8084:8084"
+    environment:
+      <<: *eureka-env
+      # Por defecto usa H2 en memoria; aquí se apunta a Postgres
+      CALIFICACIONES_DB_URL: jdbc:postgresql://calificaciones-db:5432/calificaciones
+      CALIFICACIONES_DB_DRIVER: org.postgresql.Driver
+      CALIFICACIONES_DB_USERNAME: calificaciones
+      CALIFICACIONES_DB_PASSWORD: calificaciones
+      VIAJES_GRPC_TARGET: static://viajes:9192
+    depends_on:
+      calificaciones-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+
+volumes:
+  pasajeros-data:
+  viajes-data:
+  conductores-data:
+  emparejamiento-data:
+  tarifas-data:
+  calificaciones-data:
