@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option java_package = "com.ride_hailing.tarifas.grpc";
+option java_multiple_files = true;
+option java_outer_classname = "TarifaProto";
+
+service TarifaGrpc {
+  rpc CotizarTarifa (CotizarTarifaRequest) returns (CotizarTarifaResponse) {}
+}
+
+message CotizarTarifaRequest {
+  double distanciaKm = 1;
+  double tiempoMinutos = 2;
+}
+
+message CotizarTarifaResponse {
+  double monto = 1; // Valor en pesos colombianos.
+  string moneda = 2; // Código ISO 4217: COP.
+}

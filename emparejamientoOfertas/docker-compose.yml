@@ -1,0 +1,9 @@
+services:
+  emparejamiento-db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: emparejamiento
+      POSTGRES_USER: emparejamiento
+      POSTGRES_PASSWORD: emparejamiento
+    ports:
+      - "5436:5432"

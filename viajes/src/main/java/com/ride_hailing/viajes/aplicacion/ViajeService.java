@@ -1,0 +1,128 @@
+package com.ride_hailing.viajes.aplicacion;
+
+import org.springframework.stereotype.Service;
+
+import com.ride_hailing.viajes.dominio.EstadoViaje;
+import com.ride_hailing.viajes.dominio.Ubicacion;
+import com.ride_hailing.viajes.dominio.Viaje;
+
+import jakarta.transaction.Transactional;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+@Transactional 
+public class ViajeService implements ViajeUseCase {
+
+    private final RepositorioViajes viajeRepository;
+    private final ViajeFactory viajeFactory;
+    private final TransicionEstadoViajeService transicionEstadoViajeService;
+    private final PublicadorEventosViaje publicadorEventosViaje;
+    private final VerificadorPasajero verificadorPasajero;
+
+    public ViajeService(RepositorioViajes viajeRepository,
+                         ViajeFactory viajeFactory,
+                         TransicionEstadoViajeService transicionEstadoViajeService,
+                         PublicadorEventosViaje publicadorEventosViaje,
+                         VerificadorPasajero verificadorPasajero) {
+        this.viajeRepository = viajeRepository;
+        this.viajeFactory = viajeFactory;
+        this.transicionEstadoViajeService = transicionEstadoViajeService;
+        this.publicadorEventosViaje = publicadorEventosViaje;
+        this.verificadorPasajero = verificadorPasajero;
+    }
+
+    @Override
+    public Viaje solicitarViaje(UUID pasajeroId, double latitudOrigen, double longitudOrigen,
+                                 double latitudDestino, double longitudDestino) {
+        Ubicacion origen = new Ubicacion(latitudOrigen, longitudOrigen);
+        Ubicacion destino = new Ubicacion(latitudDestino, longitudDestino);
+
+        Viaje viaje = viajeFactory.solicitar(pasajeroId, origen, destino);
+        if (!verificadorPasajero.existe(pasajeroId)) {
+            throw new PasajeroNoEncontradoException(pasajeroId);
+        }
+        viajeRepository.guardar(viaje);
+
+        publicadorEventosViaje.publicar(new ViajeSolicitadoEvent(
+            viaje.getId(), pasajeroId, latitudOrigen, longitudOrigen, viaje.getHoraSolicitud()));
+
+        // El emparejamiento reacciona al evento y puede haber cambiado el estado del viaje.
+        return viajeRepository.buscarPorId(viaje.getId()).orElse(viaje);
+    }
+
+    @Override
+    public void asignarConductor(UUID viajeId, UUID conductorId) {
+        Viaje viaje = obtenerOFallar(viajeId);
+        List<Viaje> viajesActivosDelConductor = viajeRepository.buscarPorConductorId(conductorId);
+        Instant momento = Instant.now();
+
+        transicionEstadoViajeService.asignarConductor(viaje, conductorId, viajesActivosDelConductor, momento);
+        viajeRepository.guardar(viaje);
+
+        publicadorEventosViaje.publicar(new ViajeAsignadoEvent(viaje.getId(), conductorId, momento));
+    }
+
+    @Override
+    public void rechazarPorFaltaDeConductores(UUID viajeId, String motivo) {
+        Viaje viaje = obtenerOFallar(viajeId);
+        transicionEstadoViajeService.cancelar(viaje, motivo);
+        viajeRepository.guardar(viaje);
+
+        publicadorEventosViaje.publicar(new SolicitudRechazadaEvent(viaje.getId(), motivo, Instant.now()));
+    }
+
+    @Override
+    public void iniciarViaje(UUID viajeId) {
+        Viaje viaje = obtenerOFallar(viajeId);
+        viaje.iniciar(Instant.now());
+        viajeRepository.guardar(viaje);
+    }
+
+    @Override
+    public void finalizarViaje(UUID viajeId) {
+        Viaje viaje = obtenerOFallar(viajeId);
+        Instant momento = Instant.now();
+        viaje.finalizar(momento);
+        viajeRepository.guardar(viaje);
+
+        publicadorEventosViaje.publicar(new ViajeFinalizadoEvent(
+            viaje.getId(), viaje.getConductorId(), viaje.getDistanciaKm(), viaje.getDuracion(), momento));
+    }
+
+    @Override
+    public TransicionEstadoViajeService.ResultadoCancelacion cancelarViaje(UUID viajeId, String motivo) {
+        Viaje viaje = obtenerOFallar(viajeId);
+        TransicionEstadoViajeService.ResultadoCancelacion resultado =
+            transicionEstadoViajeService.cancelar(viaje, motivo);
+        viajeRepository.guardar(viaje);
+
+        publicadorEventosViaje.publicar(new ViajeCanceladoEvent(
+            viaje.getId(), viaje.getConductorId(), resultado.requiereCargoParcial(), Instant.now()));
+
+        return resultado;
+    }
+
+    @Override
+    public Viaje consultarViaje(UUID viajeId) {
+        return obtenerOFallar(viajeId);
+    }
+
+    @Override
+    public boolean conductorTieneViajeEnCurso(UUID conductorId) {
+        return viajeRepository.buscarPorConductorId(conductorId).stream()
+            .anyMatch(v -> v.getEstado().valor() == EstadoViaje.Valor.EN_CURSO);
+    }
+
+    @Override
+    public List<Viaje> listarViajesDelPasajero(UUID pasajeroId) {
+        return viajeRepository.buscarPorPasajeroId(pasajeroId);
+    }
+
+    private Viaje obtenerOFallar(UUID viajeId) {
+        return viajeRepository.buscarPorId(viajeId)
+            .orElseThrow(() -> new ViajeNoEncontradoException(viajeId));
+    }
+}
