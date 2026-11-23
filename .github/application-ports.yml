@@ -1,0 +1,6 @@
+# Catalogo de puertos del proyecto (documentacion; Spring no carga este archivo).
+# Puertos HTTP: gateway 8000, monolito 8080, tarifas 8081, viajes 8082,
+# pasajeros 8083, calificaciones 8084, conductores 8085,
+# emparejamiento 8086, eureka 8761.
+server:
+  port: 8080
