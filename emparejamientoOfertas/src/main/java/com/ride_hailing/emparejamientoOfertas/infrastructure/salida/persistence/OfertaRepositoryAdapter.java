@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import com.ride_hailing.emparejamientoOfertas.application.puerto.salida.OfertaRepositoryPort;
+import com.ride_hailing.emparejamientoOfertas.domain.model.EstadoOferta;
 import com.ride_hailing.emparejamientoOfertas.domain.model.Oferta;
 import com.ride_hailing.emparejamientoOfertas.domain.model.OfertaId;
 import com.ride_hailing.emparejamientoOfertas.domain.model.ViajeId;
@@ -42,5 +43,12 @@ public class OfertaRepositoryAdapter implements OfertaRepositoryPort {
     @Override
     public boolean existePorViajeId(ViajeId viajeId) {
         return jpaRepository.existsByViajeId(viajeId.value());
+    }
+
+    @Override
+    public List<Oferta> buscarPorConductorIdyEstado(String conductorId, EstadoOferta estado) {
+        return jpaRepository.findByConductorIdAndEstado(conductorId, estado).stream()
+                .map(mapper::toDomain)
+                .toList();
     }
 }

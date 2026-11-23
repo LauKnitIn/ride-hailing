@@ -27,7 +27,7 @@ public class EmparejamientoCasosDeUsoTest {
     private AsignacionViajePort asignacionViajePortFake;
     private List<String> viajesAsignadosLog;
     private List<String> viajesRechazadosLog;
-
+    private ConsultarOfertasService consultarOfertasService;
     private ProcesarSolicitudEmparejamientoService procesarService;
     private AceptarOfertaService aceptarService;
     private RechazarOfertaService rechazarService;
@@ -40,6 +40,7 @@ public class EmparejamientoCasosDeUsoTest {
         viajesAsignadosLog = new ArrayList<>();
         viajesRechazadosLog = new ArrayList<>();
         asignacionViajePortFake = new AsignacionViajePortFake(viajesAsignadosLog, viajesRechazadosLog);
+        consultarOfertasService = new ConsultarOfertasService(ofertaRepositoryFalso);
 
         SeleccionConductorDomainService seleccionService = new SeleccionConductorDomainService();
         OfertaFactory ofertaFactory = new OfertaFactory();
@@ -128,5 +129,19 @@ public class EmparejamientoCasosDeUsoTest {
 
         assertThatThrownBy(() -> aceptarService.aceptar(oferta.getId().value()))
                 .isInstanceOf(EstadoOfertaInvalidoException.class);
+    }
+
+    @Test
+    void testE_ElConductorVeSoloSusOfertasPendientes() {
+        conductoresSimulados.add(new ConductorCandidato("conductor-1", 4.001, -73.001));
+        Oferta o1 = procesarService.procesar("viaje-5", 4.0, -73.0).orElseThrow();
+
+        ConsultarOfertasService consulta = new ConsultarOfertasService(ofertaRepositoryFalso);
+        assertThat(consulta.pendientesDelConductor("conductor-1")).extracting(Oferta::getId)
+                .containsExactly(o1.getId());
+        assertThat(consulta.pendientesDelConductor("otro")).isEmpty();
+
+        aceptarService.aceptar(o1.getId().value());
+        assertThat(consulta.pendientesDelConductor("conductor-1")).isEmpty();
     }
 }

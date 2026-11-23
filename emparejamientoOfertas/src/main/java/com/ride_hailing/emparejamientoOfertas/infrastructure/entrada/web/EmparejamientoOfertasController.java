@@ -74,4 +74,10 @@ public class EmparejamientoOfertasController {
                 .map(ofertaGenerada -> ResponseEntity.ok(webMapper.toResponse(ofertaGenerada)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NO_CONTENT).build());
     }
+
+    @GetMapping("/conductor/{conductorId}/pendientes")
+    public List<OfertaResponse> pendientesDelConductor(@PathVariable String conductorId) {
+        return consultarOfertas.pendientesDelConductor(conductorId).stream()
+                .map(webMapper::toResponse).toList();
+    }
 }
