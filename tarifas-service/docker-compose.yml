@@ -1,0 +1,21 @@
+services:
+  tarifas-db:
+    image: postgres:16
+    container_name: tarifas-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-tarifas}
+      POSTGRES_USER: ${POSTGRES_USER:-tarifas}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tarifas}
+    ports:
+      - "${POSTGRES_PORT:-5437}:5432"
+    volumes:
+      - tarifas-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tarifas} -d ${POSTGRES_DB:-tarifas}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  tarifas-data:

@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option java_package = "com.ride_hailing.conductores.grpc";
+option java_multiple_files = true;
+option java_outer_classname = "ConductorProto";
+
+service ConductorGrpc {
+  rpc UbicacionActual (ConductorRequest) returns (UbicacionResponse) {}
+  rpc ConductoresDisponibles (DisponiblesRequest) returns (DisponiblesResponse) {}
+}
+
+message ConductorRequest {
+  string conductorId = 1;
+}
+
+message UbicacionResponse {
+  bool tieneUbicacion = 1;   // false si el conductor aún no reporta ubicación
+  double latitud = 2;
+  double longitud = 3;
+}
+
+message DisponiblesRequest {
+}
+
+message ConductorDisponible {
+  string conductorId = 1;
+  double latitud = 2;
+  double longitud = 3;
+}
+
+message DisponiblesResponse {
+  repeated ConductorDisponible conductores = 1;
+}
