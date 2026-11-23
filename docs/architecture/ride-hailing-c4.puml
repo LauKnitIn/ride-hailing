@@ -1,0 +1,78 @@
+@startuml Ride Hailing C4
+!include <C4/C4_Context>
+!include <C4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+
+title Ride Hailing - Diagrama C4 de contenedores
+
+Person(pasajero, "Pasajero", "Solicita y consulta viajes")
+Person(conductor, "Conductor", "Administra disponibilidad y acepta viajes")
+
+System_Boundary(ride_hailing, "Ride Hailing") {
+  Container(gateway, "API Gateway", "Spring Cloud Gateway", "Enruta REST al servicio correspondiente")
+  Container(eureka, "Service Discovery", "Netflix Eureka", "Registra y descubre servicios")
+
+  Container(monolito, "Aplicación monolítica modular", "Spring Boot 4 / Java 25", "Implementación evolucionable de pasajeros, conductores, viajes, emparejamiento y tarifas")
+  ContainerDb(monolitoDb, "Bases H2 del monolito", "H2 en memoria", "Bases separadas por dominio")
+
+  Container(pasajeros, "Pasajeros Service", "Spring Boot / PostgreSQL", "Registro y consulta de pasajeros")
+  ContainerDb(pasajerosDb, "Pasajeros DB", "PostgreSQL", "Datos de pasajeros")
+
+  Container(conductores, "Conductores Service", "Spring Boot / PostgreSQL", "Disponibilidad y ubicación de conductores")
+  ContainerDb(conductoresDb, "Conductores DB", "PostgreSQL", "Datos de conductores")
+
+  Container(viajes, "Viajes Service", "Spring Boot / PostgreSQL", "Ciclo de vida de viajes y publicación Outbox")
+  ContainerDb(viajesDb, "Viajes DB", "PostgreSQL", "Datos de viajes y tabla outbox_event")
+
+  Container(emparejamiento, "Emparejamiento Service", "Spring Boot / PostgreSQL", "Oferta y asignación de conductores")
+  ContainerDb(emparejamientoDb, "Emparejamiento DB", "PostgreSQL", "Datos de ofertas")
+
+  Container(tarifas, "Tarifas Service", "Spring Boot / PostgreSQL / Flyway", "Cálculo y consulta de tarifas")
+  ContainerDb(tarifasDb, "Tarifas DB", "PostgreSQL", "Cargo parcial y tarifa final")
+
+  Container(calificaciones, "Calificaciones Service", "Spring Boot / PostgreSQL", "Registro y consulta de calificaciones")
+  ContainerDb(calificacionesDb, "Calificaciones DB", "PostgreSQL", "Calificaciones")
+
+  Container(kafka, "Apache Kafka", "Kafka broker", "Log de eventos de dominio")
+}
+
+Rel(pasajero, gateway, "Usa", "HTTP REST · sincrona")
+Rel(conductor, gateway, "Usa", "HTTP REST · sincrona")
+
+Rel(gateway, monolito, "Enruta algunas rutas", "HTTP REST · sincrona")
+Rel(gateway, pasajeros, "Enruta /api/pasajeros", "HTTP REST · sincrona")
+Rel(gateway, conductores, "Enruta /api/conductores", "HTTP REST · sincrona")
+Rel(gateway, viajes, "Enruta /api/viajes", "HTTP REST · sincrona")
+Rel(gateway, emparejamiento, "Enruta /api/ofertas", "HTTP REST · sincrona")
+Rel(gateway, tarifas, "Enruta /api/tarifas", "HTTP REST · sincrona")
+Rel(gateway, calificaciones, "Enruta /api/calificaciones", "HTTP REST · sincrona")
+
+Rel(monolito, monolitoDb, "Lee y escribe", "JDBC/JPA · sincrona")
+Rel(pasajeros, pasajerosDb, "Lee y escribe", "JDBC/JPA · sincrona")
+Rel(conductores, conductoresDb, "Lee y escribe", "JDBC/JPA · sincrona")
+Rel(viajes, viajesDb, "Lee y escribe", "JDBC/JPA · sincrona")
+Rel(emparejamiento, emparejamientoDb, "Lee y escribe", "JDBC/JPA · sincrona")
+Rel(tarifas, tarifasDb, "Lee y escribe", "JDBC/JPA · sincrona")
+Rel(calificaciones, calificacionesDb, "Lee y escribe", "JDBC/JPA · sincrona")
+
+Rel(viajes, pasajeros, "Consulta pasajero", "gRPC · sincrona")
+Rel(viajes, conductores, "Consulta conductor", "gRPC · sincrona")
+Rel(emparejamiento, viajes, "Consulta viaje", "gRPC · sincrona")
+Rel(emparejamiento, conductores, "Consulta conductores", "gRPC · sincrona")
+Rel(calificaciones, viajes, "Consulta viaje", "gRPC · sincrona")
+
+Rel(viajes, kafka, "Publica viajes.solicitados/asignados/finalizados/cancelados/rechazados", "Kafka · asincrona")
+Rel(kafka, conductores, "Consume eventos de viaje", "Kafka · asincrona")
+Rel(kafka, emparejamiento, "Consume viajes.solicitados", "Kafka · asincrona")
+Rel(kafka, tarifas, "Consume viajes.finalizados/cancelados", "Kafka · asincrona")
+
+Rel(gateway, eureka, "Consulta rutas", "HTTP · sincrona")
+Rel(pasajeros, eureka, "Se registra", "HTTP · sincrona")
+Rel(conductores, eureka, "Se registra", "HTTP · sincrona")
+Rel(viajes, eureka, "Se registra", "HTTP · sincrona")
+Rel(emparejamiento, eureka, "Se registra", "HTTP · sincrona")
+Rel(tarifas, eureka, "Se registra", "HTTP · sincrona")
+Rel(calificaciones, eureka, "Se registra", "HTTP · sincrona")
+
+@enduml
