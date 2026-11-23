@@ -1,0 +1,29 @@
+meta {
+  name: C - Solicitar viaje
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/viajes
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "pasajeroId": "{{pasajeroId}}",
+    "latitudOrigen": 4.711,
+    "longitudOrigen": -74.0721,
+    "latitudDestino": 4.65,
+    "longitudDestino": -74.1
+  }
+}
+
+vars:post-response {
+  viajeCId: res.body.id
+}
+
+assert {
+  res.status: eq 200
+}

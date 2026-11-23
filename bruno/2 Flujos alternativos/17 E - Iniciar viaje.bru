@@ -1,0 +1,15 @@
+meta {
+  name: E - Iniciar viaje
+  type: http
+  seq: 17
+}
+
+post {
+  url: {{baseUrl}}/api/viajes/{{viajeEId}}/iniciar
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 204
+}

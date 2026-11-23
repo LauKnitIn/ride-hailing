@@ -1,0 +1,15 @@
+meta {
+  name: Viaje inexistente
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/viajes/00000000-0000-0000-0000-000000000000
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+}

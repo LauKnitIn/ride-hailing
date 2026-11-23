@@ -1,0 +1,39 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: emparejamiento-service
+  datasource:
+    url: jdbc:postgresql://localhost:5436/emparejamiento
+    username: emparejamiento
+    password: emparejamiento
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: emparejamiento-service
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      ack-mode: batch
+  grpc:
+    client:
+      channel:
+        conductores:
+          target: ${CONDUCTORES_GRPC_TARGET:static://localhost:9191}
+        viajes:
+          target: ${VIAJES_GRPC_TARGET:static://localhost:9192}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true

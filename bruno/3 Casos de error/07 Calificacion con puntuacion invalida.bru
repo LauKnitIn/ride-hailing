@@ -1,0 +1,24 @@
+meta {
+  name: Calificacion con puntuacion invalida
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/calificaciones
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "viajeId": "{{viajeId}}",
+    "pasajeroId": "{{pasajeroId}}",
+    "puntuacion": 9,
+    "comentario": "x"
+  }
+}
+
+assert {
+  res.status: eq 400
+}

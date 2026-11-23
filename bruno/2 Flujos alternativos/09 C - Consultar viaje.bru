@@ -1,0 +1,15 @@
+meta {
+  name: C - Consultar viaje
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/api/viajes/{{viajeCId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}

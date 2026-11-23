@@ -1,0 +1,20 @@
+meta {
+  name: B - Cargo parcial
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/tarifas/{{viajeBId}}/cargo-parcial
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.monto: eq 2500
+}
+
+docs {
+  50% de la tarifa minima (5000).
+}

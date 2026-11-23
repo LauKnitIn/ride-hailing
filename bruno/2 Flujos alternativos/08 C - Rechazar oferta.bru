@@ -1,0 +1,19 @@
+meta {
+  name: C - Rechazar oferta
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/api/ofertas/{{ofertaCId}}/rechazar
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: gte 200
+}
+
+docs {
+  200 con la nueva oferta si hay otro conductor; 204 si no quedan (el viaje se cancela).
+}

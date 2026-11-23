@@ -1,0 +1,15 @@
+meta {
+  name: C - Cargo parcial inexistente
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/api/tarifas/{{viajeCId}}/cargo-parcial
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+}

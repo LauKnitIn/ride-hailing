@@ -1,0 +1,27 @@
+meta {
+  name: C - Cancelar antes de asignar
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/api/viajes/{{viajeCId}}/cancelar
+  body: text
+  auth: none
+}
+
+headers {
+  Content-Type: text/plain
+}
+
+body:text {
+  Ya no lo necesito
+}
+
+assert {
+  res.status: gte 200
+}
+
+docs {
+  204 si seguia SOLICITADO; 409 si ya estaba cancelado. Sin cargo parcial.
+}

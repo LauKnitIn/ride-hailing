@@ -1,0 +1,15 @@
+meta {
+  name: Consultar pasajero
+  type: http
+  seq: 3
+}
+
+get {
+  url: localhost:8080/api/pasajeros/4ef6897c-6184-4e81-a3e5-5fdc82580a53
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}

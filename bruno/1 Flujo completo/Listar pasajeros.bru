@@ -1,0 +1,17 @@
+meta {
+  name: Listar pasajeros
+  type: http
+  seq: 2
+}
+
+get {
+  url: localhost:8080/api/pasajeros
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+  forwardAuthorizationHeader: false
+}

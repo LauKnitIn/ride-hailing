@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+option java_package = "com.ride_hailing.conductores.grpc";
+option java_multiple_files = true;
+option java_outer_classname = "ViajeProto";
+
+service ViajeGrpc {
+  rpc ConsultarViaje (ViajeIdRequest) returns (ViajeDetalle) {}
+  rpc ConductorTieneViajeEnCurso (ConductorIdRequest) returns (ViajeEnCursoResponse) {}
+  rpc AsignarConductor (AsignarConductorRequest) returns (OperacionResponse) {}
+  rpc RechazarPorFaltaDeConductores (RechazarSolicitudRequest) returns (OperacionResponse) {}
+}
+
+message ViajeIdRequest {
+  string viajeId = 1;
+}
+
+message ViajeDetalle {
+  string viajeId = 1;
+  string pasajeroId = 2;
+  string conductorId = 3;       // vacío mientras no haya conductor asignado
+  string estado = 4;            // SOLICITADO, ASIGNADO, EN_CURSO, FINALIZADO o CANCELADO
+  double distanciaKm = 5;       // solo con estado FINALIZADO
+  double duracionMinutos = 6;   // solo con estado FINALIZADO
+}
+
+message ConductorIdRequest {
+  string conductorId = 1;
+}
+
+message ViajeEnCursoResponse {
+  bool enCurso = 1;
+}
+
+message AsignarConductorRequest {
+  string viajeId = 1;
+  string conductorId = 2;
+}
+
+message RechazarSolicitudRequest {
+  string viajeId = 1;
+  string motivo = 2;
+}
+
+message OperacionResponse {
+  bool ok = 1;
+}
